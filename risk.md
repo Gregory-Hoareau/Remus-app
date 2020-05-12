@@ -18,8 +18,8 @@ Niveaux de probabilité & d'importance possibles :
 **Si** ne trouvons pas un algorithme de matching performant 
 **Alors** notre solution finale ne sera pas innovante 
 
-Probabilité : :confused: 
-Importance : :rotating_light: 
+Probabilité : :no_mouth
+Importance : :fire:
 
 Actions :
 - Chercher un algorithme de matching
