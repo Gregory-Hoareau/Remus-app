@@ -18,7 +18,7 @@ Niveaux de probabilité & d'importance possibles :
 **Si** ne trouvons pas un algorithme de matching performant 
 **Alors** notre solution finale ne sera pas innovante 
 
-Probabilité : :no_mouth
+Probabilité : :no_mouth:
 Importance : :fire:
 
 Actions :
