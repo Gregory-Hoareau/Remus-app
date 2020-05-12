@@ -3,7 +3,7 @@
 Niveaux de probabilité & d'importance possibles :
 - Bas : :no_mouth:
 - Medium : :grimacing:
-- Critique : :flame:
+- Critique : :fire:
 
 ## Écriture d'un risque: Le template:
 
