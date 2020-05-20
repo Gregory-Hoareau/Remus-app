@@ -4,6 +4,7 @@
 *~
 *.sw[mnpcod]
 .tmp
+*.idea
 *.xml
 *.iml
 *.tmp
