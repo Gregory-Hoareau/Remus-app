@@ -14,6 +14,8 @@ const routes: Routes = [
   {
     path: 'host-form',
     loadChildren: () => import('./pages/host-form/host-form.module').then( m => m.HostFormPageModule)
+  },
+  {
     path: 'sessionHome',
     loadChildren : () => import('./pages/SessionHome/sessionHome.module').then(m => m.SessionHomePageModule)
   }
