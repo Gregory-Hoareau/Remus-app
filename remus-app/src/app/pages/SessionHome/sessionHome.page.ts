@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {AlertController} from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-home',
@@ -8,7 +10,17 @@ import {AlertController} from '@ionic/angular';
 })
 export class SessionHomePage {
 
-  constructor(public alertController: AlertController) {}
+  roomName: string;
+  description: string;
+
+  constructor(public alertController: AlertController, private route: ActivatedRoute, private router: Router) {
+    this.route.queryParams.subscribe(params => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.roomName = this.router.getCurrentNavigation().extras.state.name;
+        this.description = this.router.getCurrentNavigation().extras.state.description;
+      }
+    });
+  }
 
   async presentAlertConfirm() {
     const input = {data: []};
@@ -41,4 +53,7 @@ export class SessionHomePage {
     const result = await alert.onDidDismiss();
     console.log(result);
   }
+
+  
+  
 }

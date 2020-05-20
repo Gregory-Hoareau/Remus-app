@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { HostFormPage} from '../host-form/host-form.page';
 import { IonRouterOutlet } from '@ionic/angular';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ export class HomePage {
 
   dataReturned: any;
 
-  constructor(private modalCtr: ModalController, private routerOutlet: IonRouterOutlet) {
+  constructor(private router: Router, private modalCtr: ModalController, private routerOutlet: IonRouterOutlet) {
 
   }
 
@@ -28,10 +29,13 @@ export class HomePage {
       swipeToClose: true
     });
 
-    modal.onDidDismiss().then((dataReturned) => {
+    modal.onWillDismiss().then((dataReturned) => {
       if (dataReturned !== null) {
         this.dataReturned = dataReturned.data;
-        //alert('Modal Sent Data :'+ dataReturned);
+        let navigationExtras: NavigationExtras = {
+          state: this.dataReturned
+        };
+        this.router.navigate(['sessionHome'], navigationExtras);
       }
     });
 

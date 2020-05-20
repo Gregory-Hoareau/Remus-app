@@ -35,4 +35,8 @@ export class HostFormPage implements OnInit {
     await this.modalController.dismiss(onClosedData);
   }
 
+  onSubmit() {
+    
+  }
+
 }
