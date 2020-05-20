@@ -1,20 +1,30 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
+<<<<<<< HEAD
+
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+=======
+>>>>>>> 19afdd359656f5a0521ace677b48dca47d5f8423
+    <ion-title >
+      Remus : Assistant pour JDR
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <p *ngIf="dataReturned">{{dataReturned}}</p>
 </ion-content>
+
+<<ion-footer>
+  <ion-toolbar>
+    <ion-button margin (click)="openModal()" color="dark" expand="block" fill="outline" shape="round">
+      Heberger
+    </ion-button>
+  </ion-toolbar>
+<<<<<<< HEAD
+</ion-footer>
+=======
+</ion-footer>
+>>>>>>> 19afdd359656f5a0521ace677b48dca47d5f8423
