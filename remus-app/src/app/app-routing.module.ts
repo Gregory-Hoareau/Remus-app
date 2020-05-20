@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'sessionHome',
     loadChildren : () => import('./pages/SessionHome/sessionHome.module').then(m => m.SessionHomePageModule)
-  }
+  },
+  {
+    path: 'character-sheet',
+    loadChildren: () => import('./pages/character-sheet/character-sheet.module').then( m => m.CharacterSheetPageModule)
+  },
 ];
 
 @NgModule({
