@@ -4,8 +4,6 @@
 *~
 *.sw[mnpcod]
 .tmp
-*.xml
-*.iml
 *.tmp
 *.tmp.*
 *.sublime-project
@@ -19,7 +17,8 @@ $RECYCLE.BIN/
 log.txt
 npm-debug.log*
 
-.idea
+
+/.idea/
 /.ionic
 /.sass-cache
 /.sourcemaps
