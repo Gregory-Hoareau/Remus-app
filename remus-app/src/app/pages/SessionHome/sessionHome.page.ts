@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import {AlertController} from '@ionic/angular';
-import { ActivatedRoute, Router } from '@angular/router';
+import { IonRouterOutlet, ModalController} from '@ionic/angular';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
+import {DocPopupPage} from '../doc-popup/doc-popup.page';
+
 
 
 @Component({
@@ -10,10 +12,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class SessionHomePage {
 
+  dataReturned: any;
   roomName: string;
   description: string;
 
-  constructor(public alertController: AlertController, private route: ActivatedRoute, private router: Router) {
+  constructor(public modalCtr: ModalController,
+              private route: ActivatedRoute, private router: Router, private routerOutlet: IonRouterOutlet) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.roomName = this.router.getCurrentNavigation().extras.state.name;
@@ -22,38 +26,24 @@ export class SessionHomePage {
     });
   }
 
-  async presentAlertConfirm() {
-    const input = {data: []};
-    for (let i = 1; i < 21; i++) {
-      input.data.push({name: 'docs ' + i, type: 'radio', label: 'Document ' + i, value: 'value' + i});
-    }
-    const alert = await this.alertController.create({
-      header: 'Documents partagés',
-      message: 'Message <strong>text</strong>!!!',
-      cssClass: '',
-      inputs: input.data,
-      buttons: [
-        {
-          text: 'Valider',
-          role: 'Valider',
-          cssClass: 'buttons',
-          handler: () => {
-            console.log('Valider');
-          }
-        }, {
-          cssClass: 'buttons',
-          text: 'Annuler',
-          handler: () => {
-            console.log('Annuler');
-          }
-        }
-      ]
+  async openModal() {
+    const modal = await this.modalCtr.create({
+      component: DocPopupPage,
+      presentingElement: this.routerOutlet.nativeEl,
+      swipeToClose: true
     });
-    await alert.present();
-    const result = await alert.onDidDismiss();
-    console.log(result);
+
+    modal.onWillDismiss().then((dataReturned) => {
+      if (dataReturned !== null) {
+        this.dataReturned = dataReturned.data;
+        const navigationExtras: NavigationExtras = {
+          state: this.dataReturned
+        };
+        this.router.navigate(['sessionHome'], navigationExtras);
+      }
+    });
+
+    return await modal.present();
   }
 
-  
-  
 }
