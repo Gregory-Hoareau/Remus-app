@@ -30,7 +30,8 @@ export class HomePage {
     });
 
     modal.onWillDismiss().then((dataReturned) => {
-      if (dataReturned !== null) {
+      console.table(dataReturned)
+      if (dataReturned.data !== undefined) {
         this.dataReturned = dataReturned.data;
         let navigationExtras: NavigationExtras = {
           state: this.dataReturned
