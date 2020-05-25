@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {printLine} from "tslint/lib/verify/lines";
 import {forEachComment} from "tslint";
 import {AlertController} from '@ionic/angular';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'app-dice',
@@ -47,9 +48,9 @@ export class DicePage implements OnInit {
     this.selectedDices = ""
     for (var dice in map) {
       if (this.selectedDices == "") {
-        this.selectedDices = this.diceSelected[dice] + " " + dice;
+        this.selectedDices = this.diceSelected[dice] + dice;
       } else {
-        this.selectedDices = this.selectedDices + " + " + this.diceSelected[dice] + " " + dice;
+        this.selectedDices = this.selectedDices + " + " + this.diceSelected[dice] + dice;
       }
     }
   }
@@ -96,10 +97,11 @@ export class DicePage implements OnInit {
   }
 
   async presentAlertConfirm(data) {
+    const title = this.selectedDices + (this.modificateur>0? (' + '+ this.modificateur): '')
     const alert = await this.alertController.create({
-      header: 'Résultats du lancer',
+      header: title,
       message: data,
-      cssClass: '',
+      cssClass: 'dice_result',
       buttons: [
         {
           text: 'Ok',
@@ -121,7 +123,20 @@ export class DicePage implements OnInit {
     console.log(result);
   }
 
+  async noDiceAlert() {
+    const alert = await this.alertController.create({
+      header: 'Aucun dé sélectionné',
+      message: 'Vous devez choisir au moins un dé pour pouvoir faire une lancé de dé',
+      buttons: ['Compris'],
+    });
+    await alert.present();
+  }
+
   launchDice(){
+    if (this.selectedDices === "") {
+      this.noDiceAlert();
+      return
+    }
     if (this.launched == true) {
       this.launched = false;
       this.diceSum = 0;
@@ -146,10 +161,11 @@ export class DicePage implements OnInit {
     this.result = this.diceSum + this.modificateur;
     this.finalSeparatedValue = this.separetedValue;
     this.launched = true;
-    if (this.modificateur != 0) {
+    this.presentAlertConfirm('<h1>' + this.result + '</h1>' + '<br>' + this.finalSeparatedValue)
+    /*if (this.modificateur != 0) {
       this.presentAlertConfirm(this.finalSeparatedValue + '<br>' + this.modifResult + '<br>' + '<h1>' + this.result + '</h1>')
     }else{
       this.presentAlertConfirm(this.finalSeparatedValue + '<br>' + '<h1>' + this.result + '</h1>')
-    }
+    }*/
   }
 }

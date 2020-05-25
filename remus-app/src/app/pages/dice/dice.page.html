@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>dice</ion-title>
+    <ion-title>Lanceur de dés</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,24 +14,28 @@
     <ion-img class="small" (click)="increaseDiceSum(8,'d8')" src="/assets/d8.svg"></ion-img>
     <ion-img class="small" (click)="increaseDiceSum(10,'d10')" src="/assets/d10.svg"></ion-img>
     <ion-img class="small" (click)="increaseDiceSum(12,'d12')" src="/assets/d12.svg"></ion-img>
-  </ion-card-content>
-  <ion-card-content class="dices">
     <ion-img class="small" (click)="increaseDiceSum(20,'d20')" src="/assets/d20.svg"></ion-img>
-    <ion-img class="smallDouble" (click)="increaseDiceSum(100,'d100')" src="/assets/d100.png"></ion-img>
+    <ion-img class="small" (click)="increaseDiceSum(100,'d100')" src="/assets/d100.png"></ion-img>
   </ion-card-content>
-  <ion-button (click)="resetDices()">
-    <ion-icon  name="refresh-outline" ></ion-icon>
-  </ion-button>
-  <ion-card-content class="selectDices">{{selectedDices}}</ion-card-content>
-  <!--<ion-card-content class="modificateurText" *ngIf="modificateur != 0">Modificateur : {{modificateur}}</ion-card-content>-->
-  <ion-card-content class="result">{{finalSeparatedValue}}</ion-card-content>
-  <ion-card-content class="modificateurText" *ngIf="modifying">{{modifResult}}</ion-card-content>
-  <ion-card-content class="result">{{result}}</ion-card-content>
-  <ion-button class="launch" (click)="launchDice()">Lancer</ion-button>
-  <br><br>
-  <form>
-    <label for="modif">Modificateur :</label><br>
-    <input type="number" id="modif" value="" name="fname" [(ngModel)]="modificateur">
-    <!--<ion-button class="modifbutton" (click)="modifyResult()">Appliquer</ion-button>-->
-  </form>
+  <div class="control">
+    <div class="buttons">
+      <ion-button  class="launch" (click)="launchDice()">Lancer</ion-button>
+      <ion-button shape="round" *ngIf="selectedDices !== ''" class="refresh" (click)="resetDices()">
+        <ion-icon  name="refresh-outline" ></ion-icon>
+      </ion-button>
+    </div>
+
+    <ion-card-content class="selectDices">{{selectedDices}}</ion-card-content>
+    <!--<ion-card-content class="modificateurText" *ngIf="modificateur != 0">Modificateur : {{modificateur}}</ion-card-content>-->
+    <!--<ion-card-content class="result">{{finalSeparatedValue}}</ion-card-content>
+    <ion-card-content class="modificateurText" *ngIf="modifying">{{modifResult}}</ion-card-content>
+    <ion-card-content class="result">{{result}}</ion-card-content>-->
+    
+    <br><br>
+    <form>
+      <label for="modif">Modificateur :</label><br>
+      <input type="number" id="modif" value="" name="fname" [(ngModel)]="modificateur">
+      <!--<ion-button class="modifbutton" (click)="modifyResult()">Appliquer</ion-button>-->
+    </form>
+  </div>
 </ion-content>

@@ -1,27 +1,24 @@
-h1 {
-  text-align: center;
-}
-
 ion-img {
-
-  &.bigger {
-    width: 100px;
-    height: 100px;
-  }
-
   &.small {
-    width: 75px;
-    height: 75px;
+    width: 25%;
   }
-  &.smallDouble {
-    width: 90px;
-    height: 90px;
-  }
-
-
 }
 
 .dices {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+}
+
+.control {
+  width: 90%;
+  margin: 0 5%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.refresh {
+  flex-basis: content;
 }
