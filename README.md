@@ -4,6 +4,8 @@
 
 Remus est une application crossplatform qui à pour but de simplifier la vie des joueurs de jeux de rôle en centralisant un grand nombre de fonctionnalités utile lors des parties mais aussi en amont de ces dernières en simplifiant l’organisation. Cette application, contrairement aux applications déjà existante, permettrait un partage de certaines informations (fiches des personnage joueurs, fiches simplifié des personnages non joueurs, des descriptions des lieux visités et autres) entre les différents joueurs d’une campagne de jeux de rôle. Mais aussi d'avoir accès à une messagerie permettant d’envoyé des messages discrètement aux joueurs ou au maître du jeu sans interrompre sa narration.
 
+Icons fournis par : https://game-icons.net
+
 ## Installation
 
 To run this example in production or development mode you have to make sure, `ionic` and `cordova` are installed globally on your machine. After that you can install all necessary dependencies for running this example.
