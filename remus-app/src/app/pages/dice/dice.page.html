@@ -19,8 +19,8 @@
     <ion-img class="small" (click)="increaseDiceSum(20,'d20')" src="/assets/d20.svg"></ion-img>
     <ion-img class="smallDouble" (click)="increaseDiceSum(100,'d100')" src="/assets/d100.png"></ion-img>
   </ion-card-content>
-  <ion-button >
-    <ion-icon  name="refresh-outline" (click)="resetDices()"></ion-icon>
+  <ion-button (click)="resetDices()">
+    <ion-icon  name="refresh-outline" ></ion-icon>
   </ion-button>
   <ion-card-content class="selectDices">{{selectedDices}}</ion-card-content>
   <ion-card-content class="modificateurText" *ngIf="modificateur != 0">Modificateur : {{modificateur}}</ion-card-content>
