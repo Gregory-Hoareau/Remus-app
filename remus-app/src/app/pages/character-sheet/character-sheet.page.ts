@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SecurityContext } from '@angular/core';
 import {CharacterSheet} from '../../models/character-sheet.model';
 import {AlertController} from '@ionic/angular';
+import {FileChooser} from '@ionic-native/file-chooser/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @Component({
   selector: 'app-character-sheet',
@@ -11,37 +16,38 @@ export class CharacterSheetPage implements OnInit {
 
   character: CharacterSheet = {
     img: null,
-    name: 'Eude',
-    age: 18,
-    sex: 'Homme',
-    background: 'Aventurier noble',
+    name: '',
+    age: -1,
+    sex: '',
+    background: '',
     traits: [{
       name: 'Force',
-      value: 6,
+      value: -1,
     }, {
       name: 'Endurance',
-      value: 12,
+      value: -1,
     }, {
       name: 'Intelligence',
-      value: 10,
+      value: -1,
     }, {
       name: 'Perception',
-      value: 12,
+      value: -1,
     }, {
       name: 'Charisme',
-      value: 8,
+      value: -1,
     }, {
       name: 'Dextérité',
-      value: 18,
+      value: -1,
     }],
     skills: [
         'Conduite',
         'Instinct animal',
-        'Bagarre'
+        'Bagarre',
     ]
   };
 
-  constructor(private alertCtrl: AlertController) { }
+  constructor(private alertCtrl: AlertController, private fileChooser: FileChooser, private filePath: FilePath,
+    private sanitizer: DomSanitizer, private imgPicker: ImagePicker, private file: File) { }
 
   ngOnInit() {
   }
@@ -137,5 +143,30 @@ export class CharacterSheetPage implements OnInit {
     await alert.present();
   }
 
+  getCharacterPicture() {
+    return this.sanitizer.bypassSecurityTrustUrl(this.character.img);
+  }
+
+  addPicture() {
+    this.imgPicker.getPictures({maximumImagesCount: 1}).then((results) => {
+      for(let i = 0; i < results.length; i++) {
+        let filename = results[i].substring(results[i].lastIndexOf('/')+1)
+        let path = results[i].substring(0, results[i].lastIndexOf('/')+1)
+        this.file.readAsDataURL(path, filename).then((url) => {
+          this.character.img = url
+        })
+      }
+    })
+    /*this.fileChooser.open().then(uri => {
+        this.filePath.resolveNativePath(uri).then(nativePath => {
+          this.character.img = this.sanitizer.sanitize(SecurityContext.URL, nativePath);
+          alert(nativePath)
+          this.character.img = nativePath
+        }).catch(e => alert(e))
+      }
+    ).catch(
+      e => alert(e)
+    )*/
+  }
 
 }

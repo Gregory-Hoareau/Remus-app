@@ -23,12 +23,15 @@
     <ion-icon  name="refresh-outline" ></ion-icon>
   </ion-button>
   <ion-card-content class="selectDices">{{selectedDices}}</ion-card-content>
-  <ion-card-content class="modificateurText" *ngIf="modificateur != 0">Modificateur : {{modificateur}}</ion-card-content>
+  <!--<ion-card-content class="modificateurText" *ngIf="modificateur != 0">Modificateur : {{modificateur}}</ion-card-content>-->
+  <ion-card-content class="result">{{finalSeparatedValue}}</ion-card-content>
+  <ion-card-content class="modificateurText" *ngIf="modifying">{{modifResult}}</ion-card-content>
+  <ion-card-content class="result">{{result}}</ion-card-content>
   <ion-button class="launch" (click)="launchDice()">Lancer</ion-button>
   <br><br>
   <form>
     <label for="modif">Modificateur :</label><br>
-    <input type="number" id="modif" value="" name="fname">
-    <ion-button class="modifbutton" (click)="modifyResult()">Appliquer</ion-button>
+    <input type="number" id="modif" value="" name="fname" [(ngModel)]="modificateur">
+    <!--<ion-button class="modifbutton" (click)="modifyResult()">Appliquer</ion-button>-->
   </form>
 </ion-content>

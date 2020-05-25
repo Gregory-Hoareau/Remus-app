@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>character-sheet</ion-title>
+    <ion-title>
+        <span *ngIf="character.name;else no_name">{{character.name}}</span>
+        <ng-template #no_name>
+            Fiche Personnage
+        </ng-template>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,15 +19,15 @@
 
       <div class="identity">
         <div class="public-info">
-          <div *ngIf="character.img" class="image">
-            <img src="{{character.img}}">
+          <div *ngIf="character.img" width="90px" class="image">
+            <img [src]="character.img">
           </div>
           <div *ngIf="!character.img" class="image">
-            <img src="/assets/add-picture.png" width="90px">
+            <img src="/assets/add-picture.png" width="90px" (click)="addPicture()">
           </div>
           <div>
             <p class="name">Nom: {{character.name}} <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('name')"></ion-icon></p>
-            <p class="age">Age: {{character.age}} <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('age')"></ion-icon></p>
+            <p class="age">Age: <span *ngIf="character.age > -1">{{character.age}}</span> <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('age')"></ion-icon></p>
             <p class="sex">Sexe: {{character.sex}} <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('sex')"></ion-icon></p>
           </div>
         </div>
@@ -44,7 +49,7 @@
       <div class="traits">
         <ion-list>
           <ion-item *ngFor="let trait of character.traits">
-            <span>{{trait.name}}: {{trait.value}}
+              <span>{{trait.name}}: <span *ngIf="trait.value > -1">{{trait.value}}</span>
               <ion-icon name="create-outline" (click)="editTraitAlert(trait.name)"></ion-icon>
             </span>
           </ion-item>
