@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'character-sheet',
     loadChildren: () => import('./pages/character-sheet/character-sheet.module').then( m => m.CharacterSheetPageModule)
   },
+  {
+    path: 'doc-popup',
+    loadChildren: () => import('./pages/doc-popup/doc-popup.module').then( m => m.DocPopupModule)
+  },
 ];
 
 @NgModule({

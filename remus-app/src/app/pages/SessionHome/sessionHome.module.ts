@@ -7,6 +7,7 @@ import { SessionHomePage } from './sessionHome.page';
 import {
   SessionHomePageRoutingModule,
 } from './sessionHome-routing.module';
+import {DocPopupModule} from '../doc-popup/doc-popup.module';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {
     CommonModule,
     FormsModule,
     IonicModule,
-    SessionHomePageRoutingModule
+    SessionHomePageRoutingModule,
+    DocPopupModule
   ],
   declarations: [SessionHomePage]
 })
