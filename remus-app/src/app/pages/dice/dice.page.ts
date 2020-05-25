@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {printLine} from "tslint/lib/verify/lines";
 import {forEachComment} from "tslint";
+import {AlertController} from '@ionic/angular';
 
 @Component({
   selector: 'app-dice',
@@ -9,7 +10,7 @@ import {forEachComment} from "tslint";
 })
 export class DicePage implements OnInit {
 
-  constructor() { }
+  constructor(public alertController: AlertController) { }
   result : number;
   diceSum : number;
   diceSelected : any;
@@ -94,6 +95,32 @@ export class DicePage implements OnInit {
     this.modifying = false;
   }
 
+  async presentAlertConfirm(data) {
+    const alert = await this.alertController.create({
+      header: 'Résultats du lancer',
+      message: data,
+      cssClass: '',
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'Ok',
+          cssClass: 'buttons',
+          handler: () => {
+          }
+        }, {
+          cssClass: 'buttons',
+          text: 'Again',
+          handler: () => {
+            this.launchDice();
+          }
+        }
+      ]
+    });
+    await alert.present();
+    const result = await alert.onDidDismiss();
+    console.log(result);
+  }
+
   launchDice(){
     if (this.launched == true) {
       this.launched = false;
@@ -119,5 +146,10 @@ export class DicePage implements OnInit {
     this.result = this.diceSum + this.modificateur;
     this.finalSeparatedValue = this.separetedValue;
     this.launched = true;
+    if (this.modificateur != 0) {
+      this.presentAlertConfirm(this.finalSeparatedValue + '<br>' + this.modifResult + '<br>' + '<h1>' + this.result + '</h1>')
+    }else{
+      this.presentAlertConfirm(this.finalSeparatedValue + '<br>' + '<h1>' + this.result + '</h1>')
+    }
   }
 }

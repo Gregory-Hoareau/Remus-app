@@ -9,26 +9,26 @@
 
 <ion-content class="dicesPage">
   <ion-card-content class="dices">
-    <ion-button class="dice" (click)="increaseDiceSum(4, 'd4')">d4</ion-button>
-    <ion-button class="dice" (click)="increaseDiceSum(6,'d6')">d6</ion-button>
-    <ion-button class="dice" (click)="increaseDiceSum(8,'d8')">d8</ion-button>
-    <ion-button class="dice" (click)="increaseDiceSum(10,'d10')">d10</ion-button>
-    <br>
-    <ion-button class="dice" (click)="increaseDiceSum(12,'d12')">d12</ion-button>
-    <ion-button class="dice" (click)="increaseDiceSum(20,'d20')">d20</ion-button>
-    <ion-button class="dice" (click)="increaseDiceSum(100,'d100')">d100</ion-button>
+    <ion-img class="small" (click)="increaseDiceSum(4, 'd4')" src="/assets/d4.svg"></ion-img>
+    <ion-img class="small" (click)="increaseDiceSum(6,'d6')" src="/assets/d6.svg"></ion-img>
+    <ion-img class="small" (click)="increaseDiceSum(8,'d8')" src="/assets/d8.svg"></ion-img>
+    <ion-img class="small" (click)="increaseDiceSum(10,'d10')" src="/assets/d10.svg"></ion-img>
+    <ion-img class="small" (click)="increaseDiceSum(12,'d12')" src="/assets/d12.svg"></ion-img>
   </ion-card-content>
-  <ion-button class="reset" (click)="resetDices()">reset</ion-button>
+  <ion-card-content class="dices">
+    <ion-img class="small" (click)="increaseDiceSum(20,'d20')" src="/assets/d20.svg"></ion-img>
+    <ion-img class="smallDouble" (click)="increaseDiceSum(100,'d100')" src="/assets/d100.png"></ion-img>
+  </ion-card-content>
+  <ion-button >
+    <ion-icon  name="refresh-outline" (click)="resetDices()"></ion-icon>
+  </ion-button>
   <ion-card-content class="selectDices">{{selectedDices}}</ion-card-content>
   <ion-card-content class="modificateurText" *ngIf="modificateur != 0">Modificateur : {{modificateur}}</ion-card-content>
-  <ion-card-content class="result">{{finalSeparatedValue}}</ion-card-content>
-  <ion-card-content class="modificateurText" *ngIf="modifying">{{modifResult}}</ion-card-content>
-  <ion-card-content class="result">{{result}}</ion-card-content>
   <ion-button class="launch" (click)="launchDice()">Lancer</ion-button>
   <br><br>
   <form>
     <label for="modif">Modificateur :</label><br>
-    <input type="text" id="modif" value="" name="fname">
+    <input type="number" id="modif" value="" name="fname">
     <ion-button class="modifbutton" (click)="modifyResult()">Appliquer</ion-button>
   </form>
 </ion-content>
