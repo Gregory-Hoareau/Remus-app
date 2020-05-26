@@ -3,7 +3,7 @@ import {printLine} from "tslint/lib/verify/lines";
 import {forEachComment} from "tslint";
 import {AlertController} from '@ionic/angular';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-
+import { SimulateurPage } from '../simulateur/simulateur.page'
 @Component({
   selector: 'app-dice',
   templateUrl: './dice.page.html',
@@ -135,9 +135,9 @@ export class DicePage implements OnInit {
   launchDice(){
     if (this.selectedDices === "") {
       this.noDiceAlert();
-      return
+      return;
     }
-    if (this.launched == true) {
+    if (this.launched) {
       this.launched = false;
       this.diceSum = 0;
       this.separetedValue = "";
@@ -167,5 +167,6 @@ export class DicePage implements OnInit {
     }else{
       this.presentAlertConfirm(this.finalSeparatedValue + '<br>' + '<h1>' + this.result + '</h1>')
     }*/
+    SimulateurPage.diceHistory
   }
 }

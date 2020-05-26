@@ -19,8 +19,8 @@ export class AppComponent {
       icon: faHome
     },
     {
-      title: 'Dice',
-      url: '/dice',
+      title: 'Simulateur',
+      url: '/simulateur',
       icon: faDiceD20
     }
 

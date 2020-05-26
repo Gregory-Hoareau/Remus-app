@@ -12,10 +12,6 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'dice',
-    loadChildren: () => import('./pages/dice/dice.module').then(m => m.DicePageModule)
-  },
-  {
     path: 'host-form',
     loadChildren: () => import('./pages/host-form/host-form.module').then( m => m.HostFormPageModule)
   },
@@ -35,6 +31,11 @@ export const routes: Routes = [
     path: 'join-form',
     loadChildren: () => import('./pages/join-form/join-form.module').then(m => m.JoinFormPageModule)
   },
+  {
+    path: 'simulateur',
+    loadChildren: () => import('./pages/simulateur/simulateur.module').then(m => m.SimulateurPageModule)
+  }
+
 
 ];
 
