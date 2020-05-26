@@ -13,6 +13,9 @@
   <ion-card>
     {{description}}
   </ion-card>
+  <ion-card *ngFor="let name of players">
+    {{name}} has joined the room
+  </ion-card>
 </ion-content>
 
 <ion-footer >
