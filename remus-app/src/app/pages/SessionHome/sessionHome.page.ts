@@ -21,9 +21,8 @@ export class SessionHomePage {
   conn: any;
   players: any[];
 
-  constructor(public modalCtr: ModalController,
-              // tslint:disable-next-line:max-line-length
-              private route: ActivatedRoute, private router: Router, private routerOutlet: IonRouterOutlet, private alerteController: AlertController) {
+  constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router, 
+    private routerOutlet: IonRouterOutlet, private alerteController: AlertController) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.roomName = this.router.getCurrentNavigation().extras.state.name;
