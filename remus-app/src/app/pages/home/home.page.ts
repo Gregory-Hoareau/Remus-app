@@ -57,7 +57,7 @@ export class HomePage {
         let navigationExtras: NavigationExtras = {
           state: this.dataReturned
         };
-        this.router.navigate(['home'], navigationExtras);
+        this.router.navigate(['sessionHome'], navigationExtras);
       }
     });
 

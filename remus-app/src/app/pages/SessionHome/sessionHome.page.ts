@@ -12,13 +12,15 @@ import Peer from 'peerjs';
 
 export class SessionHomePage {
 
+  host: boolean;
   dataReturned: any;
   roomName: string;
   description: string;
   peer: Peer;
-  id: string;
+  myid: string;
+  roomid: string;
   pseudo: string;
-  conn: any;
+  conns: any[];
   players: any[];
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router, 
@@ -28,49 +30,52 @@ export class SessionHomePage {
         this.roomName = this.router.getCurrentNavigation().extras.state.name;
         this.description = this.router.getCurrentNavigation().extras.state.description;
         this.pseudo = this.router.getCurrentNavigation().extras.state.pseudo;
-        this.id = this.router.getCurrentNavigation().extras.state.id;
+        this.roomid = this.router.getCurrentNavigation().extras.state.id;
       }
     });
     this.players=[]
+    this.conns=[]
   }
 
   ngOnInit(){
-    this.peer = new Peer(Math.random().toString(36).substr(2, 4),{host: '127.0.0.1',path:'/remus-app' ,port:9000,debug: 3});
-
+    this.myid = Math.random().toString(36).substr(2, 4)
+    this.peer = new Peer(this.myid,{host: '127.0.0.1',path:'/remus-app' ,port:9000,debug: 3});
 
 
     if(this.pseudo){
-      console.log('trying to connect to ', this.id);
+      console.log('trying to connect to room ', this.roomid);
       this.peer.on('open', id => {
 
       });
-      this.conn = this.peer.connect(this.id);
-      this.conn.on('open', () => {
-        console.log("connection openned to id ", this.conn.peer);
-        this.conn.send({newPlayer: this.pseudo});
+      var conn = this.peer.connect(this.roomid);
+      conn.on('open', () => {
+        console.log("connection openned to id ", conn.peer);
+        conn.send({newPlayer: this.pseudo});
         this.roomName="hello there"
       })
-      this.conn.on('data', (data) => {
+      conn.on('data', (data) => {
         this.treatData(data);
       });
+      this.conns.push(conn);
 
-    }else{
+    } else{
+      this.host=true;
       console.log('trying to open');
       this.peer.on('open', id => {
         this.makeAnIdAlert(id);
         console.log('locked and loaded id: ', id);
       })
       this.peer.on('connection', (conn) => {
-        this.conn=conn;
-        console.log('connection with ', this.conn.peer);
-        this.conn.on('data', (data) => {
+        console.log('connection with ', conn.peer);
+        conn.on('data', (data) => {
           // Will print 'hi!'
           this.treatData(data);
-          this.conn.send({roomName:this.roomName,roomDesc:this.description});
+          conn.send({roomName:this.roomName,roomDesc:this.description});
         });
-        this.conn.on('open', () => {
+        conn.on('open', () => {
           console.log('opened connection');
         });
+        this.conns.push(conn)
       });
     }
   }
@@ -112,6 +117,10 @@ export class SessionHomePage {
     if(data.newPlayer)
       {
         this.players.push(data.newPlayer);
+        if(this.host)
+          this.conns.forEach(conn => {
+            conn.send(data)
+          });
       }
     }
 
