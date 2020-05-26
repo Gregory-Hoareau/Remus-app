@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavParams } from '@ionic/angular';
 
 import { JoinFormPage } from './join-form.page';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('JoinFormPage', () => {
   let component: JoinFormPage;
@@ -10,7 +11,13 @@ describe('JoinFormPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ JoinFormPage ],
-      imports: [IonicModule.forRoot()]
+      imports: [
+        IonicModule.forRoot(),
+        ReactiveFormsModule,
+      ],
+      providers: [
+        NavParams,
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(JoinFormPage);
