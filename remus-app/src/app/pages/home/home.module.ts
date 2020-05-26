@@ -6,6 +6,7 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { HostFormPageModule } from '../host-form/host-form.module';
+import {JoinFormPageModule} from '../join-form/join-form.module';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { HostFormPageModule } from '../host-form/host-form.module';
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    HostFormPageModule
+    HostFormPageModule,
+      JoinFormPageModule
   ],
   declarations: [HomePage]
 })

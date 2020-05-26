@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { HostFormPage} from '../host-form/host-form.page';
 import { IonRouterOutlet } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
+import {JoinFormPage} from "../join-form/join-form.page";
 
 @Component({
   selector: 'app-home',
@@ -17,13 +18,37 @@ export class HomePage {
 
   }
 
+  async joinModal() {
+    const joiningmodal = await this.modalCtr.create({
+      component: JoinFormPage,
+      componentProps: {
+        identifiant: ''
+      },
+      presentingElement: this.routerOutlet.nativeEl,
+      swipeToClose: true
+    });
+
+    joiningmodal.onWillDismiss().then((dataReturned) => {
+      console.table(dataReturned)
+      if (dataReturned.data !== undefined) {
+        this.dataReturned = dataReturned.data;
+        let navigationExtras: NavigationExtras = {
+          state: this.dataReturned
+        };
+        this.router.navigate(['sessionHome'], navigationExtras);
+      }
+    });
+
+    return await joiningmodal.present();
+  }
+
   async openModal() {
     const modal = await this.modalCtr.create({
       component: HostFormPage,
       componentProps: {
-        "id": 123,
-        "name": "Table de",
-        "description": ""
+        id: 123,
+        name: 'Table de',
+        description: ''
       },
       presentingElement: this.routerOutlet.nativeEl,
       swipeToClose: true

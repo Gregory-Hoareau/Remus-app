@@ -31,6 +31,11 @@ const routes: Routes = [
     path: 'doc-popup',
     loadChildren: () => import('./pages/doc-popup/doc-popup.module').then( m => m.DocPopupModule)
   },
+  {
+    path: 'join-form',
+    loadChildren: () => import('./pages/join-form/join-form.module').then(m => m.JoinFormPageModule)
+  },
+
 ];
 
 @NgModule({
