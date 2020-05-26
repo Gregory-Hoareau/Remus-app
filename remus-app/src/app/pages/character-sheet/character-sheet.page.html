@@ -20,12 +20,12 @@
       <div class="identity">
         <div class="public-info">
           <div *ngIf="character.img" width="90px" class="image">
-            <img [src]="character.img">
+            <img [src]="character.img" (click)="addPicture()">
           </div>
           <div *ngIf="!character.img" class="image">
             <img src="/assets/add-picture.png" width="90px" (click)="addPicture()">
           </div>
-          <div>
+          <div class="personnal">
             <p class="name">Nom: {{character.name}} <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('name')"></ion-icon></p>
             <p class="age">Age: <span *ngIf="character.age > -1">{{character.age}}</span> <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('age')"></ion-icon></p>
             <p class="sex">Sexe: {{character.sex}} <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('sex')"></ion-icon></p>
@@ -64,7 +64,7 @@
       </mat-expansion-panel-header>
 
       <div class="skills">
-        <ion-button (click)="addNewSkillAlert()">Nouvelle compétences</ion-button>
+        <ion-button (click)="addNewSkillAlert()">+</ion-button>
         <ion-list>
           <ion-item-sliding *ngFor="let skill of character.skills; let i = index">
             <ion-item>
