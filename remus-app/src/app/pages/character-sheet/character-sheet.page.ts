@@ -46,8 +46,7 @@ export class CharacterSheetPage implements OnInit {
     ]
   };
 
-  constructor(private alertCtrl: AlertController, private fileChooser: FileChooser, private filePath: FilePath,
-    private sanitizer: DomSanitizer, private imgPicker: ImagePicker, private file: File) { }
+  constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File) { }
 
   ngOnInit() {
   }
@@ -141,10 +140,6 @@ export class CharacterSheetPage implements OnInit {
       }]
     });
     await alert.present();
-  }
-
-  getCharacterPicture() {
-    return this.sanitizer.bypassSecurityTrustUrl(this.character.img);
   }
 
   addPicture() {

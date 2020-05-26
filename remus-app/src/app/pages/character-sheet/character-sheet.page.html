@@ -19,11 +19,11 @@
 
       <div class="identity">
         <div class="public-info">
-          <div *ngIf="character.img" width="90px" class="image">
+          <div *ngIf="character.img" class="image">
             <img [src]="character.img" (click)="addPicture()">
           </div>
           <div *ngIf="!character.img" class="image">
-            <img src="/assets/add-picture.png" width="90px" (click)="addPicture()">
+            <img src="/assets/add-picture.png" (click)="addPicture()">
           </div>
           <div class="personnal">
             <p class="name">Nom: {{character.name}} <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('name')"></ion-icon></p>

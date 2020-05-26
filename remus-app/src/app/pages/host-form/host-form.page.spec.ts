@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavParams } from '@ionic/angular';
 
 import { HostFormPage } from './host-form.page';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('HostFormPage', () => {
   let component: HostFormPage;
@@ -10,7 +11,13 @@ describe('HostFormPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ HostFormPage ],
-      imports: [IonicModule.forRoot()]
+      imports: [
+        IonicModule.forRoot(),
+        ReactiveFormsModule,
+      ],
+      providers: [
+        NavParams,
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostFormPage);

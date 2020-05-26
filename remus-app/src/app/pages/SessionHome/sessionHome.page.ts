@@ -113,7 +113,9 @@ export class SessionHomePage {
       {
         this.players.push(data.newPlayer);
       }
-    
+
+  navigateToChar() {
+    this.router.navigate(['character-sheet'])
   }
 
 }

@@ -1,7 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, IonRouterOutlet } from '@ionic/angular';
 
 import { SessionHomePage } from './sessionHome.page';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ViewContainerRef } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SessionHomePage', () => {
   let component: SessionHomePage;
@@ -10,7 +13,12 @@ describe('SessionHomePage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SessionHomePage ],
-      imports: [IonicModule.forRoot()]
+      imports: [
+        IonicModule.forRoot(),
+        RouterTestingModule,
+      ],
+      providers: [
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(SessionHomePage);

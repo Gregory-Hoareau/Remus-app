@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavParams } from '@ionic/angular';
 
 import {DocPopupPage} from './doc-popup.page';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('DocPopupPage', () => {
   let component: DocPopupPage;
@@ -10,7 +11,13 @@ describe('DocPopupPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DocPopupPage ],
-      imports: [IonicModule.forRoot()]
+      imports: [
+        IonicModule.forRoot(),
+        ReactiveFormsModule,
+      ],
+      providers: [
+        NavParams
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(DocPopupPage);

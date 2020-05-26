@@ -2,6 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { CharacterSheetPage } from './character-sheet.page';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CharacterSheetPage', () => {
   let component: CharacterSheetPage;
@@ -10,7 +14,15 @@ describe('CharacterSheetPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CharacterSheetPage ],
-      imports: [IonicModule.forRoot()]
+      imports: [
+        IonicModule.forRoot(),
+        MatExpansionModule,
+        BrowserAnimationsModule,
+      ],
+      providers: [
+        ImagePicker,
+        File,
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CharacterSheetPage);

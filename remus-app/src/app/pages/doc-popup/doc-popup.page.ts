@@ -10,7 +10,7 @@ import {AlertController, ModalController, NavParams} from '@ionic/angular';
 export class DocPopupPage implements OnInit {
 
   private items = [];
-
+  
 
   constructor(private formBuilder: FormBuilder, private alertController: AlertController,
               private modalController: ModalController,

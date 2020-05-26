@@ -20,7 +20,7 @@
 
 <ion-footer >
   <ion-toolbar  id="end">
-    <ion-button id="ButtonPerso" [routerLink]="['/character-sheet']">Mon personnage</ion-button>
+    <ion-button id="ButtonPerso" (click)="navigateToChar()">Mon personnage</ion-button>
     <!--<ion-button id="ButtonDoc" (click)="presentAlertConfirm()" >Documents partagés</ion-button>-->
     <ion-button id="ButtonDoc" (click)="openModal()" >Documents partagés</ion-button>
   </ion-toolbar>
