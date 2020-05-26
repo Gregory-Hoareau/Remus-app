@@ -23,8 +23,7 @@ export class SessionHomePage {
   conns: any[];
   players: any[];
 
-  constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router, 
-    private routerOutlet: IonRouterOutlet, private alerteController: AlertController) {
+  constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router, private alerteController: AlertController) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.roomName = this.router.getCurrentNavigation().extras.state.name;
@@ -83,7 +82,7 @@ export class SessionHomePage {
   async openModal() {
     const modal = await this.modalCtr.create({
       component: DocPopupPage,
-      presentingElement: this.routerOutlet.nativeEl,
+      //presentingElement: this.routerOutlet.nativeEl,
       swipeToClose: true
     });
 

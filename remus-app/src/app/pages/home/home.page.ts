@@ -14,14 +14,13 @@ export class HomePage {
 
   dataReturned: any;
 
-  constructor(private router: Router, private modalCtr: ModalController, private routerOutlet: IonRouterOutlet) {
+  constructor(private router: Router, private modalCtr: ModalController) {
 
   }
 
   async joinModal() {
     const joiningmodal = await this.modalCtr.create({
       component: JoinFormPage,
-      presentingElement: this.routerOutlet.nativeEl,
       swipeToClose: true
     });
 
@@ -46,7 +45,6 @@ export class HomePage {
         name: 'Table de',
         description: ''
       },
-      presentingElement: this.routerOutlet.nativeEl,
       swipeToClose: true
     });
 
