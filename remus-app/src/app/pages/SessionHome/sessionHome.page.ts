@@ -28,8 +28,8 @@ export class SessionHomePage {
       if (this.router.getCurrentNavigation().extras.state) {
         this.roomName = this.router.getCurrentNavigation().extras.state.name;
         this.description = this.router.getCurrentNavigation().extras.state.description;
+        this.pseudo = this.router.getCurrentNavigation().extras.state.pseudo;
         this.id = this.router.getCurrentNavigation().extras.state.id;
-        this.pseudo = this.router.getCurrentNavigation().extras.state.id;
       }
     });
     this.players=[]
@@ -40,10 +40,10 @@ export class SessionHomePage {
 
 
 
-    if(this.id!==""){
+    if(this.pseudo){
       console.log('trying to connect to ', this.id);
       this.peer.on('open', id => {
-        this.makeAnIdAlert(id);
+
       });
       this.conn = this.peer.connect(this.id);
       this.conn.on('open', () => {
@@ -58,12 +58,13 @@ export class SessionHomePage {
     }else{
       console.log('trying to open');
       this.peer.on('open', id => {
+        this.makeAnIdAlert(id);
         console.log('locked and loaded id: ', id);
       })
       this.peer.on('connection', (conn) => {
         this.conn=conn;
         console.log('connection with ', this.conn.peer);
-        conn.on('data', (data) => {
+        this.conn.on('data', (data) => {
           // Will print 'hi!'
           this.treatData(data);
           this.conn.send({roomName:this.roomName,roomDesc:this.description});
@@ -71,7 +72,6 @@ export class SessionHomePage {
         this.conn.on('open', () => {
           console.log('opened connection');
         });
-        this.conn.send('hello!');
       });
     }
   }

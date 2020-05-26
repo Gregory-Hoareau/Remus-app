@@ -21,9 +21,6 @@ export class HomePage {
   async joinModal() {
     const joiningmodal = await this.modalCtr.create({
       component: JoinFormPage,
-      componentProps: {
-        identifiant: ''
-      },
       presentingElement: this.routerOutlet.nativeEl,
       swipeToClose: true
     });
@@ -46,7 +43,6 @@ export class HomePage {
     const modal = await this.modalCtr.create({
       component: HostFormPage,
       componentProps: {
-        id: 123,
         name: 'Table de',
         description: ''
       },
