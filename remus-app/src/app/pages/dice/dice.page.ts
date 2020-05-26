@@ -167,6 +167,5 @@ export class DicePage implements OnInit {
     }else{
       this.presentAlertConfirm(this.finalSeparatedValue + '<br>' + '<h1>' + this.result + '</h1>')
     }*/
-    SimulateurPage.diceHistory
   }
 }
