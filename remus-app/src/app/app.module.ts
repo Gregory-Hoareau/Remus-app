@@ -14,6 +14,7 @@ import { FilePath } from '@ionic-native/file-path/ngx';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { File } from '@ionic-native/file/ngx';
 import {DiceHistoryService} from './providers/dice/dice-history.service';
+import { CharacterService } from './providers/character/character.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,8 +35,9 @@ import {DiceHistoryService} from './providers/dice/dice-history.service';
     FilePath,
     ImagePicker,
     File,
-      DiceHistoryService,
-      { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    DiceHistoryService,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    CharacterService,
   ],
 
   bootstrap: [AppComponent]
