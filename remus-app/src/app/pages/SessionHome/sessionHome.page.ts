@@ -29,7 +29,7 @@ export class SessionHomePage {
   host = '51.210.101.240';
   path = '/remus-app';
   port = 9000;
-  conn:any;
+  conn: any;
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController,
@@ -195,6 +195,10 @@ export class SessionHomePage {
       }
     if (data.kick) {
       this.makeKickAlert(data.kick);
+    }
+    if (data.fileName) {
+      this.file.createFile(this.file.dataDirectory, data.fileName, true).then();
+      this.file.writeExistingFile(this.file.dataDirectory, data.fileName, data.img).then();
     }
   }
 

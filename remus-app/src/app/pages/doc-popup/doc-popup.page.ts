@@ -35,7 +35,6 @@ export class DocPopupPage implements OnInit {
     });
    }
    ngOnInit(): void {
-     this.conn.on('data', (data) => {this.treatData(data); } );
    }
 
 
@@ -69,13 +68,4 @@ async itemSelected(item) {
 
     return await modal.present();
   }
-
-  // tslint:disable-next-line:no-unnecessary-initializer
-  treatData(data) {
-    if (data.fileName && data.img) {
-      this.file.createFile(this.file.dataDirectory, data.fileName, true).then();
-      this.file.writeExistingFile(this.file.dataDirectory, data.fileName, data.img).then();
-    }
-  }
-
 }
