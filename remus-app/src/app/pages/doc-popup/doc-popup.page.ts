@@ -21,6 +21,7 @@ export class DocPopupPage implements OnInit {
               private navParams: NavParams) {
     this.connList = navParams.get('connList');
     this.conn = navParams.get('conn');
+
     this.file.listDir(this.file.dataDirectory , '').then((listing) => {
       for (const files of listing) {
         if (files.isFile === true) {
@@ -31,12 +32,10 @@ export class DocPopupPage implements OnInit {
           console.log('This is a folder') ;
         }
       }
-      this.conn.on('data', (data) => {
-        this.treatData(data);
-      });
     });
    }
    ngOnInit(): void {
+     this.conn.on('data', (data) => {this.treatData(data); } );
    }
 
 
@@ -76,9 +75,7 @@ async itemSelected(item) {
     if (data.fileName && data.img) {
       this.file.createFile(this.file.dataDirectory, data.fileName, true).then();
       this.file.writeExistingFile(this.file.dataDirectory, data.fileName, data.img).then();
-
     }
   }
-
 
 }

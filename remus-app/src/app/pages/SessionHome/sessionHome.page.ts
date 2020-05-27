@@ -76,9 +76,6 @@ export class SessionHomePage {
       this.peer.on('error', err => {
         console.log(err.type);
       });
-
-
-
     } else {
       this.isHost = true;
       console.log('trying to open');
