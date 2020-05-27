@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import {AlertController, ModalController, NavController} from '@ionic/angular';
+import {AlertController, ModalController, NavController, NavParams} from '@ionic/angular';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
 import {CharacterSheetPage} from '../character-sheet/character-sheet.page';
 import {File} from '@ionic-native/file/ngx';
 import Peer from 'peerjs';
+import { PlayersService } from "../../providers/players/players.service";
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,7 @@ export class SessionHomePage {
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController,
-              private file: File, private navCtrl: NavController) {
+              private file: File, private navCtrl: NavController,private playerServ: PlayersService) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.roomName = this.router.getCurrentNavigation().extras.state.name;
@@ -119,7 +120,8 @@ export class SessionHomePage {
       buttons: [
         {text: 'approuver', role:'join', handler: ()=>{
           this.players.push(player);
-          if(this.host)
+            this.playerServ.playersList.push(player)
+            if(this.host)
             conn.send({roomName:this.roomName,roomDesc:this.description});
             this.conns.forEach(conn => {
               conn.send({newPlayer:player})

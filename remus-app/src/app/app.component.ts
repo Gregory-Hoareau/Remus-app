@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {Router} from '@angular/router';
 import {faDiceD20, faHome} from '@fortawesome/free-solid-svg-icons';
+import {PlayersService} from "./providers/players/players.service";
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import {faDiceD20, faHome} from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  players: any[]
   public appPages = [
     {
       title: 'Home',
@@ -27,11 +29,13 @@ export class AppComponent {
   ];
 
   constructor(
-    private platform: Platform,
+      private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private router: Router
+    private router: Router,
+      private playersServ: PlayersService
   ) {
+    this.players = this.playersServ.playersList
     this.initializeApp();
   }
 

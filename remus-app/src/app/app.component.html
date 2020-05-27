@@ -1,6 +1,6 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
+    <ion-menu side="start" menuId="mainMenu" contentId="main-content" type="overlay">
       <ion-header>
         <ion-toolbar>
           <ion-title>Menu</ion-title>
@@ -19,5 +19,22 @@
         </ion-list>
       </ion-content>
     </ion-menu>
+    <ion-menu side="end" menuId="playerList" contentId="main-content" type="overlay">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Connected Players</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-menu-toggle auto-hide="false">
+            <ion-card *ngFor="let name of players">
+              {{name}} has joined the room
+            </ion-card>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane></ion-app>
