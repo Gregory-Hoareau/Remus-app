@@ -9,6 +9,7 @@ import {
 } from './sessionHome-routing.module';
 import {DocPopupModule} from '../doc-popup/doc-popup.module';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
+import {CharacterSheetPageModule} from '../character-sheet/character-sheet.module'
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {DocPopupPage} from '../doc-popup/doc-popup.page';
     FormsModule,
     IonicModule,
     SessionHomePageRoutingModule,
-    DocPopupModule
+    DocPopupModule,
+    CharacterSheetPageModule,
   ],
   declarations: [SessionHomePage]
 })

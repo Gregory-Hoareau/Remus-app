@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import {AlertController, IonRouterOutlet, ModalController} from '@ionic/angular';
+import {AlertController, IonRouterOutlet, ModalController, NavController} from '@ionic/angular';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
+import {CharacterSheetPage} from '../character-sheet/character-sheet.page';
 import {File} from '@ionic-native/file/ngx';
 // @ts-ignore
 import Peer from 'peerjs';
@@ -28,7 +29,7 @@ export class SessionHomePage {
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private routerOutlet: IonRouterOutlet, private alerteController: AlertController,
-              private file: File) {
+              private file: File, private navCtrl: NavController) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.roomName = this.router.getCurrentNavigation().extras.state.name;
@@ -55,10 +56,9 @@ export class SessionHomePage {
       conn.on('open', () => {
         console.log('connection openned to id ', conn.peer);
         conn.send({newPlayer: this.pseudo});
-        this.roomName = 'hello there';
-      });
+      })
       conn.on('data', (data) => {
-        this.treatData(data);
+        this.treatData(data, conn);
       });
       this.conns.push(conn);
 
@@ -74,8 +74,7 @@ export class SessionHomePage {
         console.log('connection with ', conn.peer);
         conn.on('data', (data) => {
           // Will print 'hi!'
-          this.treatData(data);
-          conn.send({roomName: this.roomName, roomDesc: this.description});
+          this.treatData(data, conn);
         });
         conn.on('open', () => {
           console.log('opened connection');
@@ -85,12 +84,10 @@ export class SessionHomePage {
     }
   }
 
-  async openModal() {
+  async openModal(page) {
     const modal = await this.modalCtr.create({
-      component: DocPopupPage,
-      // presentingElement: this.routerOutlet.nativeEl,
-      cssClass: 'custom-modal-css',
-      presentingElement: this.routerOutlet.nativeEl,
+      component: (page==='doc') ? DocPopupPage : CharacterSheetPage,
+      //cssClass: 'custom-modal-css',
       swipeToClose: true
     });
 
@@ -117,21 +114,55 @@ export class SessionHomePage {
     await alert.present();
   }
 
-  treatData(data) {
-    if (data.roomName) {
-      this.roomName = data.roomName;
-    }
-    if (data.roomDesc) {
-      this.description = data.roomDesc;
-    }
-    if (data.newPlayer) {
-        this.players.push(data.newPlayer);
-        if (this.host) {
-          this.conns.forEach(conn => {
-            conn.send(data);
-          });
-        }
+  async makeApprovalAlert(player, conn) {
+    const alert = await this.alerteController.create({
+      header: 'Nouveau joueur !',
+      message: player,
+      buttons: [
+        {text: 'approuver', role:'join', handler: ()=>{
+          this.players.push(player);
+          if(this.host)
+            conn.send({roomName:this.roomName,roomDesc:this.description});
+            this.conns.forEach(conn => {
+              conn.send({newPlayer:player})
+            });
+        }}, 
+        {text: 'refuser', role: 'kick', handler: ()=>{
+        conn.send({kick:'accès refusé'})
+        }}]
+    });
+    await alert.present();
+  }
+
+  async makeKickAlert(reason) {
+    const alert = await this.alerteController.create({
+      header: 'Vous avez été viré de la partie',
+      message: 'raison : '+reason,
+      buttons: [{
+        text:'Ok',
+        handler: ()=>{
+          this.peer.disconnect();
+          this.peer.destroy();
+          this.navCtrl.navigateBack(['/home']);
+        }}]
+    });
+    await alert.present();
+  }
+
+  treatData(data, conn=undefined){
+    if(data.roomName)
+      this.roomName=data.roomName;
+    if(data.roomDesc)
+      this.description=data.roomDesc;
+    if(data.newPlayer)
+      {
+        if(this.host)
+          this.makeApprovalAlert(data.newPlayer,conn)
+        else
+          this.players.push(data.newPlayer);
       }
+    if(data.kick)
+      this.makeKickAlert(data.kick);
     }
 
     navigateToChar() {

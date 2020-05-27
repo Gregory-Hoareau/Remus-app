@@ -87,9 +87,7 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-file": {},
-      "cordova-plugin-camera": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      },
+      "cordova-plugin-camera": {},
       "cordova-plugin-telerik-imagepicker": {},
       "cordova-plugin-filepath": {},
       "cordova-plugin-filechooser": {}
