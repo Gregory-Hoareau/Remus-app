@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import {AlertController, IonRouterOutlet, ModalController, NavController} from '@ionic/angular';
+import {AlertController, ModalController, NavController} from '@ionic/angular';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
 import {CharacterSheetPage} from '../character-sheet/character-sheet.page';
 import {File} from '@ionic-native/file/ngx';
-// @ts-ignore
 import Peer from 'peerjs';
 
 @Component({
@@ -28,7 +27,7 @@ export class SessionHomePage {
   image: string;
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
-              private routerOutlet: IonRouterOutlet, private alerteController: AlertController,
+              private alerteController: AlertController,
               private file: File, private navCtrl: NavController) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
@@ -69,11 +68,9 @@ export class SessionHomePage {
         this.makeAnIdAlert(id);
         console.log('locked and loaded id: ', id);
       });
-        // tslint:disable-next-line:no-shadowed-variable
       this.peer.on('connection', (conn) => {
         console.log('connection with ', conn.peer);
         conn.on('data', (data) => {
-          // Will print 'hi!'
           this.treatData(data, conn);
         });
         conn.on('open', () => {
