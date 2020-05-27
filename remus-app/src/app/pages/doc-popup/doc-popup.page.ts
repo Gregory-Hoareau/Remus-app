@@ -12,12 +12,15 @@ import {File} from '@ionic-native/file/ngx';
 })
 export class DocPopupPage implements OnInit {
   connList;
+  conn;
   private items = [];
   private dataReturned: any;
   image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
+  // tslint:disable-next-line:max-line-length
   constructor(private file: File, private formBuilder: FormBuilder, private modalController: ModalController, private modalCtr: ModalController,
               private navParams: NavParams) {
     this.connList = navParams.get('connList');
+    this.conn = navParams.get('conn');
     this.file.listDir(this.file.dataDirectory , '').then((listing) => {
       for (const files of listing) {
         if (files.isFile === true) {
@@ -28,6 +31,9 @@ export class DocPopupPage implements OnInit {
           console.log('This is a folder') ;
         }
       }
+      this.conn.on('data', (data) => {
+        this.treatData(data);
+      });
     });
    }
    ngOnInit(): void {
@@ -63,6 +69,15 @@ async itemSelected(item) {
     });
 
     return await modal.present();
+  }
+
+  // tslint:disable-next-line:no-unnecessary-initializer
+  treatData(data) {
+    if (data.fileName && data.img) {
+      this.file.createFile(this.file.dataDirectory, data.fileName, true).then();
+      this.file.writeExistingFile(this.file.dataDirectory, data.fileName, data.img).then();
+
+    }
   }
 
 

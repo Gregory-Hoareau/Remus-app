@@ -29,6 +29,7 @@ export class SessionHomePage {
   host = '51.210.101.240';
   path = '/remus-app';
   port = 9000;
+  conn:any;
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController,
@@ -61,6 +62,7 @@ export class SessionHomePage {
         console.log('opened on ip ', this.host);
         // tslint:disable-next-line:prefer-const
         let conn = this.peer.connect(this.roomid, {serialization: 'json'});
+        this.conn = conn;
         conn.on('open', () => {
           console.log('connection openned to id ', conn.peer);
           conn.send({newPlayer: this.pseudo});
@@ -101,7 +103,8 @@ export class SessionHomePage {
     const modal = await this.modalCtr.create({
       component: (page === 'doc') ? DocPopupPage : CharacterSheetPage,
       componentProps: {
-         connList : this.conns
+         connList : this.conns,
+         conn : this.conn
       },
       cssClass: 'custom-modal-css',
       swipeToClose: true,
@@ -195,11 +198,6 @@ export class SessionHomePage {
       }
     if (data.kick) {
       this.makeKickAlert(data.kick);
-    }
-    if (data.fileName && data.img) {
-      this.file.createFile(this.file.dataDirectory, data.fileName, true).then();
-      this.file.writeExistingFile(this.file.dataDirectory, data.fileName, data.img).then();
-
     }
   }
 
