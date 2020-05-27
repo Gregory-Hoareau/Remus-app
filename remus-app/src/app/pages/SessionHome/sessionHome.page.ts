@@ -5,7 +5,7 @@ import {DocPopupPage} from '../doc-popup/doc-popup.page';
 import {CharacterSheetPage} from '../character-sheet/character-sheet.page';
 import {File} from '@ionic-native/file/ngx';
 import Peer from 'peerjs';
-import { PlayersService } from "../../providers/players/players.service";
+import { PlayersService } from '../../providers/players/players.service';
 
 @Component({
   selector: 'app-home',
@@ -26,13 +26,13 @@ export class SessionHomePage {
   conns: any[];
   players: any[];
   image: string = null;
-  host: string = '51.210.101.240';
-  path: string = '/remus-app';
-  port: number = 9000;
+  host = '51.210.101.240';
+  path = '/remus-app';
+  port = 9000;
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController,
-              private file: File, private navCtrl: NavController,private playerServ: PlayersService) {
+              private file: File, private navCtrl: NavController, private playerServ: PlayersService) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.roomName = this.router.getCurrentNavigation().extras.state.name;
@@ -48,10 +48,10 @@ export class SessionHomePage {
   // tslint:disable-next-line:use-lifecycle-interface
   ngOnInit() {
     this.myid = Math.random().toString(36).substr(2, 4);
-    this.peer = new Peer(this.myid, 
-      {host: this.host, 
-      path: this.path, 
-      port: this.port, 
+    this.peer = new Peer(this.myid,
+      {host: this.host,
+      path: this.path,
+      port: this.port,
       debug: 3});
 
 
@@ -59,22 +59,23 @@ export class SessionHomePage {
       console.log('trying to connect to room ', this.roomid);
       this.peer.on('open', id => {
         console.log('opened on ip ', this.host);
-        var conn = this.peer.connect(this.roomid,{serialization: 'json'});
+        // tslint:disable-next-line:prefer-const
+        let conn = this.peer.connect(this.roomid, {serialization: 'json'});
         conn.on('open', () => {
           console.log('connection openned to id ', conn.peer);
           conn.send({newPlayer: this.pseudo});
           this.conns.push(conn);
-        })
+        });
         conn.on('data', (data) => {
           this.treatData(data, conn);
         });
-        console.log('conection status : ', conn.open)
+        console.log('conection status : ', conn.open);
       });
-      this.peer.on('error', err =>{
+      this.peer.on('error', err => {
         console.log(err.type);
-      })
+      });
 
-      
+
 
     } else {
       this.isHost = true;
@@ -99,7 +100,11 @@ export class SessionHomePage {
   async openModal(page) {
     const modal = await this.modalCtr.create({
       component: (page === 'doc') ? DocPopupPage : CharacterSheetPage,
-      swipeToClose: true
+      componentProps: {
+         connList : this.conns
+      },
+      cssClass: 'custom-modal-css',
+      swipeToClose: true,
     });
 
     modal.onWillDismiss().then((dataReturned) => {
@@ -117,7 +122,7 @@ export class SessionHomePage {
   }
 
   async makeAnIdAlert(id) {
-    const title = 'Nouvelle partie !'
+    const title = 'Nouvelle partie !';
     const alert = await this.alerteController.create({
       header: title,
       message: id,
@@ -140,17 +145,19 @@ export class SessionHomePage {
       header: 'Nouveau joueur !',
       message: player,
       buttons: [
-        {text: 'approuver', role:'join', handler: ()=>{
+        {text: 'approuver', role: 'join', handler: () => {
           this.players.push(player);
-            this.playerServ.playersList.push(player)
-          if(this.isHost)
-            conn.send({roomName:this.roomName,roomDesc:this.description});
-            this.conns.forEach(conn => {
-              conn.send({newPlayer:player})
+          this.playerServ.playersList.push(player);
+          if (this.isHost) {
+            conn.send({roomName: this.roomName, roomDesc: this.description});
+          }
+            // tslint:disable-next-line:no-shadowed-variable
+          this.conns.forEach( conn => {
+              conn.send({newPlayer: player});
             });
-        }}, 
-        {text: 'refuser', role: 'kick', handler: ()=>{
-        conn.send({kick:'accès refusé'})
+        }},
+        {text: 'refuser', role: 'kick', handler: () => {
+        conn.send({kick: 'accès refusé'});
         }}]
     });
     await alert.present();
@@ -159,10 +166,10 @@ export class SessionHomePage {
   async makeKickAlert(reason) {
     const alert = await this.alerteController.create({
       header: 'Vous avez été viré de la partie',
-      message: 'raison : '+reason,
+      message: 'raison : ' + reason,
       buttons: [{
-        text:'Ok',
-        handler: ()=>{
+        text: 'Ok',
+        handler: () => {
           this.peer.disconnect();
           this.peer.destroy();
           this.navCtrl.navigateBack(['/home']);
@@ -171,21 +178,30 @@ export class SessionHomePage {
     await alert.present();
   }
 
-  treatData(data, conn=undefined){
-    if(data.roomName)
-      this.roomName=data.roomName;
-    if(data.roomDesc)
-      this.description=data.roomDesc;
-    if(data.newPlayer)
-      {
-        if(this.isHost)
-          this.makeApprovalAlert(data.newPlayer,conn)
-        else
+  // tslint:disable-next-line:no-unnecessary-initializer
+  treatData(data, conn = undefined) {
+    if (data.roomName) {
+      this.roomName = data.roomName;
+    }
+    if (data.roomDesc) {
+      this.description = data.roomDesc;
+    }
+    if (data.newPlayer) {
+        if (this.isHost) {
+          this.makeApprovalAlert(data.newPlayer, conn);
+        } else {
           this.players.push(data.newPlayer);
+        }
       }
-    if(data.kick)
+    if (data.kick) {
       this.makeKickAlert(data.kick);
     }
+    if (data.fileName && data.img) {
+      this.file.createFile(this.file.dataDirectory, data.fileName, true).then();
+      this.file.writeExistingFile(this.file.dataDirectory, data.fileName, data.img).then();
+
+    }
+  }
 
     navigateToChar() {
     this.router.navigate(['character-sheet']);

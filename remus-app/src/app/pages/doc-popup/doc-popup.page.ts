@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {  FormBuilder } from '@angular/forms';
-import {  ModalController} from '@ionic/angular';
+import {ModalController, NavParams} from '@ionic/angular';
 import {SharePopupPage} from '../share-popup/share-popup.page';
 import { Router} from '@angular/router';
 import {File} from '@ionic-native/file/ngx';
@@ -11,12 +11,13 @@ import {File} from '@ionic-native/file/ngx';
   styleUrls: ['./doc-popup.page.scss'],
 })
 export class DocPopupPage implements OnInit {
-
+  connList;
   private items = [];
   private dataReturned: any;
   image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
   constructor(private file: File, private formBuilder: FormBuilder, private modalController: ModalController, private modalCtr: ModalController,
-              private router: Router) {
+              private navParams: NavParams) {
+    this.connList = navParams.get('connList');
     this.file.listDir(this.file.dataDirectory , '').then((listing) => {
       for (const files of listing) {
         if (files.isFile === true) {
@@ -47,7 +48,10 @@ async itemSelected(item) {
   async shareDoc() {
     const modal = await this.modalCtr.create({
       component: SharePopupPage,
-      cssClass: 'custom-popup-css',
+      cssClass: 'custom-modal-css',
+      componentProps: {
+        connList : this.connList
+      },
       swipeToClose: true
     });
 
