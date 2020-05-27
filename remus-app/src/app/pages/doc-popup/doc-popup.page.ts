@@ -11,16 +11,14 @@ import {File} from '@ionic-native/file/ngx';
   styleUrls: ['./doc-popup.page.scss'],
 })
 export class DocPopupPage implements OnInit {
-  connList;
-  conn;
+  conns;
   private items = [];
   private dataReturned: any;
   image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
   // tslint:disable-next-line:max-line-length
   constructor(private file: File, private formBuilder: FormBuilder, private modalController: ModalController, private modalCtr: ModalController,
               private navParams: NavParams) {
-    this.connList = navParams.get('connList');
-    this.conn = navParams.get('conn');
+    this.conns = navParams.get('connList');
 
     this.file.listDir(this.file.dataDirectory , '').then((listing) => {
       for (const files of listing) {
@@ -54,18 +52,20 @@ async itemSelected(item) {
       component: SharePopupPage,
       cssClass: 'custom-modal-css',
       componentProps: {
-        connList : this.connList
+        conns: this.conns
       },
       swipeToClose: true
     });
 
     modal.onWillDismiss().then((dataReturned) => {
-      if (dataReturned !== null && dataReturned.data !== '') {
-        this.dataReturned = dataReturned.data;
+      if (dataReturned !== null && dataReturned.data.fileName !== '') {
+        this.dataReturned = dataReturned.data.fileName;
         this.items.push(this.dataReturned);
       }
     });
 
     return await modal.present();
+  }
+  test() {
   }
 }
