@@ -26,13 +26,13 @@
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        <ion-list>
-          <ion-menu-toggle auto-hide="false">
-            <ion-card *ngFor="let name of players">
-              {{name}} has joined the room
-            </ion-card>
-          </ion-menu-toggle>
-        </ion-list>
+        <ion-menu-toggle auto-hide="false">
+          <ion-list>
+            <ion-item class="players"  *ngFor="let name of players">
+              {{name}}
+            </ion-item>
+          </ion-list>
+        </ion-menu-toggle>
       </ion-content>
     </ion-menu>
 

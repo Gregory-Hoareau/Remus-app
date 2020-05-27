@@ -117,10 +117,20 @@ export class SessionHomePage {
   }
 
   async makeAnIdAlert(id) {
+    const title = 'Nouvelle partie !'
     const alert = await this.alerteController.create({
-      header: 'Nouvelle partie !',
+      header: title,
       message: id,
-      buttons: ['Ok']
+      cssClass: 'new_id',
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'Ok',
+          cssClass: 'buttons',
+          handler: () => {
+          }
+        }
+      ]
     });
     await alert.present();
   }
