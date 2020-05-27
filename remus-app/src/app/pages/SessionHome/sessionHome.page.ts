@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, ModalController, NavController, NavParams} from '@ionic/angular';
+import {AlertController, ModalController, NavController, NavParams, LoadingController} from '@ionic/angular';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
 import {CharacterSheetPage} from '../character-sheet/character-sheet.page';
@@ -30,9 +30,11 @@ export class SessionHomePage {
   path = '/remus-app';
   port = 9000;
   imgTemp = '';
+  conn: any;
+  loader: any;
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
-              private alerteController: AlertController,
+              private alerteController: AlertController, private loadingController: LoadingController,
               private file: File, private navCtrl: NavController, private playerServ: PlayersService) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
@@ -93,6 +95,11 @@ export class SessionHomePage {
         this.conns.push(conn);
       });
     }
+  }
+
+  ngOnDestroy() {
+    this.peer.disconnect();
+    this.peer.destroy();
   }
 
   async openModal(page) {
@@ -168,24 +175,31 @@ export class SessionHomePage {
       buttons: [{
         text: 'Ok',
         handler: () => {
-          this.peer.disconnect();
-          this.peer.destroy();
           this.navCtrl.navigateBack(['/home']);
         }}]
     });
     await alert.present();
   }
 
+  async makeLoader(room) {
+    this.loader = await this.loadingController.create({
+      message: 'En attente de la réponse de l\'hote pour rejoindre la sale ' + room
+    })
+    this.loader.present();
+  }
+
   // tslint:disable-next-line:no-unnecessary-initializer
   treatData(data, conn = undefined) {
     if (data.roomName) {
       this.roomName = data.roomName;
+      this.loader.dismiss();
     }
     if (data.roomDesc) {
       this.description = data.roomDesc;
     }
     if (data.newPlayer) {
         if (this.isHost) {
+          conn.send({wait:this.roomName})
           this.makeApprovalAlert(data.newPlayer, conn);
         } else {
           this.players.push(data.newPlayer);
@@ -204,9 +218,12 @@ export class SessionHomePage {
       this.file.writeExistingFile(this.file.dataDirectory, data.imgEnd[0], this.imgTemp).then();
       this.imgTemp = '';
     }
+    if (data.wait) {
+      this.makeLoader(data.wait);
+    }
   }
 
-    navigateToChar() {
+  navigateToChar() {
     this.router.navigate(['character-sheet']);
   }
   closeImage() {
