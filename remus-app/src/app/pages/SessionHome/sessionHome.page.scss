@@ -31,8 +31,30 @@
 
 }
 #end #ButtonDoc{
+  width: 48%;
   font-size: 10px;
   float: right;
   max-width: 48%;
 
+}
+.container {
+  display:flex;
+  justify-content: center;
+}
+
+/* Make the image responsive */
+.container img {
+  align-self: center;
+}
+
+/* Style the button and place it in the middle of the container/image */
+.container .btn {
+  position: absolute;
+  color: red;
+  top: 10%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  font-size: 20px;
+  cursor: pointer;
 }

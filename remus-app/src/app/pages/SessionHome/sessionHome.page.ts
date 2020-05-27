@@ -24,7 +24,7 @@ export class SessionHomePage {
   pseudo: string;
   conns: any[];
   players: any[];
-  image: string;
+  image: string = null;
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController,
@@ -41,6 +41,7 @@ export class SessionHomePage {
     this.conns = [];
   }
 
+  // tslint:disable-next-line:use-lifecycle-interface
   ngOnInit() {
     this.myid = Math.random().toString(36).substr(2, 4);
     this.peer = new Peer(this.myid, {host: '127.0.0.1', path: '/remus-app' , port: 9000, debug: 3});
@@ -83,8 +84,8 @@ export class SessionHomePage {
 
   async openModal(page) {
     const modal = await this.modalCtr.create({
-      component: (page==='doc') ? DocPopupPage : CharacterSheetPage,
-      //cssClass: 'custom-modal-css',
+      component: (page === 'doc') ? DocPopupPage : CharacterSheetPage,
+      cssClass: 'custom-modal-css',
       swipeToClose: true
     });
 
@@ -164,6 +165,9 @@ export class SessionHomePage {
 
     navigateToChar() {
     this.router.navigate(['character-sheet']);
+  }
+  closeImage() {
+    this.image = null;
   }
 
 }

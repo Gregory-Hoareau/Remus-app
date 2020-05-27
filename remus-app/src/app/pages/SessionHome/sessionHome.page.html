@@ -16,10 +16,9 @@
   <ion-card *ngFor="let name of players">
     {{name}} has joined the room
   </ion-card>
-  <div class="flex">
-    <div class="img-box">
-      <img [src]="image" alt=""/>
-    </div>
+  <div *ngIf="image" class="container">
+      <img [src]="image" alt="">
+    <ion-buttons class="btn" slot="end" (click)="closeImage()"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
   </div>
 </ion-content>
 
