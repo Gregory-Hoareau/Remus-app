@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DiceHistoryService} from "../../providers/dice-history.service";
+import {DiceHistoryService} from "../../providers/dice/dice-history.service";
 import {forEachComment} from "tslint";
 
 @Component({

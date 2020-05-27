@@ -4,7 +4,7 @@ import {forEachComment} from 'tslint';
 import {AlertController, NavController, NavParams} from '@ionic/angular';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { SimulateurPage } from '../simulateur/simulateur.page';
-import {DiceHistoryService} from '../../providers/dice-history.service';
+import {DiceHistoryService} from '../../providers/dice/dice-history.service';
 @Component({
   selector: 'app-dice',
   templateUrl: './dice.page.html',
