@@ -5,5 +5,6 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>{{diceHistory}}</ion-card>
+
+  <ion-card *ngFor="let roll of finalHistory" >{{roll}}</ion-card>
 </ion-content>

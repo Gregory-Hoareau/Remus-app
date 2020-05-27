@@ -39,3 +39,12 @@
   background-color: azure;
   --ion-background-color: azure;
 }
+
+.dice_result .alert-message, .alert-title {
+  text-align: center;
+}
+
+.dice_result .alert-message h1{
+    font-size: 60px;
+    color: darkblue;
+  }

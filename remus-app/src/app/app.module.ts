@@ -5,7 +5,6 @@ import { Camera } from '@ionic-native/camera/ngx';
 import {IonicModule, IonicRouteStrategy, IonRouterOutlet} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,6 +13,7 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { File } from '@ionic-native/file/ngx';
+import {DiceHistoryService} from './providers/dice-history.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +24,7 @@ import { File } from '@ionic-native/file/ngx';
       AppRoutingModule,
       BrowserAnimationsModule,
       FontAwesomeModule,
+
   ],
   providers: [
     StatusBar,
@@ -33,8 +34,10 @@ import { File } from '@ionic-native/file/ngx';
     FilePath,
     ImagePicker,
     File,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+      DiceHistoryService,
+      { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {DiceHistoryService} from "../../providers/dice-history.service";
+import {forEachComment} from "tslint";
 
 @Component({
   selector: 'app-historique',
@@ -6,11 +8,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./historique.page.scss'],
 })
 export class HistoriquePage implements OnInit {
-
-  constructor() { }
+  finalValue: string;
+  finalHistory: string[];
+  constructor(  private diceHistoryService: DiceHistoryService
+  ) {
+  }
 
   ngOnInit() {
+    this.finalHistory = [];
 
   }
+
+  ionViewDidEnter() {
+    this.finalHistory = [];
+    this.diceHistoryService.diceHistory.forEach(e => {
+      this.finalHistory.push(e);
+      console.table(this.finalHistory);
+    });
+  }
+
 
 }

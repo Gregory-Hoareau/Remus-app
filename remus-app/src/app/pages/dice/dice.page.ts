@@ -1,17 +1,20 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {printLine} from "tslint/lib/verify/lines";
-import {forEachComment} from "tslint";
-import {AlertController} from '@ionic/angular';
+import {printLine} from 'tslint/lib/verify/lines';
+import {forEachComment} from 'tslint';
+import {AlertController, NavController, NavParams} from '@ionic/angular';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-import { SimulateurPage } from '../simulateur/simulateur.page'
+import { SimulateurPage } from '../simulateur/simulateur.page';
+import {DiceHistoryService} from '../../providers/dice-history.service';
 @Component({
   selector: 'app-dice',
   templateUrl: './dice.page.html',
   styleUrls: ['./dice.page.scss'],
 })
+
 export class DicePage implements OnInit {
 
-  constructor(public alertController: AlertController) { }
+  constructor(public alertController: AlertController,
+              private diceHistoryService: DiceHistoryService) { }
   result : number;
   diceSum : number;
   diceSelected : any;
@@ -84,7 +87,7 @@ export class DicePage implements OnInit {
 
   }
 
-  resetDices(){
+  resetDices() {
     this.diceSum = 0;
     this.dices = [];
     this.diceSelected = {};
@@ -167,5 +170,6 @@ export class DicePage implements OnInit {
     }else{
       this.presentAlertConfirm(this.finalSeparatedValue + '<br>' + '<h1>' + this.result + '</h1>')
     }*/
+    this.diceHistoryService.diceHistory.push(this.selectedDices + '  /  ' + this.finalSeparatedValue + '  /  ' + this.modifResult + '  /  ' + this.result.toString());
   }
 }
