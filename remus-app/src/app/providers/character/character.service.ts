@@ -6,7 +6,7 @@ import { CharacterSheet } from 'src/app/models/character-sheet.model';
 })
 export class CharacterService {
 
-  characters: CharacterSheet[] = [{
+  private empty_characters: CharacterSheet = {
     img: null,
     name: '',
     age: -1,
@@ -36,12 +36,20 @@ export class CharacterService {
         'Instinct animal',
         'Bagarre',
     ]
-  }]
+  };
+
+  characters: CharacterSheet[] = []
 
   constructor() {}
 
   get firstChar() {
-    return this.characters[0];
+    if (this.characters.length === 0) {
+      const temp = {...this.empty_characters};
+      this.characters.push(temp);
+      return temp;
+    } else {
+      return this.characters[0];
+    }
   }
 
 }

@@ -115,15 +115,23 @@ export class CharacterSheetPage implements OnInit {
   }
 
   addPicture() {
-    this.imgPicker.getPictures({maximumImagesCount: 1}).then((results) => {
-      for(let i = 0; i < results.length; i++) {
-        let filename = results[i].substring(results[i].lastIndexOf('/')+1)
-        let path = results[i].substring(0, results[i].lastIndexOf('/')+1)
-        this.file.readAsDataURL(path, filename).then((url) => {
-          this.character.img = url
+    this.imgPicker.hasReadPermission().then((result) => {
+      if (!result) {
+        this.imgPicker.requestReadPermission()
+      } else {
+        this.imgPicker.getPictures({maximumImagesCount: 1}).then((results) => {
+          console.log('Get the results');
+          for(let i = 0; i < results.length; i++) {
+            let filename = results[i].substring(results[i].lastIndexOf('/')+1)
+            let path = results[i].substring(0, results[i].lastIndexOf('/')+1)
+            this.file.readAsDataURL(path, filename).then((url) => {
+              this.character.img = url
+            })
+          }
         })
       }
     })
+    /**/
     /*this.fileChooser.open().then(uri => {
         this.filePath.resolveNativePath(uri).then(nativePath => {
           this.character.img = this.sanitizer.sanitize(SecurityContext.URL, nativePath);

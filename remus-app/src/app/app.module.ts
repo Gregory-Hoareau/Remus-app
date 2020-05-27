@@ -25,7 +25,6 @@ import { CharacterService } from './providers/character/character.service';
       AppRoutingModule,
       BrowserAnimationsModule,
       FontAwesomeModule,
-
   ],
   providers: [
     StatusBar,
