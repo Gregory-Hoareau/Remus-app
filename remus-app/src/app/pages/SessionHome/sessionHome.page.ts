@@ -15,7 +15,7 @@ import { PlayersService } from "../../providers/players/players.service";
 
 export class SessionHomePage {
 
-  host: boolean;
+  isHost: boolean;
   dataReturned: any;
   roomName: string;
   description: string;
@@ -26,6 +26,9 @@ export class SessionHomePage {
   conns: any[];
   players: any[];
   image: string = null;
+  host: string = '51.210.101.240';
+  path: string = '/remus-app';
+  port: number = 9000;
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController,
@@ -45,26 +48,36 @@ export class SessionHomePage {
   // tslint:disable-next-line:use-lifecycle-interface
   ngOnInit() {
     this.myid = Math.random().toString(36).substr(2, 4);
-    this.peer = new Peer(this.myid, {host: '127.0.0.1', path: '/remus-app' , port: 9000, debug: 3});
+    this.peer = new Peer(this.myid, 
+      {host: this.host, 
+      path: this.path, 
+      port: this.port, 
+      debug: 3});
 
 
     if (this.pseudo) {
       console.log('trying to connect to room ', this.roomid);
       this.peer.on('open', id => {
-
+        console.log('opened on ip ', this.host);
+        var conn = this.peer.connect(this.roomid,{serialization: 'json'});
+        conn.on('open', () => {
+          console.log('connection openned to id ', conn.peer);
+          conn.send({newPlayer: this.pseudo});
+          this.conns.push(conn);
+        })
+        conn.on('data', (data) => {
+          this.treatData(data, conn);
+        });
+        console.log('conection status : ', conn.open)
       });
-      var conn = this.peer.connect(this.roomid);
-      conn.on('open', () => {
-        console.log('connection openned to id ', conn.peer);
-        conn.send({newPlayer: this.pseudo});
+      this.peer.on('error', err =>{
+        console.log(err.type);
       })
-      conn.on('data', (data) => {
-        this.treatData(data, conn);
-      });
-      this.conns.push(conn);
+
+      
 
     } else {
-      this.host = true;
+      this.isHost = true;
       console.log('trying to open');
       this.peer.on('open', id => {
         this.makeAnIdAlert(id);
@@ -86,7 +99,6 @@ export class SessionHomePage {
   async openModal(page) {
     const modal = await this.modalCtr.create({
       component: (page === 'doc') ? DocPopupPage : CharacterSheetPage,
-      cssClass: 'custom-modal-css',
       swipeToClose: true
     });
 
@@ -121,7 +133,7 @@ export class SessionHomePage {
         {text: 'approuver', role:'join', handler: ()=>{
           this.players.push(player);
             this.playerServ.playersList.push(player)
-            if(this.host)
+          if(this.isHost)
             conn.send({roomName:this.roomName,roomDesc:this.description});
             this.conns.forEach(conn => {
               conn.send({newPlayer:player})
@@ -156,7 +168,7 @@ export class SessionHomePage {
       this.description=data.roomDesc;
     if(data.newPlayer)
       {
-        if(this.host)
+        if(this.isHost)
           this.makeApprovalAlert(data.newPlayer,conn)
         else
           this.players.push(data.newPlayer);
