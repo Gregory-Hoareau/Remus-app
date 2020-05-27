@@ -1,11 +1,12 @@
 import { Component, OnInit, SecurityContext } from '@angular/core';
 import {CharacterSheet} from '../../models/character-sheet.model';
-import {AlertController} from '@ionic/angular';
+import {AlertController, ModalController} from '@ionic/angular';
 import {FileChooser} from '@ionic-native/file-chooser/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { CharacterService } from 'src/app/providers/character/character.service';
 
 @Component({
   selector: 'app-character-sheet',
@@ -14,39 +15,10 @@ import { File } from '@ionic-native/file/ngx';
 })
 export class CharacterSheetPage implements OnInit {
 
-  character: CharacterSheet = {
-    img: null,
-    name: '',
-    age: -1,
-    sex: '',
-    background: '',
-    traits: [{
-      name: 'Force',
-      value: -1,
-    }, {
-      name: 'Endurance',
-      value: -1,
-    }, {
-      name: 'Intelligence',
-      value: -1,
-    }, {
-      name: 'Perception',
-      value: -1,
-    }, {
-      name: 'Charisme',
-      value: -1,
-    }, {
-      name: 'Dextérité',
-      value: -1,
-    }],
-    skills: [
-        'Conduite',
-        'Instinct animal',
-        'Bagarre',
-    ]
-  };
+  character: CharacterSheet = this.characterService.firstChar;
 
-  constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File) { }
+  constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File,
+    private characterService:CharacterService, private modalCtrl:ModalController) { }
 
   ngOnInit() {
   }
