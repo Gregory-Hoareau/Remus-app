@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DiceHistoryService} from "../../providers/dice/dice-history.service";
 import {forEachComment} from "tslint";
+import { DiceRoll } from 'src/app/models/dice-roll.model';
 
 @Component({
   selector: 'app-historique',
@@ -9,9 +10,8 @@ import {forEachComment} from "tslint";
 })
 export class HistoriquePage implements OnInit {
   finalValue: string;
-  finalHistory: string[];
-  constructor(  private diceHistoryService: DiceHistoryService
-  ) {
+  finalHistory: DiceRoll[];
+  constructor(private diceHistoryService: DiceHistoryService) {
   }
 
   ngOnInit() {
@@ -20,12 +20,7 @@ export class HistoriquePage implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.finalHistory = [];
-    this.diceHistoryService.diceHistory.forEach(e => {
-      this.finalHistory.push(e);
-      console.table(this.finalHistory);
-    });
+    this.finalHistory = this.diceHistoryService.history;
   }
-
 
 }

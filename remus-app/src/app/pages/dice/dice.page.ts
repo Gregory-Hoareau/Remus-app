@@ -170,6 +170,12 @@ export class DicePage implements OnInit {
     }else{
       this.presentAlertConfirm(this.finalSeparatedValue + '<br>' + '<h1>' + this.result + '</h1>')
     }*/
-    this.diceHistoryService.diceHistory.push(this.selectedDices + '  /  ' + this.finalSeparatedValue + '  /  ' + this.modifResult + '  /  ' + this.result.toString());
+    //this.diceHistoryService.history.push(this.selectedDices + '  /  ' + this.finalSeparatedValue + '  /  ' + this.modifResult + '  /  ' + this.result.toString());
+    this.diceHistoryService.addDiceRoll({
+      dices: this.diceSelected,
+      modificator: (this.modificateur > 0? this.modificateur: undefined),
+      separatedValue: this.finalSeparatedValue,
+      result: this.result,
+    });
   }
 }

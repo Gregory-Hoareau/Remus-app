@@ -6,5 +6,5 @@
 
 <ion-content>
 
-  <ion-card *ngFor="let roll of finalHistory" >{{roll}}</ion-card>
+  <app-roll-history *ngFor="let roll of finalHistory" [roll]= roll></app-roll-history>
 </ion-content>

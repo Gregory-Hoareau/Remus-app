@@ -7,14 +7,18 @@ import { IonicModule } from '@ionic/angular';
 import { HistoriquePageRoutingModule } from './historique-routing.module';
 
 import { HistoriquePage } from './historique.page';
+import { RollHistoryComponent } from 'src/app/components/roll-history/roll-history.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HistoriquePageRoutingModule
+    HistoriquePageRoutingModule,
   ],
-  declarations: [HistoriquePage]
+  declarations: [
+    HistoriquePage,
+    RollHistoryComponent,
+  ]
 })
 export class HistoriquePageModule {}
