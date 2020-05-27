@@ -25,11 +25,17 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-.dice_result .alert-message, .alert-title {
-    text-align: center;
+.custom-modal-css .modal-wrapper {
+  height: 85%;
+  width: 85%;
+  position: absolute;
+  display: block;
 }
 
-.dice_result .alert-message h1{
-    font-size: 60px;
-    color: darkblue;
+.custom-popup-css .modal-wrapper {
+  height: 40%;
+  width: 80%;
+  position: absolute;
+  background-color: azure;
+  --ion-background-color: azure;
 }

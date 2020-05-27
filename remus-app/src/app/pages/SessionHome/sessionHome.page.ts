@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {AlertController, IonRouterOutlet, ModalController} from '@ionic/angular';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
+import {File} from '@ionic-native/file/ngx';
+// @ts-ignore
 import Peer from 'peerjs';
 
 @Component({
@@ -22,8 +24,11 @@ export class SessionHomePage {
   pseudo: string;
   conns: any[];
   players: any[];
+  image: string;
 
-  constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router, private alerteController: AlertController) {
+  constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
+              private routerOutlet: IonRouterOutlet, private alerteController: AlertController,
+              private file: File) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.roomName = this.router.getCurrentNavigation().extras.state.name;
@@ -32,49 +37,50 @@ export class SessionHomePage {
         this.roomid = this.router.getCurrentNavigation().extras.state.id;
       }
     });
-    this.players=[]
-    this.conns=[]
+    this.players = [];
+    this.conns = [];
   }
 
-  ngOnInit(){
-    this.myid = Math.random().toString(36).substr(2, 4)
-    this.peer = new Peer(this.myid,{host: '127.0.0.1',path:'/remus-app' ,port:9000,debug: 3});
+  ngOnInit() {
+    this.myid = Math.random().toString(36).substr(2, 4);
+    this.peer = new Peer(this.myid, {host: '127.0.0.1', path: '/remus-app' , port: 9000, debug: 3});
 
 
-    if(this.pseudo){
+    if (this.pseudo) {
       console.log('trying to connect to room ', this.roomid);
       this.peer.on('open', id => {
 
       });
       var conn = this.peer.connect(this.roomid);
       conn.on('open', () => {
-        console.log("connection openned to id ", conn.peer);
+        console.log('connection openned to id ', conn.peer);
         conn.send({newPlayer: this.pseudo});
-        this.roomName="hello there"
-      })
+        this.roomName = 'hello there';
+      });
       conn.on('data', (data) => {
         this.treatData(data);
       });
       this.conns.push(conn);
 
-    } else{
-      this.host=true;
+    } else {
+      this.host = true;
       console.log('trying to open');
       this.peer.on('open', id => {
         this.makeAnIdAlert(id);
         console.log('locked and loaded id: ', id);
-      })
+      });
+        // tslint:disable-next-line:no-shadowed-variable
       this.peer.on('connection', (conn) => {
         console.log('connection with ', conn.peer);
         conn.on('data', (data) => {
           // Will print 'hi!'
           this.treatData(data);
-          conn.send({roomName:this.roomName,roomDesc:this.description});
+          conn.send({roomName: this.roomName, roomDesc: this.description});
         });
         conn.on('open', () => {
           console.log('opened connection');
         });
-        this.conns.push(conn)
+        this.conns.push(conn);
       });
     }
   }
@@ -82,13 +88,16 @@ export class SessionHomePage {
   async openModal() {
     const modal = await this.modalCtr.create({
       component: DocPopupPage,
-      //presentingElement: this.routerOutlet.nativeEl,
+      // presentingElement: this.routerOutlet.nativeEl,
+      cssClass: 'custom-modal-css',
+      presentingElement: this.routerOutlet.nativeEl,
       swipeToClose: true
     });
 
     modal.onWillDismiss().then((dataReturned) => {
-      if (dataReturned !== null) {
+      if (dataReturned !== null && dataReturned.data !== '') {
         this.dataReturned = dataReturned.data;
+        this.image = this.dataReturned;
         const navigationExtras: NavigationExtras = {
           state: this.dataReturned
         };
@@ -108,23 +117,25 @@ export class SessionHomePage {
     await alert.present();
   }
 
-  treatData(data){
-    if(data.roomName)
-      this.roomName=data.roomName;
-    if(data.roomDesc)
-      this.description=data.roomDesc;
-    if(data.newPlayer)
-      {
+  treatData(data) {
+    if (data.roomName) {
+      this.roomName = data.roomName;
+    }
+    if (data.roomDesc) {
+      this.description = data.roomDesc;
+    }
+    if (data.newPlayer) {
         this.players.push(data.newPlayer);
-        if(this.host)
+        if (this.host) {
           this.conns.forEach(conn => {
-            conn.send(data)
+            conn.send(data);
           });
+        }
       }
     }
 
-  navigateToChar() {
-    this.router.navigate(['character-sheet'])
+    navigateToChar() {
+    this.router.navigate(['character-sheet']);
   }
 
 }

@@ -6,9 +6,9 @@
 
 <ion-content>
     <ion-list>
-        <ion-button id="buttons" ion-item *ngFor="let item of items" (click)="itemSelected(item)">
-            {{ item }}
-        </ion-button>
+        <ion-item id="buttons" *ngFor="let item of items"  button (click)="itemSelected(item)">
+            <h3>{{item}}</h3>
+        </ion-item>
     </ion-list>
 </ion-content>
 
@@ -16,3 +16,5 @@
     <ion-button (click)="shareDoc()"> Partager</ion-button>
     <ion-button (click)="closeModal()"> Annuler </ion-button>
 </ion-footer>
+
+

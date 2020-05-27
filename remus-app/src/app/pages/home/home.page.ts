@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { HostFormPage} from '../host-form/host-form.page';
 import { IonRouterOutlet } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
-import {JoinFormPage} from "../join-form/join-form.page";
+import {JoinFormPage} from '../join-form/join-form.page';
 
 @Component({
   selector: 'app-home',
@@ -25,10 +25,10 @@ export class HomePage {
     });
 
     joiningmodal.onWillDismiss().then((dataReturned) => {
-      console.table(dataReturned)
+      console.table(dataReturned);
       if (dataReturned.data !== undefined) {
         this.dataReturned = dataReturned.data;
-        let navigationExtras: NavigationExtras = {
+        const navigationExtras: NavigationExtras = {
           state: this.dataReturned
         };
         this.router.navigate(['sessionHome'], navigationExtras);
@@ -49,10 +49,10 @@ export class HomePage {
     });
 
     modal.onWillDismiss().then((dataReturned) => {
-      console.table(dataReturned)
+      console.table(dataReturned);
       if (dataReturned.data !== undefined) {
         this.dataReturned = dataReturned.data;
-        let navigationExtras: NavigationExtras = {
+        const navigationExtras: NavigationExtras = {
           state: this.dataReturned
         };
         this.router.navigate(['sessionHome'], navigationExtras);

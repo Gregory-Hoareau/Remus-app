@@ -26,6 +26,9 @@ export const routes: Routes = [
   {
     path: 'doc-popup',
     loadChildren: () => import('./pages/doc-popup/doc-popup.module').then( m => m.DocPopupModule)
+  }, {
+    path: 'share-popup',
+    loadChildren: () => import('./pages/share-popup/share-popup.module').then( m => m.SharePopupModule)
   },
   {
     path: 'join-form',

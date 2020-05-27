@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import {AlertController, ModalController, NavParams} from '@ionic/angular';
+import {  FormBuilder } from '@angular/forms';
+import {  ModalController} from '@ionic/angular';
+import {SharePopupPage} from '../share-popup/share-popup.page';
+import { Router} from '@angular/router';
+import {File} from '@ionic-native/file/ngx';
 
 @Component({
   selector: 'app-doc-popup',
@@ -10,51 +13,53 @@ import {AlertController, ModalController, NavParams} from '@ionic/angular';
 export class DocPopupPage implements OnInit {
 
   private items = [];
-  
-
-  constructor(private formBuilder: FormBuilder, private alertController: AlertController,
-              private modalController: ModalController,
-              private navParams: NavParams) {}
-
-  ngOnInit() {
-  }
+  private dataReturned: any;
+  image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
+  constructor(private file: File, private formBuilder: FormBuilder, private modalController: ModalController, private modalCtr: ModalController,
+              private router: Router) {
+    this.file.listDir(this.file.dataDirectory , '').then((listing) => {
+      for (const files of listing) {
+        if (files.isFile === true) {
+          this.items.push(files.name);
+          console.log('This is a file');
+          // Code if its a folder
+        } else {
+          console.log('This is a folder') ;
+        }
+      }
+    });
+   }
+   ngOnInit(): void {
+   }
 
 
   async closeModal() {
     await this.modalController.dismiss();
   }
 
-  async itemSelected(item) {
-
-  }
-  async shareDoc() {
-    const alert = await this.alertController.create({
-      header: 'Ajouter un document :',
-      buttons: [
-        {
-          text: 'Valider',
-          role: 'Valider',
-          cssClass: 'buttons',
-          handler: (data) => {
-            this.items.push(data.input);
-          }
-        }, {
-          cssClass: 'buttons',
-          text: 'Annuler',
-          handler: () => {
-            console.log('Annuler');
-          }
-        }
-      ],
-      inputs: [
-        {
-          type: 'textarea',
-          name: 'input'
-        }
-      ]
+async itemSelected(item) {
+    this.file.readAsText(this.file.dataDirectory, item).then((value) => {
+      this.image = value;
+      this.modalController.dismiss(this.image);
     });
-    await alert.present();
-    const result = await alert.onDidDismiss();
-    console.log(result);
   }
+
+  async shareDoc() {
+    const modal = await this.modalCtr.create({
+      component: SharePopupPage,
+      cssClass: 'custom-popup-css',
+      swipeToClose: true
+    });
+
+    modal.onWillDismiss().then((dataReturned) => {
+      if (dataReturned !== null && dataReturned.data !== '') {
+        this.dataReturned = dataReturned.data;
+        this.items.push(this.dataReturned);
+      }
+    });
+
+    return await modal.present();
+  }
+
+
 }

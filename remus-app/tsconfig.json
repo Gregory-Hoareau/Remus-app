@@ -10,8 +10,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "esModuleInterop": true,
     "target": "es2015",
+    "esModuleInterop": true,
     "typeRoots": [
       "node_modules/@types"
     ],
