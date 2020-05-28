@@ -1,6 +1,6 @@
 import { Component, OnInit, SecurityContext } from '@angular/core';
 import {CharacterSheet} from '../../models/character-sheet.model';
-import {AlertController, ModalController} from '@ionic/angular';
+import {AlertController, ModalController, NavParams} from '@ionic/angular';
 import {FileChooser} from '@ionic-native/file-chooser/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -15,10 +15,14 @@ import { CharacterService } from 'src/app/providers/character/character.service'
 })
 export class CharacterSheetPage implements OnInit {
 
-  character: CharacterSheet = this.characterService.firstChar;
+  character: CharacterSheet;
 
   constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File,
-    private characterService:CharacterService, private modalCtrl:ModalController) { }
+    private characterService:CharacterService, private modalCtrl:ModalController,
+    private navParams: NavParams) {
+      const index = navParams.get('charInd');
+      this.character = this.characterService.getCharacter(index);
+    }
 
   ngOnInit() {
   }

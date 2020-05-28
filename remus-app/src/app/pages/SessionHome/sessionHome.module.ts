@@ -10,6 +10,7 @@ import {
 import {DocPopupModule} from '../doc-popup/doc-popup.module';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
 import {CharacterSheetPageModule} from '../character-sheet/character-sheet.module'
+import { SelectCharacterPageModule } from '../select-character/select-character.module';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import {CharacterSheetPageModule} from '../character-sheet/character-sheet.modul
     SessionHomePageRoutingModule,
     DocPopupModule,
     CharacterSheetPageModule,
+    SelectCharacterPageModule
   ],
   declarations: [SessionHomePage]
 })
