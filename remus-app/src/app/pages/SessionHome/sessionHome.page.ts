@@ -59,7 +59,10 @@ export class SessionHomePage {
       debug: 3});
 
 
-    if (this.pseudo) {
+    if (!this.roomName) {
+      this.roomName='Salle d\'attente';
+      if(!this.roomid)
+        this.navCtrl.navigateBack(['/home']);
       console.log('trying to connect to room ', this.roomid);
       this.peer.on('open', id => {
         console.log('opened on ip ', this.host);
@@ -123,7 +126,6 @@ export class SessionHomePage {
         const navigationExtras: NavigationExtras = {
           state: this.dataReturned
         };
-        this.router.navigate(['sessionHome'], navigationExtras);
       }
     });
 
