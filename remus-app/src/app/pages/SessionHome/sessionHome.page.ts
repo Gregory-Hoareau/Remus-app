@@ -7,6 +7,9 @@ import {File} from '@ionic-native/file/ngx';
 import Peer from 'peerjs';
 import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
+import { SimulateurPage } from '../simulateur/simulateur.page';
+import {faDiceD20} from '@fortawesome/free-solid-svg-icons';
+import { DicePage } from '../dice/dice.page';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +36,8 @@ export class SessionHomePage {
   imgTemp = '';
   conn: any;
   loader: any;
+
+  diceIcon = faDiceD20;
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
@@ -150,6 +155,18 @@ export class SessionHomePage {
     });
 
     return await modal.present();
+  }
+
+  openDiceRollerModal() {
+    this.modalCtr.create({
+      component: DicePage,
+      componentProps: {
+        modal: true,
+      },
+      swipeToClose: true,
+    }).then(modal => {
+      modal.present();
+    })
   }
 
   async makeAnIdAlert(id) {

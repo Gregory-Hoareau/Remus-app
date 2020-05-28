@@ -1,7 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-buttons *ngIf="!isModal" slot="start">
       <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')">
+      <ion-icon class="ion-margin" name="close-outline"></ion-icon>
     </ion-buttons>
     <ion-title>Lanceur de dés</ion-title>
   </ion-toolbar>

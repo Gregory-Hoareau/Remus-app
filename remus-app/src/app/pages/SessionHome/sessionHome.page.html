@@ -1,11 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button menu="mainMenu"></ion-menu-button>
-    </ion-buttons>
     <ion-buttons slot="end">
       <ion-menu-toggle menu="playerList">
-        <ion-button>
+        <ion-button *ngIf="isHost">
           <ion-icon name="person" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-menu-toggle>
@@ -20,7 +17,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content class="flex" [fullscreen]="true">
   <ion-card>
     {{description}}
   </ion-card>
@@ -31,6 +28,12 @@
       <img [src]="image" alt="">
     <ion-buttons class="btn" slot="end" (click)="closeImage()"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
   </div>
+  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="dice" (click)="openDiceRollerModal()">
+      <fa-icon class="icon" [icon]="diceIcon"></fa-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
 
 <ion-footer >

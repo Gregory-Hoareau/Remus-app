@@ -11,6 +11,8 @@ import {DocPopupModule} from '../doc-popup/doc-popup.module';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
 import {CharacterSheetPageModule} from '../character-sheet/character-sheet.module'
 import { SelectCharacterPageModule } from '../select-character/select-character.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { DicePageModule } from '../dice/dice.module';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { SelectCharacterPageModule } from '../select-character/select-character.
     SessionHomePageRoutingModule,
     DocPopupModule,
     CharacterSheetPageModule,
-    SelectCharacterPageModule
+    SelectCharacterPageModule,
+    FontAwesomeModule,
+    DicePageModule,
   ],
   declarations: [SessionHomePage]
 })

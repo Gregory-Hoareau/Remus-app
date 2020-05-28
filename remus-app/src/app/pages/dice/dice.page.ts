@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {printLine} from 'tslint/lib/verify/lines';
 import {forEachComment} from 'tslint';
-import {AlertController, NavController, NavParams} from '@ionic/angular';
+import {AlertController, NavController, NavParams, ModalController} from '@ionic/angular';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { SimulateurPage } from '../simulateur/simulateur.page';
 import {DiceHistoryService} from '../../providers/dice/dice-history.service';
@@ -14,7 +14,8 @@ import {DiceHistoryService} from '../../providers/dice/dice-history.service';
 export class DicePage implements OnInit {
 
   constructor(public alertController: AlertController,
-              private diceHistoryService: DiceHistoryService) { }
+              private diceHistoryService: DiceHistoryService, private modalCtrl: ModalController,
+              private navParams: NavParams) { }
   result : number;
   diceSum : number;
   diceSelected : any;
@@ -28,6 +29,7 @@ export class DicePage implements OnInit {
   modificateur : number;
   modifResult : string;
 
+  isModal: boolean;
 
   ngOnInit() {
     this.modificateur = 0;
@@ -40,6 +42,8 @@ export class DicePage implements OnInit {
     this.finalSeparatedValue = "";
     this.dices = [];
     this.modifying = false;
+
+    this.isModal = this.navParams.get('modal');
   }
 
   getRandomInt(max) {
