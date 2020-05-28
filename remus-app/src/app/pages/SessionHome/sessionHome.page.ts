@@ -32,7 +32,7 @@ export class SessionHomePage {
   imgTemp = '';
   conn: any;
   loader: any;
-  leader: boolean;
+
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
               private file: File, private navCtrl: NavController, private playerServ: PlayersService) {
@@ -46,14 +46,11 @@ export class SessionHomePage {
     });
     this.players = [];
     this.conns = [];
-    this.leader= false;
+
   }
 
   // tslint:disable-next-line:use-lifecycle-interface
   ngOnInit() {
-    if(this.roomName != undefined){
-      this.leader = true;
-    }
     this.myid = Math.random().toString(36).substr(2, 4);
     this.peer = new Peer(this.myid,
       {host: this.host,
@@ -80,6 +77,9 @@ export class SessionHomePage {
       });
       this.peer.on('error', err => {
         console.log(err.type);
+        if(err.type==='peer-unavailable') {
+          this.makeKickAlert('id '+this.roomid+' ne correspond a aucune salle.');
+        }
       });
     } else {
       this.isHost = true;
