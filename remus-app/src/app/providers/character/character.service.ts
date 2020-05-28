@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CharacterSheet } from 'src/app/models/character-sheet.model';
 import { all_characters } from 'src/mocks/character'
+import { PlayersService } from '../players/players.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,18 +34,16 @@ export class CharacterService {
       value: -1,
     }],
     skills: [
-        'Conduite',
-        'Instinct animal',
-        'Bagarre',
     ]
   };
 
-  characters: CharacterSheet[] = all_characters;
+  characters: CharacterSheet[];
 
-  constructor() {}
+  constructor(private playerService: PlayersService) {
+    this.characters = playerService.isHost? all_characters: [];
+  }
 
   getCharacter(index = -1) {
-    console.log('Want Character at: ' + index)
     if (index === -1) { // Se la personne qui envoie la requête n'est pas le MJ
       if (this.characters.length === 0) {
         const newChar = {...this.empty_characters}

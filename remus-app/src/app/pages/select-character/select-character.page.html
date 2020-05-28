@@ -10,7 +10,7 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let c of characters; let i = index" (click)="characterModal(i)">
-      <ion-label>{{c.name}} {{c.age}} </ion-label>
+      <ion-label>{{c.name}}</ion-label>
     </ion-item>
   </ion-list>
   <ion-fab vertical="top" horizontal="end" slot="fixed">

@@ -8,6 +8,7 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 })
 export class PlayersService {
   playersList: Player[]
+  isHost: boolean;
 
   constructor(private alertCtrl: AlertController) {
     this.playersList = []

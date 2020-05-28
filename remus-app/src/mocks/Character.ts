@@ -58,9 +58,8 @@ export let all_characters: CharacterSheet[] = [
           value: -1,
         }],
         skills: [
-            'Conduite',
-            'Instinct animal',
-            'Bagarre',
+            'Erudition',
+            'Connaissance Magique',
         ]
       }
 ]

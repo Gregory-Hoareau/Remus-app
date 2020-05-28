@@ -87,6 +87,7 @@ export class SessionHomePage {
       });
     } else {
       this.isHost = true;
+      this.playerServ.isHost = true;
       console.log('trying to open');
       this.peer.on('open', id => {
         this.makeAnIdAlert(id);
