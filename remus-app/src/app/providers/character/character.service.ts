@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CharacterSheet } from 'src/app/models/character-sheet.model';
+import { all_characters } from 'src/mocks/character'
 
 @Injectable({
   providedIn: 'root'
@@ -38,17 +39,26 @@ export class CharacterService {
     ]
   };
 
-  characters: CharacterSheet[] = []
+  characters: CharacterSheet[] = all_characters;
 
   constructor() {}
 
-  get firstChar() {
-    if (this.characters.length === 0) {
-      const temp = {...this.empty_characters};
-      this.characters.push(temp);
-      return temp;
+  getCharacter(index = -1) {
+    console.log('Want Character at: ' + index)
+    if (index === -1) { // Se la personne qui envoie la requête n'est pas le MJ
+      if (this.characters.length === 0) {
+        const newChar = {...this.empty_characters}
+        this.characters.push(newChar);
+        return newChar;
+      } else {
+        return this.characters[0];
+      }
+    } else if (index === null) { // Si le MJ veut créer une nouveau PNJ
+      const newChar = {...this.empty_characters}
+      this.characters.push(newChar);
+      return newChar;
     } else {
-      return this.characters[0];
+      return this.characters[index];
     }
   }
 

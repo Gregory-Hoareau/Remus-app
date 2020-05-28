@@ -35,7 +35,8 @@
 
 <ion-footer >
   <ion-toolbar  id="end">
-    <ion-button id="ButtonPerso" (click)="openModal('char')">Mon personnage</ion-button>
+    <ion-button *ngIf="isHost" id="ButtonPerso" (click)="masterCharacterModal()">Mes Personnages</ion-button>
+    <ion-button *ngIf="!isHost" id="ButtonPerso" (click)="openModal('char')">Mon personnage</ion-button>
     <!--<ion-button id="ButtonDoc" (click)="presentAlertConfirm()" >Documents partagés</ion-button>-->
     <ion-button id="ButtonDoc" (click)="openModal('doc')" >Documents partagés</ion-button>
   </ion-toolbar>

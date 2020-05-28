@@ -6,6 +6,7 @@ import {CharacterSheetPage} from '../character-sheet/character-sheet.page';
 import {File} from '@ionic-native/file/ngx';
 import Peer from 'peerjs';
 import { PlayersService } from '../../providers/players/players.service';
+import { SelectCharacterPage } from '../select-character/select-character.page';
 
 @Component({
   selector: 'app-home',
@@ -110,11 +111,19 @@ export class SessionHomePage {
     this.peer.destroy();
   }
 
+  masterCharacterModal() {
+    this.modalCtr.create({
+      component: SelectCharacterPage,
+      swipeToClose: true,
+    }).then(modal => modal.present())
+  }
+
   async openModal(page) {
     const modal = await this.modalCtr.create({
       component: (page === 'doc') ? DocPopupPage : CharacterSheetPage,
       componentProps: {
-         connList : this.conns
+         connList : this.conns,
+         charInd: -1,
       },
       cssClass: 'custom-modal-css',
       swipeToClose: true,
