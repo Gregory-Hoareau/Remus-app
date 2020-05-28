@@ -14,6 +14,7 @@ export class SharePopupPage implements OnInit {
   private text = {name: '' };
   image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
  conns: any;
+ libraryImage;
   constructor(private file: File, private formBuilder: FormBuilder, private modalController: ModalController,
               private navParams: NavParams, private camera: Camera) {
     this.conns = navParams.get('conns');
@@ -23,8 +24,8 @@ export class SharePopupPage implements OnInit {
   }
 
   async searchPhoto() {
-    const libraryImage = await this.openLibrary();
-    this.image = 'data:image/jpg;base64,' + libraryImage;
+    this.libraryImage = await this.openLibrary();
+    this.image = 'data:image/jpg;base64,' + this.libraryImage;
   }
 
   async openLibrary() {
@@ -43,29 +44,31 @@ export class SharePopupPage implements OnInit {
     await this.modalController.dismiss();
   }
   async validModal() {
-    await this.modalController.dismiss({filename: this.text.name, img: this.image});
-    let size = this.image.length;
-    let sum = 0;
-    this.conns.forEach((conn) => {
-        // @ts-ignore
-        while (size !== 0) {
-            if (size > 150000) {
-                conn.send({
-                    imgPart: this.image.slice(sum, sum + 149999)
-                });
-                sum = sum + 150000;
-                size = size - 150000;
-            } else {
-                conn.send({
-                    imgEnd: [this.text.name, this.image.slice(sum, sum + size)]
-                });
-                size = size - size;
-            }
-        }
-    });
-    this.savePicture();
+      await this.modalController.dismiss({filename: this.text.name, img: this.image});
+      let size = this.image.length;
+      console.log(size);
+      let sum = 0;
+      this.conns.forEach((conn) => {
+          // @ts-ignore
+          while (size !== 0) {
+              if (size > 150000) {
+                  conn.send({
+                      imgPart: this.image.substring(sum, sum + 150000)
+                  });
+                  sum = sum + 150000;
+                  size = size - 150000;
+              } else {
+                  conn.send({
+                      imgEnd: [this.text.name, this.image.substring(sum, sum + size)]
+                  });
+                  sum = sum + size;
+                  size = size - size;
+                  console.log(sum);
+              }
+          }
+      });
+      this.savePicture();
   }
-
 
   private savePicture() {
     this.file.createFile(this.file.dataDirectory, this.text.name, true).then();

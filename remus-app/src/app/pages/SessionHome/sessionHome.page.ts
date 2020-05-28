@@ -97,6 +97,7 @@ export class SessionHomePage {
     }
   }
 
+  // tslint:disable-next-line:use-lifecycle-interface
   ngOnDestroy() {
     this.peer.disconnect();
     this.peer.destroy();
@@ -184,7 +185,7 @@ export class SessionHomePage {
   async makeLoader(room) {
     this.loader = await this.loadingController.create({
       message: 'En attente de la réponse de l\'hote pour rejoindre la sale ' + room
-    })
+    });
     this.loader.present();
   }
 
@@ -199,7 +200,7 @@ export class SessionHomePage {
     }
     if (data.newPlayer) {
         if (this.isHost) {
-          conn.send({wait:this.roomName})
+          conn.send({wait: this.roomName});
           this.makeApprovalAlert(data.newPlayer, conn);
         } else {
           this.players.push(data.newPlayer);
@@ -212,7 +213,7 @@ export class SessionHomePage {
       this.imgTemp = this.imgTemp + data.imgPart;
 
     }
-    if(data.imgEnd) {
+    if (data.imgEnd) {
       this.imgTemp = this.imgTemp + data.imgEnd[1];
       this.file.createFile(this.file.dataDirectory, data.imgEnd[0], true).then();
       this.file.writeExistingFile(this.file.dataDirectory, data.imgEnd[0], this.imgTemp).then();
