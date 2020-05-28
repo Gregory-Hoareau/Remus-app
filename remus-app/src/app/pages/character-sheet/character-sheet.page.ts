@@ -42,6 +42,12 @@ export class CharacterSheetPage implements OnInit {
         placeholder: title,
       }],
       buttons: [{
+          text: 'Annuler',
+          handler: () => {
+            console.log('Action cancel');
+          }
+        },
+        {
         text: 'Valider',
         handler: data => {
           if (data[title] !== '') {
@@ -50,13 +56,7 @@ export class CharacterSheetPage implements OnInit {
             }
             this.character[title] = data[title];
           }
-        },
-      }, {
-        text: 'Annuler',
-        handler: () => {
-          console.log('Action cancel');
-        }
-      }],
+        }}],
     });
 
     await alert.present();

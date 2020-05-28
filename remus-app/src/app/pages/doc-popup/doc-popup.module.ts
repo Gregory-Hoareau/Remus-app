@@ -16,7 +16,7 @@ import {SharePopupModule} from '../share-popup/share-popup.module';
     IonicModule,
     DocPopupRoutingModule,
     ReactiveFormsModule,
-      SharePopupModule,
+    SharePopupModule,
   ],
   declarations: [DocPopupPage]
 })

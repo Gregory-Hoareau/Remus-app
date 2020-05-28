@@ -1,26 +1,73 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-buttons *ngIf='!isModal' slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Lanceur de dés</ion-title>
+    <ion-buttons *ngIf='isModal' slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-tabs>
+<ion-content [fullscreen]='true'>
+    <!-- SLIDES -->
+    <ion-slides #slides class="slides" (ionSlideDidChange)="slideChanged()" scrollbar="true">
+      <!-- DICE -->
+      <ion-slide class="dicesPage">
+          <div class="dices">
+            <ion-img class="small" (click)="increaseDiceSum(4, 'd4')" src="/assets/d4.svg"></ion-img>
+            <ion-img class="small" (click)="increaseDiceSum(6,'d6')" src="/assets/d6.svg"></ion-img>
+            <ion-img class="small" (click)="increaseDiceSum(8,'d8')" src="/assets/d8.svg"></ion-img>
+            <ion-img class="small" (click)="increaseDiceSum(10,'d10')" src="/assets/d10.svg"></ion-img>
+            <ion-img class="small" (click)="increaseDiceSum(12,'d12')" src="/assets/d12.svg"></ion-img>
+            <ion-img class="small" (click)="increaseDiceSum(20,'d20')" src="/assets/d20.svg"></ion-img>
+            <ion-img class="small" (click)="increaseDiceSum(100,'d100')" src="/assets/d100.png"></ion-img>
+          </div>
+          <div class="control">
+            <div class="buttons">
+              <ion-button  class="launch" (click)="launchDice()">Lancer</ion-button>
+              <ion-button shape="round" *ngIf="selectedDices !== ''" class="refresh" (click)="resetDices()">
+                <ion-icon  name="refresh-outline" ></ion-icon>
+              </ion-button>
+            </div>
+        
+            <ion-card-content class="selectDices">{{selectedDices}}</ion-card-content>
+            
+            <br><br>
+            <form>
+              <label for="modif">Modificateur :</label><br>
+              <input type="number" id="modif" value="" name="fname" [(ngModel)]="modificateur">
+            </form>
+          </div>
+      </ion-slide>
 
-    <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="dice">
+
+      <!-- MACRO -->
+    
+
+      <!-- HISTORIQUE -->
+      <ion-slide class="historiquePage">
+        <app-roll-history class="historiquePage" *ngFor="let roll of finalHistory" [roll]= roll></app-roll-history>
+      </ion-slide>
+
+
+    </ion-slides>
+
+
+  
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="segment" color="warning">
+      <ion-segment-button value="0">
         <ion-label>Dés</ion-label>
-      </ion-tab-button>
-
-      <!--<ion-tab-button tab="macro">
-        <ion-label>Macro</ion-label>
-      </ion-tab-button>-->
-
-      <ion-tab-button tab="historique">
+      </ion-segment-button>
+     <!-- <ion-segment-button value="1">
+        <ion-label>Macros</ion-label>
+      </ion-segment-button> -->
+      <ion-segment-button value="1">
         <ion-label>Historique</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
-
-</ion-tabs>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>

@@ -12,7 +12,7 @@ import {DocPopupPage} from '../doc-popup/doc-popup.page';
 import {CharacterSheetPageModule} from '../character-sheet/character-sheet.module'
 import { SelectCharacterPageModule } from '../select-character/select-character.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { DicePageModule } from '../dice/dice.module';
+import { SimulateurPageModule } from '../simulateur/simulateur.module';
 
 
 @NgModule({
@@ -25,7 +25,7 @@ import { DicePageModule } from '../dice/dice.module';
     CharacterSheetPageModule,
     SelectCharacterPageModule,
     FontAwesomeModule,
-    DicePageModule,
+    SimulateurPageModule,
   ],
   declarations: [SessionHomePage]
 })

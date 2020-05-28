@@ -9,7 +9,6 @@ import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
 import { SimulateurPage } from '../simulateur/simulateur.page';
 import {faDiceD20} from '@fortawesome/free-solid-svg-icons';
-import { DicePage } from '../dice/dice.page';
 
 @Component({
   selector: 'app-home',
@@ -159,11 +158,11 @@ export class SessionHomePage {
 
   openDiceRollerModal() {
     this.modalCtr.create({
-      component: DicePage,
-      componentProps: {
-        modal: true,
-      },
+      component: SimulateurPage,
       swipeToClose: true,
+      componentProps: {
+        isModal: true
+     },
     }).then(modal => {
       modal.present();
     })

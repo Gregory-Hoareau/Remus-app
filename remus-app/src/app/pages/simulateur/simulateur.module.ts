@@ -6,14 +6,18 @@ import { IonicModule } from '@ionic/angular';
 
 
 import { SimulateurPage } from './simulateur.page';
+import { RollHistoryComponent } from 'src/app/components/roll-history/roll-history.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SimulateurPageRoutingModule
+    SimulateurPageRoutingModule,
   ],
-  declarations: [SimulateurPage]
+  declarations: [
+    SimulateurPage,
+    RollHistoryComponent
+  ]
 })
 export class SimulateurPageModule {}
