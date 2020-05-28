@@ -44,7 +44,7 @@ export class SharePopupPage implements OnInit {
     await this.modalController.dismiss();
   }
   async validModal() {
-      this.savePicture();
+      await this.modalController.dismiss({filename: this.text.name, img: this.image});
       let size = this.image.length;
       console.log(size);
       let sum = 0;
@@ -67,8 +67,7 @@ export class SharePopupPage implements OnInit {
               }
           }
       });
-      await this.modalController.dismiss({filename: this.text.name, img: this.image});
-
+      this.savePicture();
   }
 
   private savePicture() {
