@@ -46,6 +46,7 @@ export class SessionHomePage {
     });
     this.players = [];
     this.conns = [];
+
   }
 
   // tslint:disable-next-line:use-lifecycle-interface
@@ -58,7 +59,10 @@ export class SessionHomePage {
       debug: 3});
 
 
-    if (this.pseudo) {
+    if (!this.roomName) {
+      this.roomName='Salle d\'attente';
+      if(!this.roomid)
+        this.navCtrl.navigateBack(['/home']);
       console.log('trying to connect to room ', this.roomid);
       this.peer.on('open', id => {
         console.log('opened on ip ', this.host);
@@ -76,6 +80,9 @@ export class SessionHomePage {
       });
       this.peer.on('error', err => {
         console.log(err.type);
+        if(err.type==='peer-unavailable') {
+          this.makeKickAlert('id '+this.roomid+' ne correspond a aucune salle.');
+        }
       });
     } else {
       this.isHost = true;
@@ -120,7 +127,6 @@ export class SessionHomePage {
         const navigationExtras: NavigationExtras = {
           state: this.dataReturned
         };
-        this.router.navigate(['sessionHome'], navigationExtras);
       }
     });
 
@@ -153,7 +159,7 @@ export class SessionHomePage {
       buttons: [
         {text: 'approuver', role: 'join', handler: () => {
           this.players.push(player);
-          this.playerServ.playersList.push(player);
+          this.playerServ.playersList.push({name: player, conn: conn});
           if (this.isHost) {
             conn.send({roomName: this.roomName, roomDesc: this.description});
           }
