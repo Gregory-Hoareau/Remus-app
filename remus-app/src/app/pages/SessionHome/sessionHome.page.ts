@@ -158,7 +158,7 @@ export class SessionHomePage {
       buttons: [
         {text: 'approuver', role: 'join', handler: () => {
           this.players.push(player);
-          this.playerServ.playersList.push(player);
+          this.playerServ.playersList.push({name: player, conn: conn});
           if (this.isHost) {
             conn.send({roomName: this.roomName, roomDesc: this.description});
           }

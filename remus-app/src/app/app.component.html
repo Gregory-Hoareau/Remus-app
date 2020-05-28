@@ -28,8 +28,8 @@
       <ion-content>
         <ion-menu-toggle auto-hide="false">
           <ion-list>
-            <ion-item class="players"  *ngFor="let name of players">
-              {{name}}
+            <ion-item class="players"  *ngFor="let player of players" (click)="kick(player)">
+              {{player.name}}
             </ion-item>
           </ion-list>
         </ion-menu-toggle>

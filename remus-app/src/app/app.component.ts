@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {NavigationExtras, Router} from '@angular/router';
 import {faDiceD20, faHome} from '@fortawesome/free-solid-svg-icons';
 import {PlayersService} from "./providers/players/players.service";
+import { Player } from './models/player.models';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ import {PlayersService} from "./providers/players/players.service";
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  players: any[]
+  players: Player[];
   public appPages = [
     {
       title: 'Home',
@@ -44,6 +45,11 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+
+  kick(player) {
+    this.playersServ.kickAlert(player);
+    this.players = this.playersServ.playersList
   }
 
 }
