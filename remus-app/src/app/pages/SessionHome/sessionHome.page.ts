@@ -80,8 +80,8 @@ export class SessionHomePage {
       });
       this.peer.on('error', err => {
         console.log(err.type);
-        if(err.type==='peer-unavailable') {
-          this.makeKickAlert('id '+this.roomid+' ne correspond a aucune salle.');
+        if (err.type === 'peer-unavailable') {
+          this.makeKickAlert('id ' + this.roomid +' ne correspond a aucune salle.');
         }
       });
     } else {
@@ -108,6 +108,14 @@ export class SessionHomePage {
   ngOnDestroy() {
     this.peer.disconnect();
     this.peer.destroy();
+    this.file.listDir(this.file.dataDirectory , '').then((listing) => {
+      for (const files of listing) {
+        if (files.isFile === true) {
+          this.file.removeFile(this.file.dataDirectory, files.name);
+          console.log('This is a file');
+        }
+      }
+    });
   }
 
   async openModal(page) {
