@@ -1,0 +1,25 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-title>Nouveau Partage</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card-content>
+        <ion-item>
+        <ion-text id="label">Nom :</ion-text>
+        <ion-input id="name" [(ngModel)]="text.name"></ion-input>
+        <ion-img class="small" id="" (click)="searchPhoto()" src="/assets/open-folder.png"> </ion-img>
+        </ion-item>
+        <div>
+            <img [src]="this.image" alt=""/>
+        </div>
+    </ion-card-content>
+</ion-content>
+
+<ion-footer>
+    <ion-button (click)="validModal()"> Valider</ion-button>
+    <ion-button (click)="closeModal()"> Annuler </ion-button>
+</ion-footer>
+
+

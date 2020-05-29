@@ -1,0 +1,80 @@
+#container {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+#end{
+}
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+  color: #8c8c8c;
+  margin: 0;
+}
+
+#container a {
+  text-decoration: none;
+}
+#end #ButtonPerso{
+  font-size: 10px;
+  float: left;
+  max-width: 50%;
+  width: 49%;
+
+}
+#end #ButtonDoc{
+  width: 48%;
+  font-size: 10px;
+  float: right;
+  max-width: 48%;
+
+}
+.container {
+  display:flex;
+  justify-content: center;
+}
+
+/* Make the image responsive */
+.container img {
+  align-self: center;
+}
+
+/* Style the button and place it in the middle of the container/image */
+.container .btn {
+  position: absolute;
+  color: red;
+  top: 10%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.realSmall {
+  width: 25px;
+  height: 25px;
+}
+
+.hcs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.dice {
+  font-size: x-large;
+}
+
+.icon {
+  color: black;
+}

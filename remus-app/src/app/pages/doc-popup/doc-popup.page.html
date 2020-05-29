@@ -1,0 +1,20 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-title>Documents partagés</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item id="buttons" *ngFor="let item of items"  button (click)="itemSelected(item)">
+            <h3>{{item}}</h3>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+    <ion-button (click)="shareDoc()"> Partager</ion-button>
+    <ion-button (click)="closeModal()"> Annuler </ion-button>
+</ion-footer>
+
+

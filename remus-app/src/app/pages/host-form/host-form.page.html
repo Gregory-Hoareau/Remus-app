@@ -1,0 +1,26 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-title>Héberger votre partie</ion-title>
+    <ion-buttons slot="end" (click)="this.modalController.dismiss(undefined, 'cancel')"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="myForm">
+    <ion-item>
+      <ion-label position="floating">Nom de la salle <ion-text color="danger">*</ion-text></ion-label>
+      <ion-input required formControlName="name" maxLength="36" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Mot de passe (optionel) </ion-label>
+      <ion-input formControlName="password" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Description <ion-text color="danger">*</ion-text></ion-label>
+      <ion-input required formControlName="description" type="text"></ion-input>
+    </ion-item>
+    <ion-button (click)="closeModal(myForm.getRawValue())" type="button" block expand="block" color="medium" [disabled]="myForm.invalid">
+      Héberger
+    </ion-button>
+  </form>
+</ion-content>

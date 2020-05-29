@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')">
+      <ion-icon class="ion-margin" name="close-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>
+        <span *ngIf="character.name;else no_name">{{character.name}}</span>
+        <ng-template #no_name>
+            Fiche Personnage
+        </ng-template>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <mat-accordion multi="true">
+    <mat-expansion-panel class="section">
+      <mat-expansion-panel-header class="section-title">
+        Identité
+      </mat-expansion-panel-header>
+
+      <div class="identity">
+        <div class="public-info">
+          <div *ngIf="character.img" class="image">
+            <img [src]="character.img" (click)="addPicture()">
+          </div>
+          <div *ngIf="!character.img" class="image">
+            <img src="/assets/add-picture.png" (click)="addPicture()">
+          </div>
+          <div class="personnal">
+            <p class="name">Nom: {{character.name}} <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('name')"></ion-icon></p>
+            <p class="age">Age: <span *ngIf="character.age > -1">{{character.age}}</span> <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('age')"></ion-icon></p>
+            <p class="sex">Sexe: {{character.sex}} <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('sex')"></ion-icon></p>
+          </div>
+        </div>
+
+        <div class="private-info">
+          <p>Background: <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('background')"></ion-icon></p>
+          <div class="background-display">
+            {{character.background}}
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="section">
+      <mat-expansion-panel-header class="section-title">
+        Caractéristiques
+      </mat-expansion-panel-header>
+
+      <div class="traits">
+        <ion-list>
+          <ion-item *ngFor="let trait of character.traits">
+              <span>{{trait.name}}: <span *ngIf="trait.value > -1">{{trait.value}}</span>
+              <ion-icon name="create-outline" (click)="editTraitAlert(trait.name)"></ion-icon>
+            </span>
+          </ion-item>
+        </ion-list>
+      </div>
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="section">
+      <mat-expansion-panel-header class="section-title">
+        Compétences
+      </mat-expansion-panel-header>
+
+      <div class="skills">
+        <ion-button (click)="addNewSkillAlert()">+</ion-button>
+        <ion-list>
+          <ion-item-sliding *ngFor="let skill of character.skills; let i = index">
+            <ion-item>
+              <ion-label>{{skill}}</ion-label>
+            </ion-item>
+            <ion-item-options side="start">
+              <ion-item-option color="danger" (click)="deleteSkill(i)">Delete</ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </div>
+
+    </mat-expansion-panel>
+
+  </mat-accordion>
+</ion-content>

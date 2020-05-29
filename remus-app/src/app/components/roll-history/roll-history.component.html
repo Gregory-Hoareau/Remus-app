@@ -1,0 +1,25 @@
+<!--<ion-card>
+  <ion-card-subtitle>{{historyService.selectedDiceString(roll)}}</ion-card-subtitle>
+  <ion-card-title>{{roll.result}}</ion-card-title>
+  
+  <ion-card-content>
+    {{roll.separatedValue}}
+  </ion-card-content>
+</ion-card>-->
+
+<div class="history">
+  <div class="result">
+    <ion-text color="tertiary">
+      {{roll.result}}
+    </ion-text>
+  </div>
+
+  <div class="detail">
+    <ion-text class="name">
+      {{historyService.selectedDiceString(roll)}}
+    </ion-text>
+    <ion-text class="value">
+      {{roll.separatedValue}}
+    </ion-text>
+  </div>
+</div>

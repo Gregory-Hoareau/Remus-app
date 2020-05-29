@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')">
+      <ion-icon class="ion-margin" name="close-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>Mes Personnages</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let c of characters; let i = index" (click)="characterModal(i)">
+      <ion-label>{{c.name}}</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-fab vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="characterModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

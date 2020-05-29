@@ -1,0 +1,47 @@
+ion-img {
+    &.small {
+      width: 25%;
+    }
+  }
+  
+  .dices {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .control {
+    width: 90%;
+    margin: 0 5%;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .refresh {
+    flex-basis: content;
+  }
+
+ .slides {
+      height: 100%;
+  }
+
+app-roll-history {
+  min-height: fit-content;
+}
+
+  .swiper-slide { overflow-y: scroll; display: block; }
+
+  .dicesPage {
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+  }
+
+  .historiquePage {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: start;
+}

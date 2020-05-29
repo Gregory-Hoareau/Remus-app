@@ -1,3 +1,40 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
-</ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu side="start" menuId="mainMenu" contentId="main-content" type="overlay">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Menu</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+              <fa-icon [icon]="p.icon"></fa-icon>
+              <ion-label>
+                {{p.title}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-menu side="end" menuId="playerList" contentId="main-content" type="overlay">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Connected Players</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-menu-toggle auto-hide="false">
+          <ion-list>
+            <ion-item class="players"  *ngFor="let player of players" (click)="kick(player)">
+              {{player.name}}
+            </ion-item>
+          </ion-list>
+        </ion-menu-toggle>
+      </ion-content>
+    </ion-menu>
+
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane></ion-app>

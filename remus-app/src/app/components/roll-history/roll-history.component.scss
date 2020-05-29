@@ -1,0 +1,23 @@
+.history {
+    display: flex;
+    width: 98%;
+    margin: 1%;
+    padding: 1%;
+    border: solid grey 1px;
+}
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    margin: 1% 5%;
+}
+
+.result {
+    width: 25%;
+    text-align: center;
+    vertical-align: middle;
+    font-size: xx-large;
+    padding: 2%;
+    align-self: center;
+}
+

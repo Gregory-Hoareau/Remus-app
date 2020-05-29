@@ -24,3 +24,42 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.custom-modal-css .modal-wrapper {
+  height: 85%;
+  width: 85%;
+  position: absolute;
+  display: block;
+}
+
+.custom-popup-css .modal-wrapper {
+  height: 85%;
+  width: 85%;
+  position: absolute;
+  display: block;
+}
+
+.dice_result .alert-message, .alert-title {
+  text-align: center;
+}
+
+.dice_result .alert-message h1{
+    font-size: 60px;
+    color: darkblue;
+  }
+
+.new_id .alert-message, .alert-title {
+  text-align: center;
+}
+
+.new_id .alert-message{
+  margin-top: 15px;
+  font-size: xx-large;
+  color: darkblue;
+}
+
+.swiper-slide { overflow-y: scroll; display: block; }
+
+ion-content {
+  --overflow: hidden;
+}
