@@ -41,14 +41,16 @@ export class SessionHomePage {
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
               private file: File, private navCtrl: NavController, private playerServ: PlayersService) {
-    this.route.queryParams.subscribe(params => {
-      if (this.router.getCurrentNavigation().extras.state) {
-        this.roomName = this.router.getCurrentNavigation().extras.state.name;
-        this.description = this.router.getCurrentNavigation().extras.state.description;
-        this.pseudo = this.router.getCurrentNavigation().extras.state.pseudo;
-        this.roomid = this.router.getCurrentNavigation().extras.state.id;
-      }
-    });
+    if(this.route.queryParams){
+      this.route.queryParams.subscribe(params => {
+        if (this.router.getCurrentNavigation().extras.state) {
+          this.roomName = this.router.getCurrentNavigation().extras.state.name;
+          this.description = this.router.getCurrentNavigation().extras.state.description;
+          this.pseudo = this.router.getCurrentNavigation().extras.state.pseudo;
+          this.roomid = this.router.getCurrentNavigation().extras.state.id;
+        }
+      });
+    }
     this.players = [];
     this.conns = [];
 

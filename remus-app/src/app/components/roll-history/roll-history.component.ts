@@ -12,7 +12,9 @@ export class RollHistoryComponent implements OnInit {
   @Input()
   private roll: DiceRoll;
 
-  constructor(private historyService:DiceHistoryService) { }
+  constructor(private historyService:DiceHistoryService) {
+    this.roll={result:0,modificator:0,dices:null}
+  }
 
   ngOnInit() {}
 

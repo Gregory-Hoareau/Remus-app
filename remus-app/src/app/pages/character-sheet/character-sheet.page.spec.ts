@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavParams } from '@ionic/angular';
 
 import { CharacterSheetPage } from './character-sheet.page';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -22,6 +22,7 @@ describe('CharacterSheetPage', () => {
       providers: [
         ImagePicker,
         File,
+        NavParams,
       ]
     }).compileComponents();
 

@@ -35,7 +35,7 @@
             <br><br>
             <form>
               <label for="modif">Modificateur :</label><br>
-              <input type="number" id="modif" value="" name="fname" [(ngModel)]="modificateur">
+              <input type="number" id="modif" value="" name="fname" >
             </form>
           </div>
       </ion-slide>
@@ -58,7 +58,7 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="segment" color="warning">
+    <ion-segment (ionChange)="segmentChanged($event)"  color="warning">
       <ion-segment-button value="0">
         <ion-label>Dés</ion-label>
       </ion-segment-button>

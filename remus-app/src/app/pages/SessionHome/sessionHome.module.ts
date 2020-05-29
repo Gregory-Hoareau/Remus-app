@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {IonicModule} from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { SessionHomePage } from './sessionHome.page';
-
+import {File} from '@ionic-native/file/ngx';
 import {
   SessionHomePageRoutingModule,
 } from './sessionHome-routing.module';
@@ -13,6 +13,7 @@ import {CharacterSheetPageModule} from '../character-sheet/character-sheet.modul
 import { SelectCharacterPageModule } from '../select-character/select-character.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SimulateurPageModule } from '../simulateur/simulateur.module';
+
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { SimulateurPageModule } from '../simulateur/simulateur.module';
     FontAwesomeModule,
     SimulateurPageModule,
   ],
-  declarations: [SessionHomePage]
+  declarations: [SessionHomePage],
+  providers: [File]
 })
 export class SessionHomePageModule {}

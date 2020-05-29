@@ -4,6 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { SimulateurPage } from './simulateur.page';
 import { Location, LocationStrategy } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('SimulateurPage', () => {
   let component: SimulateurPage;
@@ -17,7 +18,8 @@ describe('SimulateurPage', () => {
         RouterTestingModule,
       ],
       providers: [
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(SimulateurPage);
