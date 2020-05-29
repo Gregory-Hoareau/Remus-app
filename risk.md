@@ -41,14 +41,14 @@ Actions :
 
 ### Risk #1
 
-**Si** nous rencontrons des problèmes lors de l'implem des conversations privées
+**Si** nous rencontrons des problèmes lors de l'implémentation des conversations privées
 **Alors** on perd un des principe fondamental de notre application ( plus d'alliance, plus de message privé avec le MJ, ... ) on perd l'innovation
 
-Probabilité : :grimacing:
+Probabilité : :grimacing: => :no_mouth:
 Importance : :fire:
 
 Actions :
-- ?
+- Chercher différents moyen d'éachanger des messages entre les téléphones
 
 ### Risk #2
 
@@ -59,7 +59,29 @@ Probabilité : :grimacing:
 Importance : :grimacing:
 
 Actions :
-- demander des conseil a notre sponsor IHM pour avoir une application utiliable et comprehensible par tout utilisateur
+- demander des conseil a notre sponsor IHM pour avoir une application utilisable et comprehensible par tout utilisateur
 - faire des tests utilisateurs pour avoir des retours utilisateurs de manière a adapté notre application au mieux 
+
+### Risk #3
+
+**Si** on n'arrive pas à développer le système de succès
+**Alors** on perdrait une fonctionnalité innovante, non disponible sur les autres applications du marché
+
+Probabilité : :no_mouth:
+Importance : :grimacing:
+
+Actions :
+- En cas d'échec, chercher d'autres fonctionnalités innovantes
+
+### Risk #4
+
+**Si** on arrive pas à développer le sytème de Crowdsourcing
+**Alors** on perd une des briques dorées de notre projet
+
+Probabilité : :grimacing:
+Importance : :fire:
+
+Actions :
+- Reussir
 
 ## Sprint 3
