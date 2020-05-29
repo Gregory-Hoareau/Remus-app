@@ -27,6 +27,12 @@ ion-img {
       height: 100%;
   }
 
+app-roll-history {
+  min-height: fit-content;
+}
+
+  .swiper-slide { overflow-y: scroll; display: block; }
+
   .dicesPage {
       display: flex;
       flex-direction: column;

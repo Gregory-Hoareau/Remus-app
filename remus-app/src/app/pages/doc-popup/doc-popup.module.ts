@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
+import {File} from '@ionic-native/file/ngx';
 
 import {DocPopupPage} from './doc-popup.page';
 import {DocPopupRoutingModule} from './doc-popup-routing.module';
@@ -18,6 +18,7 @@ import {SharePopupModule} from '../share-popup/share-popup.module';
     ReactiveFormsModule,
     SharePopupModule,
   ],
+  providers: [File],
   declarations: [DocPopupPage]
 })
 export class DocPopupModule {}

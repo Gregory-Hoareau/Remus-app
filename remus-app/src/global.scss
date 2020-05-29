@@ -58,6 +58,8 @@
   color: darkblue;
 }
 
+.swiper-slide { overflow-y: scroll; display: block; }
+
 ion-content {
   --overflow: hidden;
 }
