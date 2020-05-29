@@ -19,20 +19,20 @@ export class DocPopupPage implements OnInit {
   constructor(private file: File, private formBuilder: FormBuilder, private modalController: ModalController, private modalCtr: ModalController,
               private navParams: NavParams) {
     this.conns = navParams.get('connList');
-
-    this.file.listDir(this.file.dataDirectory , '').then((listing) => {
-      for (const files of listing) {
-        if (files.isFile === true) {
-          this.items.push(files.name);
-          console.log('This is a file');
-          // Code if its a folder
-        } else {
-          console.log('This is a folder') ;
-        }
-      }
-    });
    }
    ngOnInit(): void {
+    if(this.file.listDir(this.file.dataDirectory , ''))
+      this.file.listDir(this.file.dataDirectory , '').then((listing) => {
+        for (const files of listing) {
+          if (files.isFile === true) {
+            this.items.push(files.name);
+            console.log('This is a file');
+            // Code if its a folder
+          } else {
+            console.log('This is a folder') ;
+          }
+        }
+      });
    }
 
 
