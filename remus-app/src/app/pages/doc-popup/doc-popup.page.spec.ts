@@ -3,6 +3,7 @@ import { IonicModule, NavParams } from '@ionic/angular';
 
 import {DocPopupPage} from './doc-popup.page';
 import { ReactiveFormsModule } from '@angular/forms';
+import {File} from '@ionic-native/file/ngx';
 
 describe('DocPopupPage', () => {
   let component: DocPopupPage;
@@ -16,7 +17,8 @@ describe('DocPopupPage', () => {
         ReactiveFormsModule,
       ],
       providers: [
-        NavParams
+        NavParams,
+        File
       ]
     }).compileComponents();
 
