@@ -18,22 +18,24 @@ import {faDiceD20} from '@fortawesome/free-solid-svg-icons';
 
 export class SessionHomePage {
 
+  //Personal info
   isHost: boolean;
-  dataReturned: any;
   roomName: string;
   description: string;
   peer: Peer;
   myid: string;
   roomid: string;
   pseudo: string;
-  image: string = null;
+  //Host peerServer info
   host = '51.210.101.240';
   path = '/remus-app';
   port = 9000;
+  //Other variables
   imgTemp = '';
+  image: string = null;
   conn: any;
   loader: any;
-
+  //???
   diceIcon = faDiceD20;
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
@@ -52,9 +54,10 @@ export class SessionHomePage {
 
   }
 
-  // tslint:disable-next-line:use-lifecycle-interface
+
   ngOnInit() {
-    this.myid = Math.random().toString(36).substr(2, 4);
+    //initialise Peer
+    this.myid = Math.random().toString(36).substr(2, 4); //Should be only for host
     this.peer = new Peer(this.myid,
       {host: this.host,
       path: this.path,
@@ -63,38 +66,41 @@ export class SessionHomePage {
 
 
     if (!this.roomName) {
+      //Peers trying to join
       this.roomName='Salle d\'attente';
       if(!this.roomid)
         this.navCtrl.navigateBack(['/home']);
-      console.log('trying to connect to room ', this.roomid);
+      
       this.peer.on('open', id => {
-        console.log('opened on ip ', this.host);
-        // tslint:disable-next-line:prefer-const
+        //connect to host peer
         let conn = this.peer.connect(this.roomid, {serialization: 'json'});
         conn.on('open', () => {
-          console.log('connection openned to id ', conn.peer);
+          //informe player name
           conn.send({newPlayer: this.pseudo});
         });
         conn.on('data', (data) => {
           this.treatData(data, conn);
         });
-        console.log('conection status : ', conn.open);
       });
+
       this.peer.on('error', err => {
         console.log(err.type);
         if (err.type === 'peer-unavailable') {
           this.makeKickAlert('id ' + this.roomid +' ne correspond a aucune salle.');
         }
       });
+
     } else {
+      //Initialise hosting
       this.isHost = true;
-      this.roomid=this.myid;
+      this.roomid = this.myid;
       this.playerServ.isHost = true;
-      console.log('trying to open');
+
       this.peer.on('open', id => {
         this.makeAnIdAlert(id);
         console.log('locked and loaded id: ', id);
       });
+
       this.peer.on('connection', (conn) => {
         console.log('connection with ', conn.peer);
         conn.on('data', (data) => {
@@ -104,13 +110,15 @@ export class SessionHomePage {
           console.log('opened connection');
         });
       });
+
     }
   }
 
-  // tslint:disable-next-line:use-lifecycle-interface
   ngOnDestroy() {
+
     this.peer.disconnect();
     this.peer.destroy();
+    //reset shared files
     this.file.listDir(this.file.dataDirectory , '').then((listing) => {
       for (const files of listing) {
         if (files.isFile === true) {
@@ -119,6 +127,7 @@ export class SessionHomePage {
         }
       }
     });
+
   }
 
   masterCharacterModal() {
@@ -141,10 +150,9 @@ export class SessionHomePage {
 
     modal.onWillDismiss().then((dataReturned) => {
       if (dataReturned !== null && dataReturned.data !== '') {
-        this.dataReturned = dataReturned.data;
-        this.image = this.dataReturned;
+        this.image = dataReturned.data;
         const navigationExtras: NavigationExtras = {
-          state: this.dataReturned
+          state: dataReturned.data
         };
       }
     });
@@ -152,6 +160,7 @@ export class SessionHomePage {
     return await modal.present();
   }
 
+  //Return the connections to the players in table
   getConns(){
     var conns: any[] = [];
     this.playerServ.playersList.forEach(player => {
@@ -166,7 +175,7 @@ export class SessionHomePage {
       component: SimulateurPage,
       swipeToClose: true,
       componentProps: {
-        isModal: true
+        isModal: true //Adapt format for in-modal use
      },
     }).then(modal => {
       modal.present();
@@ -174,9 +183,8 @@ export class SessionHomePage {
   }
 
   async makeAnIdAlert(id) {
-    const title = 'Nouvelle partie !';
-    const alert = await this.alerteController.create({
-      header: title,
+    this.alerteController.create({
+      header: 'Nouvelle partie !',
       message: id,
       cssClass: 'new_id',
       buttons: [
@@ -188,12 +196,13 @@ export class SessionHomePage {
           }
         }
       ]
-    });
-    await alert.present();
+    }).then(alert => {
+      alert.present();
+    })
   }
 
   async makeApprovalAlert(player, conn) {
-    const alert = await this.alerteController.create({
+    this.alerteController.create({
       header: 'Nouveau joueur !',
       message: player,
       buttons: [
@@ -209,17 +218,17 @@ export class SessionHomePage {
             this.playerServ.playersList.forEach( player => {
               conn.send({newPlayer: player.name, peer: player.conn.peer});
             });
-          
         }},
         {text: 'refuser', role: 'kick', handler: () => {
         conn.send({kick: 'accès refusé'});
         }}]
-    });
-    await alert.present();
+    }).then(alert => {
+      alert.present();
+    })
   }
 
   async makeKickAlert(reason) {
-    const alert = await this.alerteController.create({
+    this.alerteController.create({
       header: 'Vous avez été viré de la partie',
       message: 'raison : ' + reason,
       buttons: [{
@@ -227,8 +236,9 @@ export class SessionHomePage {
         handler: () => {
           this.navCtrl.navigateBack(['/home']);
         }}]
-    });
-    await alert.present();
+    }).then(alert => {
+      alert.present();
+    })
   }
 
   async makeLoader(room) {
@@ -240,9 +250,11 @@ export class SessionHomePage {
 
   // tslint:disable-next-line:no-unnecessary-initializer
   treatData(data, conn = undefined) {
+    //Treat given data
     if (data.roomName) {
       this.roomName = data.roomName;
-      this.loader.dismiss();
+      if(this.loader)
+        this.loader.dismiss();
     }
     if (data.roomDesc) {
       this.description = data.roomDesc;
