@@ -1,4 +1,6 @@
+import { DataConnection } from 'peerjs';
+
 export interface Player {
     name: string;
-    conn: any;
+    conn: DataConnection;
 }

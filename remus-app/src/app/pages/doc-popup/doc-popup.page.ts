@@ -4,6 +4,7 @@ import {ModalController, NavParams} from '@ionic/angular';
 import {SharePopupPage} from '../share-popup/share-popup.page';
 import { Router} from '@angular/router';
 import {File} from '@ionic-native/file/ngx';
+import { DataConnection } from 'peerjs';
 
 @Component({
   selector: 'app-doc-popup',
@@ -11,14 +12,15 @@ import {File} from '@ionic-native/file/ngx';
   styleUrls: ['./doc-popup.page.scss'],
 })
 export class DocPopupPage implements OnInit {
-  conns;
+  @Input() conns: DataConnection[];
   private items = [];
   private dataReturned: any;
   image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
   // tslint:disable-next-line:max-line-length
   constructor(private file: File, private formBuilder: FormBuilder, private modalController: ModalController, private modalCtr: ModalController,
               private navParams: NavParams) {
-    this.conns = navParams.get('connList');
+    this.conns = navParams.data.connList;
+    console.table(this.conns);
    }
    ngOnInit(): void {
     if(this.file.listDir(this.file.dataDirectory , ''))
@@ -29,7 +31,7 @@ export class DocPopupPage implements OnInit {
             console.log('This is a file');
             // Code if its a folder
           } else {
-            console.log('This is a folder') ;
+            console.log('This is a folder');
           }
         }
       });

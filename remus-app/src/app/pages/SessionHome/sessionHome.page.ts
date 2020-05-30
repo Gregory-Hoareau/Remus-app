@@ -8,7 +8,7 @@ import Peer from 'peerjs';
 import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
 import { SimulateurPage } from '../simulateur/simulateur.page';
-import {faDiceD20} from '@fortawesome/free-solid-svg-icons';
+import {faDiceD20, faTable} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-home',
@@ -33,7 +33,6 @@ export class SessionHomePage {
   //Other variables
   imgTemp = '';
   image: string = null;
-  conn: any;
   loader: any;
   //???
   diceIcon = faDiceD20;
@@ -138,6 +137,7 @@ export class SessionHomePage {
   }
 
   async openModal(page) {
+    console.table(this.getConns());
     const modal = await this.modalCtr.create({
       component: (page === 'doc') ? DocPopupPage : CharacterSheetPage,
       componentProps: {
