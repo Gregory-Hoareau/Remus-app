@@ -21,9 +21,11 @@
   <ion-card>
     {{description}}
   </ion-card>
+  <!-- Should be generated in code for better persistence -->
   <ion-card *ngFor="let player of playerServ.playersList">
     {{player.name}} has joined the room
   </ion-card>
+  <!-- Shows share image if on is selected; Should be generated in code for better persistence -->
   <div *ngIf="image" class="container">
       <img [src]="image" alt="">
     <ion-buttons class="btn" slot="end" (click)="closeImage()"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
