@@ -21,8 +21,8 @@
   <ion-card>
     {{description}}
   </ion-card>
-  <ion-card *ngFor="let name of players">
-    {{name}} has joined the room
+  <ion-card *ngFor="let player of playerServ.playersList">
+    {{player.name}} has joined the room
   </ion-card>
   <div *ngIf="image" class="container">
       <img [src]="image" alt="">

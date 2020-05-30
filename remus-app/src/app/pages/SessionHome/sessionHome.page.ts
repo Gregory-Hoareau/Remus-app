@@ -26,8 +26,6 @@ export class SessionHomePage {
   myid: string;
   roomid: string;
   pseudo: string;
-  conns: any[];
-  players: any[];
   image: string = null;
   host = '51.210.101.240';
   path = '/remus-app';
@@ -51,8 +49,6 @@ export class SessionHomePage {
         }
       });
     }
-    this.players = [];
-    this.conns = [];
 
   }
 
@@ -78,7 +74,6 @@ export class SessionHomePage {
         conn.on('open', () => {
           console.log('connection openned to id ', conn.peer);
           conn.send({newPlayer: this.pseudo});
-          this.conns.push(conn);
         });
         conn.on('data', (data) => {
           this.treatData(data, conn);
@@ -108,7 +103,6 @@ export class SessionHomePage {
         conn.on('open', () => {
           console.log('opened connection');
         });
-        this.conns.push(conn);
       });
     }
   }
@@ -138,7 +132,7 @@ export class SessionHomePage {
     const modal = await this.modalCtr.create({
       component: (page === 'doc') ? DocPopupPage : CharacterSheetPage,
       componentProps: {
-         connList : this.conns,
+         connList : this.getConns(),
          charInd: -1,
       },
       cssClass: 'custom-modal-css',
@@ -157,6 +151,15 @@ export class SessionHomePage {
 
     return await modal.present();
   }
+
+  getConns(){
+    var conns: any[] = [];
+    this.playerServ.playersList.forEach(player => {
+      conns.push(player.conn);
+    });
+    return conns;
+  }
+
 
   openDiceRollerModal() {
     this.modalCtr.create({
@@ -195,15 +198,18 @@ export class SessionHomePage {
       message: player,
       buttons: [
         {text: 'approuver', role: 'join', handler: () => {
-          this.players.push(player);
-          this.playerServ.playersList.push({name: player, conn: conn});
-          if (this.isHost) {
-            conn.send({roomName: this.roomName, roomDesc: this.description});
-          }
-            // tslint:disable-next-line:no-shadowed-variable
-          this.conns.forEach( conn => {
-              conn.send({newPlayer: player});
+            //Send new player info to old players
+            this.getConns().forEach( con => {
+              con.send({newPlayer: player, peer: conn.peer});
             });
+            conn.send({roomName: this.roomName, roomDesc: this.description});
+            //Add new player to peronnal player list
+            this.playerServ.playersList.push({name: player, conn: conn});
+            //Send old players info to new player
+            this.playerServ.playersList.forEach( player => {
+              conn.send({newPlayer: player.name, peer: player.conn.peer});
+            });
+          
         }},
         {text: 'refuser', role: 'kick', handler: () => {
         conn.send({kick: 'accès refusé'});
@@ -246,7 +252,7 @@ export class SessionHomePage {
           conn.send({wait: this.roomName});
           this.makeApprovalAlert(data.newPlayer, conn);
         } else {
-          this.players.push(data.newPlayer);
+          this.playerServ.playersList.push({name: data.newPlayer, conn: this.peer.connect(data.peer, {serialization: 'json'}) });
         }
       }
     if (data.kick) {
