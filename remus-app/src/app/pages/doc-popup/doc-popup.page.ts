@@ -20,7 +20,6 @@ export class DocPopupPage implements OnInit {
   constructor(private file: File, private formBuilder: FormBuilder, private modalController: ModalController, private modalCtr: ModalController,
               private navParams: NavParams) {
     this.conns = navParams.data.connList;
-    console.table(this.conns);
    }
    ngOnInit(): void {
     if(this.file.listDir(this.file.dataDirectory , ''))

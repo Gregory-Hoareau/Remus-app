@@ -18,7 +18,6 @@ export class SharePopupPage implements OnInit {
   constructor(private file: File, private formBuilder: FormBuilder, private modalController: ModalController,
               private navParams: NavParams, private camera: Camera) {
     this.conns = navParams.get('conns');
-    console.table(this.conns)
   }
 
   ngOnInit() {
@@ -46,10 +45,10 @@ export class SharePopupPage implements OnInit {
   }
   async validModal() {
       this.savePicture();
-      let size = this.image.length;
-      console.log(size);
-      let sum = 0;
       this.conns.forEach((conn) => {
+          let size = this.image.length;
+          console.log(size);
+          let sum = 0;
           // @ts-ignore
           while (size !== 0) {
               if (size > 150000) {

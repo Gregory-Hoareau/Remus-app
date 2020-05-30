@@ -34,7 +34,6 @@ export class SessionHomePage {
   imgTemp = '';
   image: string = null;
   loader: any;
-  //???
   diceIcon = faDiceD20;
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
@@ -61,7 +60,7 @@ export class SessionHomePage {
       {host: this.host,
       path: this.path,
       port: this.port,
-      debug: 3});
+      debug: 2});
 
 
     if (!this.roomName) {
@@ -137,7 +136,6 @@ export class SessionHomePage {
   }
 
   async openModal(page) {
-    console.table(this.getConns());
     const modal = await this.modalCtr.create({
       component: (page === 'doc') ? DocPopupPage : CharacterSheetPage,
       componentProps: {
