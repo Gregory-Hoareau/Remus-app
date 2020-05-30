@@ -1,6 +1,6 @@
 import { Component, OnInit, SecurityContext } from '@angular/core';
 import {CharacterSheet} from '../../models/character-sheet.model';
-import {AlertController, ModalController, NavParams} from '@ionic/angular';
+import {AlertController, ModalController, NavParams, ToastController} from '@ionic/angular';
 import {FileChooser} from '@ionic-native/file-chooser/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -19,7 +19,7 @@ export class CharacterSheetPage implements OnInit {
 
   constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File,
     private characterService:CharacterService, private modalCtrl:ModalController,
-    private navParams: NavParams) {
+    private navParams: NavParams, private toastController: ToastController) {
       const index = navParams.get('charInd');
       this.character = this.characterService.getCharacter(index);
     }
@@ -56,6 +56,7 @@ export class CharacterSheetPage implements OnInit {
             }
             this.character[title] = data[title];
           }
+          this.changeSavedToast();
         }}],
     });
 
@@ -70,7 +71,14 @@ export class CharacterSheetPage implements OnInit {
         type: 'number',
         placeholder: title,
       }],
-      buttons: [{
+      buttons: [
+        {
+          text: 'Annuler',
+          handler: () => {
+            console.log('Action cancel');
+          }
+        },
+        {
         text: 'Valider',
         handler: data => {
           if (data[title] !== '') {
@@ -81,12 +89,8 @@ export class CharacterSheetPage implements OnInit {
               }
             }
           }
+          this.changeSavedToast();
         },
-      }, {
-        text: 'Annuler',
-        handler: () => {
-          console.log('Action cancel');
-        }
       }],
     });
 
@@ -95,8 +99,20 @@ export class CharacterSheetPage implements OnInit {
 
   deleteSkill(index) {
     this.character.skills.splice(index, 1);
+    this.changeSavedToast();
 
   }
+
+  async changeSavedToast() {
+    const toast = await this.toastController.create({
+      duration: 1000,
+      message: 'changement sauvegardés',
+      position: 'bottom',
+    });
+    toast.present();
+  }
+
+
 
   async addNewSkillAlert() {
     const alert = await this.alertCtrl.create({
@@ -112,6 +128,7 @@ export class CharacterSheetPage implements OnInit {
           if (data.skill !== '') {
             this.character.skills.push(data.skill);
           }
+          this.changeSavedToast();
         }
       }]
     });
