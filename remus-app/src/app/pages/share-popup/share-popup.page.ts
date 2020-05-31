@@ -79,7 +79,7 @@ export class SharePopupPage implements OnInit {
           name: player.name,
           type: 'checkbox',
           label: player.name,
-          checked: true,
+          checked: false,
           value: player.conn
         });
       });
@@ -95,6 +95,13 @@ export class SharePopupPage implements OnInit {
               data.forEach(conn => {
                 this.conns.push(conn);
               });
+              this.validModal()
+            }
+          },{
+            text:'à tous',
+            role:'shareall',
+            handler: () =>{
+              this.conns = this.playersServ.getConns();
               this.validModal()
             }
           }]

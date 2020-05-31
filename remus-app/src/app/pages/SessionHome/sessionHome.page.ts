@@ -69,9 +69,11 @@ export class SessionHomePage {
       if(!this.roomid)
         this.navCtrl.navigateBack(['/home']);
       
+      
       this.peer.on('open', id => {
         //connect to host peer
         let conn = this.peer.connect(this.roomid, {serialization: 'json'});
+        this.makeLoader();
         conn.on('open', () => {
           //informe player name
           conn.send({newPlayer: this.pseudo});
@@ -84,6 +86,7 @@ export class SessionHomePage {
       this.peer.on('error', err => {
         console.log(err.type);
         if (err.type === 'peer-unavailable') {
+          this.loader.dismiss()
           this.makeKickAlert('id ' + this.roomid +' ne correspond a aucune salle.');
         }
       });
@@ -241,9 +244,9 @@ export class SessionHomePage {
     })
   }
 
-  async makeLoader(room) {
+  async makeLoader() {
     this.loader = await this.loadingController.create({
-      message: 'En attente de la réponse de l\'hote pour rejoindre la sale ' + room
+      message: 'En attente de la réponse de l\'hote'
     });
     this.loader.present();
   }
@@ -267,7 +270,6 @@ export class SessionHomePage {
       document.getElementById("mainContent").appendChild(node);
 
       if (this.isHost) {
-        conn.send({wait: this.roomName});
         this.makeApprovalAlert(data.newPlayer, conn);
       } else {
         this.playerServ.playersList.push({name: data.newPlayer, conn: this.peer.connect(data.peer, {serialization: 'json'}) });
@@ -284,9 +286,6 @@ export class SessionHomePage {
       this.file.createFile(this.file.dataDirectory, data.imgEnd[0], true).then();
       this.file.writeExistingFile(this.file.dataDirectory, data.imgEnd[0], this.imgTemp).then();
       this.imgTemp = '';
-    }
-    if (data.wait) {
-      this.makeLoader(data.wait);
     }
     if (data.removed){
       var node = document.createElement("ION-CARD");
