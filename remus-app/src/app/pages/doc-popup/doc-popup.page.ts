@@ -12,14 +12,12 @@ import { DataConnection } from 'peerjs';
   styleUrls: ['./doc-popup.page.scss'],
 })
 export class DocPopupPage implements OnInit {
-  @Input() conns: DataConnection[];
   private items = [];
   private dataReturned: any;
   image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
   // tslint:disable-next-line:max-line-length
   constructor(private file: File, private formBuilder: FormBuilder, private modalController: ModalController, private modalCtr: ModalController,
               private navParams: NavParams) {
-    this.conns = navParams.data.connList;
    }
    ngOnInit(): void {
     if(this.file.listDir(this.file.dataDirectory , ''))
@@ -52,9 +50,6 @@ async itemSelected(item) {
     const modal = await this.modalCtr.create({
       component: SharePopupPage,
       cssClass: 'custom-modal-css',
-      componentProps: {
-        conns: this.conns
-      },
       swipeToClose: true
     });
 

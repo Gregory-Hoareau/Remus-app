@@ -114,7 +114,7 @@ export class SessionHomePage {
 
   ngOnDestroy() {
     console.log("ONDESTROY")
-    this.getConns().forEach(c => {
+    this.playerServ.getConns().forEach(c => {
       if(!this.isHost)
         c.send({removed:this.pseudo})
       else
@@ -125,7 +125,6 @@ export class SessionHomePage {
     for (let i = 0; i < len; i++) {
       this.playerServ.playersList.pop();      
     }
-
 
 
     this.peer.disconnect();
@@ -153,7 +152,6 @@ export class SessionHomePage {
     const modal = await this.modalCtr.create({
       component: (page === 'doc') ? DocPopupPage : CharacterSheetPage,
       componentProps: {
-         connList : this.getConns(),
          charInd: -1,
       },
       cssClass: 'custom-modal-css',
@@ -171,16 +169,6 @@ export class SessionHomePage {
 
     return await modal.present();
   }
-
-  //Return the connections to the players in table
-  getConns(){
-    var conns: any[] = [];
-    this.playerServ.playersList.forEach(player => {
-      conns.push(player.conn);
-    });
-    return conns;
-  }
-
 
   openDiceRollerModal() {
     this.modalCtr.create({
@@ -220,7 +208,7 @@ export class SessionHomePage {
       buttons: [
         {text: 'approuver', role: 'join', handler: () => {
             //Send new player info to old players
-            this.getConns().forEach( con => {
+            this.playerServ.getConns().forEach( con => {
               con.send({newPlayer: player, peer: conn.peer});
             });
             conn.send({roomName: this.roomName, roomDesc: this.description});

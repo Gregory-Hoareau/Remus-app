@@ -54,6 +54,13 @@ export class PlayersService {
     return 0;
   }
 
+  getConns(){
+    var conns: any[] = [];
+    this.playersList.forEach(player => {
+      conns.push(player.conn);
+    });
+    return conns;
+  }
   
 
 }

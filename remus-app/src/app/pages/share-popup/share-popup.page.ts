@@ -1,9 +1,10 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {  FormBuilder } from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { ModalController, NavParams} from '@ionic/angular';
+import { ModalController, NavParams, AlertController} from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import Peer, { DataConnection } from 'peerjs';
+import { PlayersService } from 'src/app/providers/players/players.service';
 
 @Component({
   selector: 'app-share-popup',
@@ -16,8 +17,8 @@ export class SharePopupPage implements OnInit {
  @Input() conns: DataConnection[];
  libraryImage;
   constructor(private file: File, private formBuilder: FormBuilder, private modalController: ModalController,
-              private navParams: NavParams, private camera: Camera) {
-    this.conns = navParams.get('conns');
+              private navParams: NavParams, private camera: Camera, private playersServ: PlayersService, private alertController: AlertController) {
+    this.conns = []
   }
 
   ngOnInit() {
@@ -68,6 +69,38 @@ export class SharePopupPage implements OnInit {
           }
       });
       await this.modalController.dismiss({filename: this.text.name, img: this.image});
+  }
+
+
+  async selectPlayers() {
+      const inputs = [];
+      this.playersServ.playersList.forEach(player => {
+        inputs.push({
+          name: player.name,
+          type: 'checkbox',
+          label: player.name,
+          checked: true,
+          value: player.conn
+        });
+      });
+
+      if(inputs!=0)
+        this.alertController.create({
+          header:'Selectionnez les joueurs avec qui partager',
+          inputs:inputs,
+          buttons:[{
+            text:'Partager',
+            role:'partager',
+            handler: data => {
+              data.forEach(conn => {
+                this.conns.push(conn);
+              });
+              this.validModal()
+            }
+          }]
+        }).then(alert => {
+          alert.present();
+        });
   }
 
   private savePicture() {
