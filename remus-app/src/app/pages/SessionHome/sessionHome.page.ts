@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, ModalController, NavController, NavParams, LoadingController} from '@ionic/angular';
+import {AlertController, ModalController, NavController, NavParams, LoadingController, ToastController} from '@ionic/angular';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
 import {CharacterSheetPage} from '../character-sheet/character-sheet.page';
@@ -38,7 +38,7 @@ export class SessionHomePage {
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
-              private file: File, private navCtrl: NavController, private playerServ: PlayersService) {
+              private file: File, private navCtrl: NavController, private playerServ: PlayersService, private toastController: ToastController) {
     if(this.route.queryParams){
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
@@ -226,6 +226,10 @@ export class SessionHomePage {
   }
 
   async makeKickAlert(reason) {
+    let len = this.playerServ.playersList.length;
+    for (let i = 0; i < len; i++) {
+      this.playerServ.playersList.pop();      
+    }
     this.alerteController.create({
       header: 'Vous avez été viré de la partie',
       message: 'raison : ' + reason,
@@ -280,6 +284,16 @@ export class SessionHomePage {
     }
     if (data.wait) {
       this.makeLoader(data.wait);
+    }
+    if (data.removed){
+      //Notify players
+      this.toastController.create({
+        duration: 2000,
+        message: data.removed + ' à quité la partie',
+      }).then(toast => {toast.present()});
+
+      const id = this.playerServ.getPlayerByName(data.removed);
+      this.playerServ.playersList.splice(id, 1);
     }
   }
 

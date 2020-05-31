@@ -104,12 +104,11 @@ export class CharacterSheetPage implements OnInit {
   }
 
   async changeSavedToast() {
-    const toast = await this.toastController.create({
+    this.toastController.create({
       duration: 1000,
       message: 'changement sauvegardés',
       position: 'bottom',
-    });
-    toast.present();
+    }).then(toast => {toast.present()});
   }
 
 
