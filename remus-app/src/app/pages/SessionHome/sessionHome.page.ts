@@ -113,6 +113,20 @@ export class SessionHomePage {
   }
 
   ngOnDestroy() {
+    console.log("ONDESTROY")
+    this.getConns().forEach(c => {
+      if(!this.isHost)
+        c.send({removed:this.pseudo})
+      else
+        c.send({kick:'l\'hote à quité la partie'})
+    });
+
+    let len = this.playerServ.playersList.length;
+    for (let i = 0; i < len; i++) {
+      this.playerServ.playersList.pop();      
+    }
+
+
 
     this.peer.disconnect();
     this.peer.destroy();
@@ -226,10 +240,6 @@ export class SessionHomePage {
   }
 
   async makeKickAlert(reason) {
-    let len = this.playerServ.playersList.length;
-    for (let i = 0; i < len; i++) {
-      this.playerServ.playersList.pop();      
-    }
     this.alerteController.create({
       header: 'Vous avez été viré de la partie',
       message: 'raison : ' + reason,
@@ -257,24 +267,29 @@ export class SessionHomePage {
       this.roomName = data.roomName;
       if(this.loader)
         this.loader.dismiss();
+      this.playerServ.playersList.push({name:'host', conn:conn})
     }
     if (data.roomDesc) {
       this.description = data.roomDesc;
     }
     if (data.newPlayer) {
-        if (this.isHost) {
-          conn.send({wait: this.roomName});
-          this.makeApprovalAlert(data.newPlayer, conn);
-        } else {
-          this.playerServ.playersList.push({name: data.newPlayer, conn: this.peer.connect(data.peer, {serialization: 'json'}) });
-        }
+
+      var node = document.createElement("ION-CARD");
+      node.appendChild(document.createTextNode(data.newPlayer+' has joined the room'));
+      document.getElementById("mainContent").appendChild(node);
+
+      if (this.isHost) {
+        conn.send({wait: this.roomName});
+        this.makeApprovalAlert(data.newPlayer, conn);
+      } else {
+        this.playerServ.playersList.push({name: data.newPlayer, conn: this.peer.connect(data.peer, {serialization: 'json'}) });
       }
+    }
     if (data.kick) {
       this.makeKickAlert(data.kick);
     }
     if (data.imgPart) {
       this.imgTemp = this.imgTemp + data.imgPart;
-
     }
     if (data.imgEnd) {
       this.imgTemp = this.imgTemp + data.imgEnd[1];
@@ -286,6 +301,9 @@ export class SessionHomePage {
       this.makeLoader(data.wait);
     }
     if (data.removed){
+      var node = document.createElement("ION-CARD");
+      node.appendChild(document.createTextNode(data.removed+' à quitté la salle'));
+      document.getElementById("mainContent").appendChild(node);
       //Notify players
       this.toastController.create({
         duration: 2000,

@@ -17,13 +17,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="flex" [fullscreen]="true">
+<ion-content class="flex" id="mainContent" [fullscreen]="true">
   <ion-card>
     {{description}}
-  </ion-card>
-  <!-- Should be generated in code for better persistence -->
-  <ion-card *ngFor="let player of playerServ.playersList">
-    {{player.name}} has joined the room
   </ion-card>
   <!-- Shows share image if on is selected; Should be generated in code for better persistence -->
   <div *ngIf="image" class="container">
