@@ -84,7 +84,7 @@ export class SharePopupPage implements OnInit {
         });
       });
 
-      if(inputs!=0)
+      if(inputs.length!==0)
         this.alertController.create({
           header:'Selectionnez les joueurs avec qui partager',
           inputs:inputs,
