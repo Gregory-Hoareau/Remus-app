@@ -62,6 +62,7 @@ export class SimulateurPage implements OnInit {
   }
 
   ionViewDidEnter() {
+    this.slider.update()
     console.table(this.macroService.macros);
   }
 
