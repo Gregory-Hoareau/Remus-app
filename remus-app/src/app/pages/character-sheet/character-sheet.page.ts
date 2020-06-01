@@ -179,7 +179,6 @@ export class CharacterSheetPage implements OnInit {
     let filename = null;
     while(!filename) {
       filename = await this.chooseNameFileAlert();
-      console.log(filename);
       await this.file.checkFile(path, filename+'.json').then(async res => {
         // TODO - Find how to check if a file exist or not
           await this.replaceFileAlert().then( res=> {
@@ -194,17 +193,8 @@ export class CharacterSheetPage implements OnInit {
     console.log('CREATING FILE');
     await this.file.createFile(path, filename+'.json', true);
     console.log('WRITING IN FILE');
-    console.log( JSON.stringify(this.character))
     await this.file.writeExistingFile(path, filename+'.json', JSON.stringify(this.character));
     console.log('END WRITING');
-
-    this.file.listDir(this.file.dataDirectory, 'characterSheet').then((listing) => {
-      for (const elem of listing) {
-        if(elem.isFile) {
-          console.log(elem)
-        }
-      }
-    })
   }
 
   private async replaceFileAlert(): Promise<boolean> {
