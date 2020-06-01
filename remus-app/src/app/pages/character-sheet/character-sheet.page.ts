@@ -8,6 +8,7 @@ import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { CharacterService } from 'src/app/providers/character/character.service';
 import { CrowdsourcingService } from 'src/app/providers/crowdsourcing/crowdsourcing.service';
+import { resolve } from 'url';
 
 @Component({
   selector: 'app-character-sheet',
@@ -172,8 +173,106 @@ export class CharacterSheetPage implements OnInit {
     })
   }
 
-  downloadCharacter() {
+  async downloadCharacter() {
+    this.createSheetsStorage();
+    const path = this.file.dataDirectory + 'characterSheet/';
+    let filename = null;
+    while(!filename) {
+      filename = await this.chooseNameFileAlert();
+      console.log(filename);
+      await this.file.checkFile(path, filename+'.json').then(async res => {
+        // TODO - Find how to check if a file exist or not
+          await this.replaceFileAlert().then( res=> {
+            if(!res) {
+              filename = null;
+            }
+          });
+      }).catch(err => {
+        console.log('Filename available');
+      })
+    }
+    console.log('CREATING FILE');
+    await this.file.createFile(path, filename+'.json', true);
+    console.log('WRITING IN FILE');
+    console.log( JSON.stringify(this.character))
+    await this.file.writeExistingFile(path, filename+'.json', JSON.stringify(this.character));
+    console.log('END WRITING');
 
+    this.file.listDir(this.file.dataDirectory, 'characterSheet').then((listing) => {
+      for (const elem of listing) {
+        if(elem.isFile) {
+          console.log(elem)
+        }
+      }
+    })
+  }
+
+  private async replaceFileAlert(): Promise<boolean> {
+    let resolveFunction: (res: boolean) => void;
+    const promise = new Promise<boolean>(resolve => {
+      resolveFunction = resolve;
+    })
+    const alert = await this.alertCtrl.create({
+      message: 'Il y a déjà un fichier avec le même nom, voulez-vous réecrire le fichier ?',
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Oui',
+          handler: () => {
+            resolveFunction(true);
+          }
+        },
+        {
+          text: 'Non',
+          handler: () => {
+            resolveFunction(false);
+          }
+        }
+      ]
+    });
+    await alert.present();
+
+    return promise;
+  }
+
+  private async chooseNameFileAlert(): Promise<string> {
+    let resolveFunction: (name: string) => void;
+    const promise = new Promise<string>(resolve => {
+      resolveFunction = resolve;
+    })
+    const alert = await this.alertCtrl.create({
+      header: 'Enregistrer',
+      message: 'Sous quel nom voulez-vous enregistrer la fiche de personnage',
+      backdropDismiss: false,
+      inputs: [
+        {
+          type: 'text',
+          name: 'filename',
+          placeholder: this.character.name,
+        }
+      ],
+      buttons: [
+        {
+          text: 'Confirmer',
+          handler: (data) => {
+            resolveFunction(data.filename);
+          }
+        }
+      ]
+    });
+    await alert.present();
+
+    return promise;
+  }
+
+  private async createSheetsStorage() { // create the folder to store character sheet if it doesn't exist
+    await this.file.checkDir(this.file.dataDirectory, 'characterSheet').then(res => {
+      console.log('Storage is ready')
+    }).catch(async err => {
+      console.log('Storage in creation')
+      await this.file.createDir(this.file.dataDirectory, 'characterSheet', false)
+      console.log('Storage created')
+    });
   }
 
 }
