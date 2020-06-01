@@ -47,8 +47,8 @@
       </ion-slide>
 
       <!-- HISTORIQUE -->
-      <ion-slide class="historiquePage">
-        <app-roll-history class="historiquePage" *ngFor="let roll of finalHistory" [roll]= roll></app-roll-history>
+      <ion-slide class="historiquePage" id="test">
+        <app-roll-history class="historiquePage" *ngFor="let roll of this.diceHistoryService.history" [roll]= roll></app-roll-history>
       </ion-slide>
 
 

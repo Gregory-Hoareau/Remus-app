@@ -27,7 +27,6 @@ export class SimulateurPage implements OnInit {
 
   //Historique var
   finalValue: string;
-  finalHistory: DiceRoll[];
 
   //Dice thrower var
   result : number;
@@ -60,11 +59,9 @@ export class SimulateurPage implements OnInit {
     this.finalSeparatedValue = "";
     this.dices = [];
     this.modifying = false;
-    this.finalHistory = [];
   }
 
   ionViewDidEnter() {
-    this.finalHistory = this.diceHistoryService.history;
     console.table(this.macroService.macros);
   }
 
