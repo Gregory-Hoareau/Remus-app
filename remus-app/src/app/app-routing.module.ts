@@ -37,12 +37,15 @@ export const routes: Routes = [
   {
     path: 'simulateur',
     loadChildren: () => import('./pages/simulateur/simulateur.module').then(m => m.SimulateurPageModule)
-  },  {
+  },
+  {
     path: 'select-character',
     loadChildren: () => import('./pages/select-character/select-character.module').then( m => m.SelectCharacterPageModule)
+  },
+  {
+    path: 'crowdsourcing',
+    loadChildren: () => import('./pages/crowdsourcing/crowdsourcing.module').then( m => m.CrowdsourcingPageModule)
   }
-
-
 
 ];
 

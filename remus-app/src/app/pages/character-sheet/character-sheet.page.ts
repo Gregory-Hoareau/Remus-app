@@ -16,12 +16,19 @@ import { CharacterService } from 'src/app/providers/character/character.service'
 export class CharacterSheetPage implements OnInit {
 
   character: CharacterSheet;
+  read_only: boolean;
 
   constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File,
     private characterService:CharacterService, private modalCtrl:ModalController,
     private navParams: NavParams, private toastController: ToastController) {
-      const index = navParams.get('charInd');
-      this.character = this.characterService.getCharacter(index);
+      this.read_only = navParams.get('display')
+      if (this.read_only) {
+        this.character = navParams.get('character');
+      } else {
+        const index = navParams.get('charInd');
+        this.character = this.characterService.getCharacter(index);
+      }
+      
     }
 
   ngOnInit() {
@@ -135,6 +142,9 @@ export class CharacterSheetPage implements OnInit {
   }
 
   addPicture() {
+    if (this.read_only) {
+      return
+    }
     this.imgPicker.hasReadPermission().then((result) => {
       if (!result) {
         this.imgPicker.requestReadPermission()
@@ -150,18 +160,7 @@ export class CharacterSheetPage implements OnInit {
           }
         })
       }
-    })
-    /**/
-    /*this.fileChooser.open().then(uri => {
-        this.filePath.resolveNativePath(uri).then(nativePath => {
-          this.character.img = this.sanitizer.sanitize(SecurityContext.URL, nativePath);
-          alert(nativePath)
-          this.character.img = nativePath
-        }).catch(e => alert(e))
-      }
-    ).catch(
-      e => alert(e)
-    )*/
+    });
   }
 
 }
