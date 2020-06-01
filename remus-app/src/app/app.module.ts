@@ -13,7 +13,7 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { File } from '@ionic-native/file/ngx';
-import {DiceHistoryService} from './providers/dice/dice-history.service';
+import {DiceHistoryService} from './providers/diceHistory/dice-history.service';
 import { CharacterService } from './providers/character/character.service';
 
 @NgModule({

@@ -19,7 +19,26 @@
         </ion-list>
       </ion-content>
     </ion-menu>
-    <ion-menu side="end" menuId="playerList" contentId="main-content" type="overlay">
+    <ion-menu side="start" disabled="true" menuId="sessionMenu" contentId="main-content" type="overlay">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Menu</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="quit()">
+              <fa-icon [icon]="powerIcon"></fa-icon>
+              <ion-label>
+                Quitter
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-menu disabled="true" side="end" menuId="playerList" contentId="main-content" type="overlay">
       <ion-header>
         <ion-toolbar>
           <ion-title>Connected Players</ion-title>
@@ -28,8 +47,12 @@
       <ion-content>
         <ion-menu-toggle auto-hide="false">
           <ion-list>
-            <ion-item class="players"  *ngFor="let player of players" (click)="kick(player)">
+            <ion-item class="players"  *ngFor="let player of players" >
               {{player.name}}
+              <fa-icon class="icons" [icon]="chatIcon"></fa-icon>
+              <fa-icon (click)="kick(player)" class="icons" [icon]="kickIcon"></fa-icon>
+
+
             </ion-item>
           </ion-list>
         </ion-menu-toggle>
