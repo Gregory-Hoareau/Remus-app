@@ -7,20 +7,25 @@ import { IonicModule } from '@ionic/angular';
 
 import { SimulateurPage } from './simulateur.page';
 import { RollHistoryComponent } from 'src/app/components/roll-history/roll-history.component';
+import { RollMacroComponent} from '../../components/roll-macro/roll-macro.component';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    SimulateurPageRoutingModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        SimulateurPageRoutingModule,
+        FontAwesomeModule,
+    ],
   declarations: [
     SimulateurPage,
-    RollHistoryComponent
+    RollHistoryComponent,
+      RollMacroComponent
   ],
   exports: [
-    RollHistoryComponent
+    RollHistoryComponent,
+      RollMacroComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
