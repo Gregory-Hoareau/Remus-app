@@ -22,7 +22,7 @@
   </ion-refresher>
   <ion-list>
     <ion-item *ngFor="let character of characters; let i = index" (click)="displayChar(i)">
-      <ion-label>{{i}} {{character.name}}</ion-label>
+      <ion-label>{{character.name}}</ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

@@ -81,6 +81,12 @@
       </div>
 
     </mat-expansion-panel>
-
   </mat-accordion>
+
+  <ion-button *ngIf="!read_only" (click)="shareCharacter()">
+    Share your character
+  </ion-button>
+  <ion-button *ngIf="read_only" (click)="downloadCharacter()">
+    Download this character
+  </ion-button>
 </ion-content>

@@ -7,6 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { CharacterService } from 'src/app/providers/character/character.service';
+import { CrowdsourcingService } from 'src/app/providers/crowdsourcing/crowdsourcing.service';
 
 @Component({
   selector: 'app-character-sheet',
@@ -20,7 +21,8 @@ export class CharacterSheetPage implements OnInit {
 
   constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File,
     private characterService:CharacterService, private modalCtrl:ModalController,
-    private navParams: NavParams, private toastController: ToastController) {
+    private navParams: NavParams, private toastController: ToastController,
+    private crowdsourcing: CrowdsourcingService) {
       this.read_only = navParams.get('display')
       if (this.read_only) {
         this.character = navParams.get('character');
@@ -161,6 +163,17 @@ export class CharacterSheetPage implements OnInit {
         })
       }
     });
+  }
+
+  shareCharacter() {
+    this.crowdsourcing.postCharacterSheet(this.character).subscribe(sheet => {
+      console.log(sheet);
+      console.log('Character sheet upload on the server');
+    })
+  }
+
+  downloadCharacter() {
+
   }
 
 }
