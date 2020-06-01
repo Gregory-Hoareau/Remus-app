@@ -47,8 +47,12 @@
       <ion-content>
         <ion-menu-toggle auto-hide="false">
           <ion-list>
-            <ion-item class="players"  *ngFor="let player of players" (click)="kick(player)">
+            <ion-item class="players"  *ngFor="let player of players" >
               {{player.name}}
+              <fa-icon class="icons" [icon]="chatIcon"></fa-icon>
+              <fa-icon (click)="kick(player)" class="icons" [icon]="kickIcon"></fa-icon>
+
+
             </ion-item>
           </ion-list>
         </ion-menu-toggle>
