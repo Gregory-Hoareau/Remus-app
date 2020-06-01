@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, ModalController, NavController, NavParams, LoadingController, ToastController} from '@ionic/angular';
+import {AlertController, ModalController, NavController, NavParams, LoadingController, ToastController, MenuController} from '@ionic/angular';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
 import {CharacterSheetPage} from '../character-sheet/character-sheet.page';
@@ -38,7 +38,8 @@ export class SessionHomePage {
 
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
-              private file: File, private navCtrl: NavController, private playerServ: PlayersService, private toastController: ToastController) {
+              private file: File, private navCtrl: NavController, private playerServ: PlayersService,
+               private toastController: ToastController, private menuController: MenuController) {
     if(this.route.queryParams){
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
@@ -49,13 +50,16 @@ export class SessionHomePage {
         }
       });
     }
+    this.menuController.enable(true,'playerList');
+    this.menuController.enable(false,'mainMenu');
+    this.menuController.enable(true,'sessionMenu');
 
   }
 
 
   ngOnInit() {
     //initialise Peer
-    this.myid = Math.random().toString(36).substr(2, 4); //Should be only for host
+    this.myid = Math.random().toString(36).substr(2, 5); //Should be only for host
     this.peer = new Peer(this.myid,
       {host: this.host,
       path: this.path,
@@ -73,8 +77,8 @@ export class SessionHomePage {
       this.peer.on('open', id => {
         //connect to host peer
         let conn = this.peer.connect(this.roomid, {serialization: 'json'});
-        this.makeLoader();
         conn.on('open', () => {
+          this.makeLoader();
           //informe player name
           conn.send({newPlayer: this.pseudo});
         });
@@ -99,6 +103,8 @@ export class SessionHomePage {
 
       this.peer.on('open', id => {
         this.makeAnIdAlert(id);
+        console.log(this.route.url)
+
         console.log('locked and loaded id: ', id);
       });
 
@@ -116,12 +122,16 @@ export class SessionHomePage {
   }
 
   ngOnDestroy() {
-    console.log("ONDESTROY")
+    this.menuController.enable(false,'playerList');
+    this.menuController.enable(false,'sessionMenu');
+    this.menuController.enable(true,'mainMenu');
+
     this.playerServ.getConns().forEach(c => {
       if(!this.isHost)
         c.send({removed:this.pseudo})
       else
         c.send({kick:'l\'hote à quité la partie'})
+      c.close();
     });
 
     let len = this.playerServ.playersList.length;
@@ -133,14 +143,15 @@ export class SessionHomePage {
     this.peer.disconnect();
     this.peer.destroy();
     //reset shared files
-    this.file.listDir(this.file.dataDirectory , '').then((listing) => {
-      for (const files of listing) {
-        if (files.isFile === true) {
-          this.file.removeFile(this.file.dataDirectory, files.name);
-          console.log('This is a file');
+    if(this.file.listDir(this.file.dataDirectory , ''))
+      this.file.listDir(this.file.dataDirectory , '').then((listing) => {
+        for (const files of listing) {
+          if (files.isFile === true) {
+            this.file.removeFile(this.file.dataDirectory, files.name);
+            console.log('This is a file');
+          }
         }
-      }
-    });
+      });
 
   }
 

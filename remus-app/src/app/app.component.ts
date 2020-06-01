@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {NavigationExtras, Router} from '@angular/router';
-import {faDiceD20, faHome} from '@fortawesome/free-solid-svg-icons';
+import {faDiceD20, faHome, faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import {PlayersService} from "./providers/players/players.service";
 import { Player } from './models/player.models';
 
@@ -15,6 +15,8 @@ import { Player } from './models/player.models';
 })
 export class AppComponent {
   players: Player[];
+  powerIcon=faPowerOff;
+
   public appPages = [
     {
       title: 'Home',
@@ -34,7 +36,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private router: Router,
-      private playersServ: PlayersService
+      private playersServ: PlayersService,
+      private navCtrl: NavController
   ) {
     this.players = this.playersServ.playersList
     this.initializeApp();
@@ -50,6 +53,10 @@ export class AppComponent {
   kick(player) {
     this.playersServ.kickAlert(player);
     this.players = this.playersServ.playersList
+  }
+
+  quit(){
+    this.navCtrl.navigateBack(['/home'])
   }
 
 }
