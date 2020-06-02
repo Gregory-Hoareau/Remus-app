@@ -50,6 +50,7 @@ export class CharacterSheetPage implements OnInit {
         name: title,
         type: field,
         placeholder: title,
+        value: this.character[title]
       }],
       buttons: [{
           text: 'Annuler',
@@ -73,13 +74,16 @@ export class CharacterSheetPage implements OnInit {
     await alert.present();
   }
 
-  async editTraitAlert(title) {
+  async editTraitAlert(index) {
+    console.log(this.character.traits)
+    const trait = this.character.traits[index];
     const alert = await this.alertCtrl.create({
-      header: title.charAt(0).toUpperCase() + title.slice(1),
+      header: trait.name.charAt(0).toUpperCase() + trait.name.slice(1),
       inputs: [{
-        name: title,
+        name: trait.name,
         type: 'number',
-        placeholder: title,
+        placeholder: trait.name,
+        value: (trait.value>-1? trait.value: '')
       }],
       buttons: [
         {
@@ -91,11 +95,11 @@ export class CharacterSheetPage implements OnInit {
         {
         text: 'Valider',
         handler: data => {
-          if (data[title] !== '') {
+          if (data[trait.name] !== '') {
             const allTrait = this.character.traits;
             for (const t of allTrait) {
-              if (t.name === title) {
-                t.value = data[title];
+              if (t.name === trait.name) {
+                t.value = data[trait.name];
               }
             }
           }
@@ -116,7 +120,7 @@ export class CharacterSheetPage implements OnInit {
   async changeSavedToast() {
     this.toastController.create({
       duration: 1000,
-      message: 'changement sauvegardés',
+      message: 'Changement sauvegardé',
       position: 'bottom',
     }).then(toast => {toast.present()});
   }
@@ -150,7 +154,9 @@ export class CharacterSheetPage implements OnInit {
     }
     this.imgPicker.hasReadPermission().then((result) => {
       if (!result) {
-        this.imgPicker.requestReadPermission()
+        this.imgPicker.requestReadPermission().then(res=> {
+          this.addPicture()
+        })
       } else {
         this.imgPicker.getPictures({maximumImagesCount: 1}).then((results) => {
           console.log('Get the results');
@@ -160,7 +166,8 @@ export class CharacterSheetPage implements OnInit {
             this.file.readAsDataURL(path, filename).then((url) => {
               this.character.img = url
             })
-          }
+          };
+          this.changeSavedToast()
         })
       }
     });
@@ -180,7 +187,6 @@ export class CharacterSheetPage implements OnInit {
     while(!filename) {
       filename = await this.chooseNameFileAlert();
       await this.file.checkFile(path, filename+'.json').then(async res => {
-        // TODO - Find how to check if a file exist or not
           await this.replaceFileAlert().then( res=> {
             if(!res) {
               filename = null;
@@ -199,7 +205,7 @@ export class CharacterSheetPage implements OnInit {
 
   private async replaceFileAlert(): Promise<boolean> {
     let resolveFunction: (res: boolean) => void;
-    const promise = new Promise<boolean>(resolve => {
+    const promise = new Promise<boolean>((resolve) => {
       resolveFunction = resolve;
     })
     const alert = await this.alertCtrl.create({
@@ -227,9 +233,9 @@ export class CharacterSheetPage implements OnInit {
 
   private async chooseNameFileAlert(): Promise<string> {
     let resolveFunction: (name: string) => void;
-    const promise = new Promise<string>(resolve => {
+    const promise = new Promise<string>((resolve) => {
       resolveFunction = resolve;
-    })
+    });
     const alert = await this.alertCtrl.create({
       header: 'Enregistrer',
       message: 'Sous quel nom voulez-vous enregistrer la fiche de personnage',

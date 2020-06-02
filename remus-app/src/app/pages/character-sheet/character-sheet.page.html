@@ -51,9 +51,9 @@
 
       <div class="traits">
         <ion-list>
-          <ion-item *ngFor="let trait of character.traits">
+          <ion-item *ngFor="let trait of character.traits; let i = index">
               <span>{{trait.name}}: <span *ngIf="trait.value > -1">{{trait.value}}</span>
-              <ion-icon *ngIf="!read_only" name="create-outline" (click)="editTraitAlert(trait.name)"></ion-icon>
+              <ion-icon *ngIf="!read_only" name="create-outline" (click)="editTraitAlert(i)"></ion-icon>
             </span>
           </ion-item>
         </ion-list>
@@ -84,9 +84,9 @@
   </mat-accordion>
 
   <ion-button *ngIf="!read_only" (click)="shareCharacter()">
-    Share your character
+    <ion-icon name="cloud-upload"></ion-icon>
   </ion-button>
   <ion-button *ngIf="read_only" (click)="downloadCharacter()">
-    Download this character
+    <ion-icon name="cloud-download"></ion-icon>
   </ion-button>
 </ion-content>
