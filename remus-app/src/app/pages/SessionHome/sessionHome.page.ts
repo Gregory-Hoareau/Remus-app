@@ -9,6 +9,7 @@ import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
 import { SimulateurPage } from '../simulateur/simulateur.page';
 import {faDiceD20, faTable} from '@fortawesome/free-solid-svg-icons';
+import {AchivementService} from "../../providers/achivement/achivement.service";
 import {NotesPage} from "../notes/notes.page";
 import {NotesService} from "../../providers/notes/notes.service";
 import { Player } from 'src/app/models/player.models';
@@ -39,10 +40,10 @@ export class SessionHomePage {
   loader: any;
   diceIcon = faDiceD20;
 
-  constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
+  constructor(public achivementService:AchivementService,public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
               private file: File, private navCtrl: NavController, private playerServ: PlayersService,
-               private toastController: ToastController, private menuController: MenuController,
+              private toastController: ToastController, private menuController: MenuController,
               private noteService: NotesService) {
     if(this.route.queryParams){
       this.route.queryParams.subscribe(params => {
@@ -54,7 +55,7 @@ export class SessionHomePage {
         }
       });
     }
-    
+
     this.menuController.enable(true,'playerList');
     this.menuController.enable(false,'mainMenu');
 
@@ -248,7 +249,7 @@ export class SessionHomePage {
             //Send old players info to new player
             this.playerServ.playersList.forEach( player => {
               conn.send({newPlayer: player.name, peer: player.conn.peer});
-            });          
+            });
             //Send new player info to old players
             this.playerServ.getConns().forEach( con => {
               con.send({newPlayer: player, peer: conn.peer});
@@ -351,6 +352,15 @@ export class SessionHomePage {
         this.playerServ.conversations.set(p,{messages:[]})
       console.log("recieved message : ", data.message, " from ", p)
       this.playerServ.conversations.get(p).messages.push([p,data.message])
+    }
+    if (data.achivement) {
+      this.achivementService.achivements.push({titre: data.achivement, description: data.description, checked: false});
+    }
+    if (data.achivementPartage) {
+      this.achivementService.partage = !this.achivementService.partage;
+    }
+    if(data.achivementValide) {
+      this.achivementService.validAchivement(data.achivementValide);
     }
   }
 

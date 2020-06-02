@@ -8,15 +8,16 @@ import { Conversation } from 'src/app/models/conversation.model';
   providedIn: 'root'
 })
 export class PlayersService {
+  // tslint:disable-next-line:ban-types
   myName: String;
-  playersList: Player[]
-  conversations: Map<Player,Conversation>
+  playersList: Player[];
+  conversations: Map<Player, Conversation>;
 
   isHost: boolean;
 
   constructor(private alertCtrl: AlertController) {
-    this.playersList = []
-    this.conversations = new Map<Player,Conversation>()
+    this.playersList = [];
+    this.conversations = new Map<Player, Conversation>();
   }
 
   resetPlayer(){

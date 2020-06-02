@@ -18,6 +18,8 @@ import { CharacterService } from './providers/character/character.service';
 import { HttpClientModule } from '@angular/common/http';
 import {IonicStorageModule} from '@ionic/storage';
 import { SessionChatPageModule } from './pages/session-chat/session-chat.module';
+import {AchivementPage} from './pages/achivement/achivement.page';
+import {AchivementPageModule} from './pages/achivement/achivement.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,7 +32,8 @@ import { SessionChatPageModule } from './pages/session-chat/session-chat.module'
       FontAwesomeModule,
       HttpClientModule,
       IonicStorageModule.forRoot(),
-      SessionChatPageModule
+      SessionChatPageModule,
+      AchivementPageModule
   ],
   providers: [
     StatusBar,
