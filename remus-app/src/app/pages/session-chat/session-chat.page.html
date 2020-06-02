@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <h1>HELLO</h1>
+  <ion-card *ngFor="let message of conv.messages"> {{message[0].name}} : {{message[1]}}</ion-card>
 </ion-content>
 
 <ion-footer>

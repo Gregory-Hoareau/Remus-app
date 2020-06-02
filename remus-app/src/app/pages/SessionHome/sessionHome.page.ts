@@ -90,6 +90,15 @@ export class SessionHomePage {
         });
       });
 
+      this.peer.on('connection', (conn) => {
+        conn.on('data', (data) => {
+          this.treatData(data, conn);
+        });
+        conn.on('open', () => {
+          console.log('opened connection with ', conn);
+        });
+      });
+
       this.peer.on('error', err => {
         console.log(err.type);
         if (err.type === 'peer-unavailable') {
@@ -100,6 +109,7 @@ export class SessionHomePage {
 
     } else {
       //Initialise hosting
+      this.pseudo="Host"
       this.isHost = true;
       this.roomid = this.myid;
       this.playerServ.isHost = true;
@@ -114,11 +124,12 @@ export class SessionHomePage {
           this.treatData(data, conn);
         });
         conn.on('open', () => {
-          console.log('opened connection');
+          console.log('opened connection with ', conn);
         });
       });
 
     }
+    this.playerServ.myName = this.pseudo;
   }
 
   ngOnDestroy() {
@@ -232,6 +243,10 @@ export class SessionHomePage {
       message: player,
       buttons: [
         {text: 'approuver', role: 'join', handler: () => {
+            //Send old players info to new player
+            this.playerServ.playersList.forEach( player => {
+              conn.send({newPlayer: player.name, peer: player.conn.peer});
+            });          
             //Send new player info to old players
             this.playerServ.getConns().forEach( con => {
               con.send({newPlayer: player, peer: conn.peer});
@@ -239,10 +254,6 @@ export class SessionHomePage {
             conn.send({roomName: this.roomName, roomDesc: this.description});
             //Add new player to peronnal player list
             this.playerServ.playersList.push({name: player, conn: conn});
-            //Send old players info to new player
-            this.playerServ.playersList.forEach( player => {
-              conn.send({newPlayer: player.name, peer: player.conn.peer});
-            });
         }},
         {text: 'refuser', role: 'kick', handler: () => {
         conn.send({kick: 'accès refusé'});
@@ -280,7 +291,7 @@ export class SessionHomePage {
       this.roomName = data.roomName;
       if(this.loader)
         this.loader.dismiss();
-      this.playerServ.playersList.push({name:'host', conn:conn})
+      this.playerServ.playersList.push({name:'Host', conn:conn})
     }
     if (data.roomDesc) {
       this.description = data.roomDesc;
@@ -294,7 +305,15 @@ export class SessionHomePage {
       if (this.isHost) {
         this.makeApprovalAlert(data.newPlayer, conn);
       } else {
-        this.playerServ.playersList.push({name: data.newPlayer, conn: this.peer.connect(data.peer, {serialization: 'json'}) });
+        var con = this.peer.connect(data.peer, {serialization: 'json'})
+        con.on('open', () => {
+          //informe player name
+          this.playerServ.playersList.push({name: data.newPlayer, conn: con});
+          console.log("Openned connection with ", data.newPlayer)
+        });
+        con.on('data', (data) => {
+          this.treatData(data, con);
+        });
       }
     }
     if (data.kick) {

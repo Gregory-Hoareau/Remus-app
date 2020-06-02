@@ -8,6 +8,7 @@ import { Conversation } from 'src/app/models/conversation.model';
   providedIn: 'root'
 })
 export class PlayersService {
+  myName: String;
   playersList: Player[]
   conversations: Map<Player,Conversation>
 
