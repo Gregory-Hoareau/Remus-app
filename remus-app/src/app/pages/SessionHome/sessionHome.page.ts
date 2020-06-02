@@ -11,6 +11,7 @@ import { SimulateurPage } from '../simulateur/simulateur.page';
 import {faDiceD20, faTable} from '@fortawesome/free-solid-svg-icons';
 import {NotesPage} from "../notes/notes.page";
 import {NotesService} from "../../providers/notes/notes.service";
+import { Player } from 'src/app/models/player.models';
 
 @Component({
   selector: 'app-home',
@@ -105,13 +106,10 @@ export class SessionHomePage {
 
       this.peer.on('open', id => {
         this.makeAnIdAlert(id);
-        console.log(this.route.url)
-
         console.log('locked and loaded id: ', id);
       });
 
       this.peer.on('connection', (conn) => {
-        console.log('connection with ', conn.peer);
         conn.on('data', (data) => {
           this.treatData(data, conn);
         });
@@ -311,7 +309,7 @@ export class SessionHomePage {
       this.file.writeExistingFile(this.file.dataDirectory, data.imgEnd[0], this.imgTemp).then();
       this.imgTemp = '';
     }
-    if (data.removed){
+    if (data.removed) {
       var node = document.createElement("ION-CARD");
       node.appendChild(document.createTextNode(data.removed+' à quitté la salle'));
       document.getElementById("mainContent").appendChild(node);
@@ -323,6 +321,14 @@ export class SessionHomePage {
 
       const id = this.playerServ.getPlayerByName(data.removed);
       this.playerServ.playersList.splice(id, 1);
+    }
+    if (data.message) {
+      let p: Player;
+      p = this.playerServ.getPlayerById(conn.peer);
+      if (!this.playerServ.conversations.get(p))
+        this.playerServ.conversations.set(p,{messages:[]})
+      console.log("recieved message : ", data.message, " from ", p)
+      this.playerServ.conversations.get(p).messages.push([p,data.message])
     }
   }
 

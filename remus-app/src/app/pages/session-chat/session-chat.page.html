@@ -1,9 +1,21 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>session-chat</ion-title>
+    <ion-title>{{player.name}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <h1>HELLO</h1>
 </ion-content>
+
+<ion-footer>
+
+  <form [formGroup]="myForm" (ngSubmit)="send()">
+    <ion-item>
+      <ion-textarea formControlName="message" placeholder="Envoyer un message à {{player.name}}"></ion-textarea>
+    </ion-item>
+    <ion-button block color="primary" type="submit" [disabled]="myForm.invalid">
+      send
+    </ion-button>
+  </form>
+</ion-footer>

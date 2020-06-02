@@ -68,9 +68,15 @@ export class AppComponent {
 
   openChat(player: Player) {
     console.log("CLICKED ON ", player)
+    if (!this.playersServ.conversations.get(player))
+      this.playersServ.conversations.set(player,{messages:[]})
     this.modalController.create({
       component: SessionChatPage,
       swipeToClose: true,
+      componentProps: {
+        player: player,
+        conv: this.playersServ.conversations.get(player)
+      }
     }).then(modal => {
       modal.present()
     });

@@ -17,6 +17,7 @@ import {DiceHistoryService} from './providers/diceHistory/dice-history.service';
 import { CharacterService } from './providers/character/character.service';
 import { HttpClientModule } from '@angular/common/http';
 import {IonicStorageModule} from '@ionic/storage';
+import { SessionChatPageModule } from './pages/session-chat/session-chat.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,7 +29,8 @@ import {IonicStorageModule} from '@ionic/storage';
       BrowserAnimationsModule,
       FontAwesomeModule,
       HttpClientModule,
-      IonicStorageModule.forRoot()
+      IonicStorageModule.forRoot(),
+      SessionChatPageModule
   ],
   providers: [
     StatusBar,

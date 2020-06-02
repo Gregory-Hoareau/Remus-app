@@ -1,4 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Player } from 'src/app/models/player.models';
+import { Conversation } from 'src/app/models/conversation.model';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-session-chat',
@@ -7,11 +10,25 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SessionChatPage implements OnInit {
 
-  @Input() player: String;
+  myForm : FormGroup;
+  @Input() player: Player;
+  @Input() conv: Conversation;
 
-  constructor() { }
+  constructor(private formBuilder: FormBuilder) { 
+  }
 
-  ngOnInit() {
+  ngOnInit() {    
+    this.myForm = this.formBuilder.group({
+      message: ''
+  })
+    console.table(this.conv.messages)
+  }
+
+  send() {
+    console.table(this.myForm.getRawValue())
+    const message = this.myForm.getRawValue().message
+    console.log("sending ", message)
+    this.player.conn.send({message:message});
   }
 
 }

@@ -15,6 +15,7 @@ export class PlayersService {
 
   constructor(private alertCtrl: AlertController) {
     this.playersList = []
+    this.conversations = new Map<Player,Conversation>()
   }
 
   resetPlayer(){
@@ -60,6 +61,17 @@ export class PlayersService {
         return this.playersList.indexOf(p);
     });
     return 0;
+  }
+
+  getPlayerById(id: string): Player {
+    let player: Player;
+    this.playersList.forEach(p => {
+      console.log(p.conn.peer)
+      if(p.conn.peer == id){
+        player=p;
+      }
+    });
+    return player;
   }
 
   getConns(){
