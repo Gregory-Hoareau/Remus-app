@@ -117,3 +117,4 @@ python manage.py runserver ip:port
 ```
 
 where `ip` and `port` are the IP address and the port you want.
+If you use this line, you will need to add `ip` in the `ALLOWED_HOST` variable that is in `remus-backend/crowdsorucing/crowdsourcing/settings.py`
