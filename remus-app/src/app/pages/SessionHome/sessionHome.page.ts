@@ -78,10 +78,10 @@ export class SessionHomePage {
       
       
       this.peer.on('open', id => {
+        this.makeLoader();
         //connect to host peer
         let conn = this.peer.connect(this.roomid, {serialization: 'json'});
         conn.on('open', () => {
-          this.makeLoader();
           //informe player name
           conn.send({newPlayer: this.pseudo});
         });
@@ -102,7 +102,6 @@ export class SessionHomePage {
       this.peer.on('error', err => {
         console.log(err.type);
         if (err.type === 'peer-unavailable') {
-          this.loader.dismiss()
           this.makeKickAlert('id ' + this.roomid +' ne correspond a aucune salle.');
         }
       });
@@ -133,6 +132,8 @@ export class SessionHomePage {
   }
 
   ngOnDestroy() {
+    this.loader.dismiss()
+
     this.menuController.enable(false,'playerList');
     this.menuController.enable(true,'mainMenu');
 
@@ -264,6 +265,7 @@ export class SessionHomePage {
   }
 
   async makeKickAlert(reason) {
+    this.loader.dismiss()
     this.alerteController.create({
       header: 'Vous avez été viré de la partie',
       message: 'raison : ' + reason,
