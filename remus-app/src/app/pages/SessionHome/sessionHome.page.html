@@ -26,10 +26,16 @@
       <img [src]="image" alt="">
     <ion-buttons class="btn" slot="end" (click)="closeImage()"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
   </div>
-  
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button class="dice" (click)="openDiceRollerModal()">
       <fa-icon class="icon" [icon]="diceIcon"></fa-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button class="dice" (click)="openNotesModal()">
+      <ion-icon name="create-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

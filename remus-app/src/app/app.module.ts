@@ -16,6 +16,7 @@ import { File } from '@ionic-native/file/ngx';
 import {DiceHistoryService} from './providers/diceHistory/dice-history.service';
 import { CharacterService } from './providers/character/character.service';
 import { HttpClientModule } from '@angular/common/http';
+import {IonicStorageModule} from '@ionic/storage';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +28,7 @@ import { HttpClientModule } from '@angular/common/http';
       BrowserAnimationsModule,
       FontAwesomeModule,
       HttpClientModule,
+      IonicStorageModule.forRoot()
   ],
   providers: [
     StatusBar,

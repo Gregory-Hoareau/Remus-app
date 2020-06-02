@@ -13,6 +13,7 @@ import {CharacterSheetPageModule} from '../character-sheet/character-sheet.modul
 import { SelectCharacterPageModule } from '../select-character/select-character.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SimulateurPageModule } from '../simulateur/simulateur.module';
+import {NotesPageModule} from '../notes/notes.module';
 
 
 
@@ -27,6 +28,7 @@ import { SimulateurPageModule } from '../simulateur/simulateur.module';
     SelectCharacterPageModule,
     FontAwesomeModule,
     SimulateurPageModule,
+    NotesPageModule
   ],
   declarations: [SessionHomePage],
   providers: [File]

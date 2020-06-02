@@ -9,6 +9,8 @@ import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
 import { SimulateurPage } from '../simulateur/simulateur.page';
 import {faDiceD20, faTable} from '@fortawesome/free-solid-svg-icons';
+import {NotesPage} from "../notes/notes.page";
+import {NotesService} from "../../providers/notes/notes.service";
 
 @Component({
   selector: 'app-home',
@@ -39,7 +41,8 @@ export class SessionHomePage {
   constructor(public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
               private file: File, private navCtrl: NavController, private playerServ: PlayersService,
-               private toastController: ToastController, private menuController: MenuController) {
+               private toastController: ToastController, private menuController: MenuController,
+              private noteService: NotesService) {
     if(this.route.queryParams){
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
@@ -65,7 +68,6 @@ export class SessionHomePage {
       path: this.path,
       port: this.port,
       debug: 2});
-
 
     if (!this.roomName) {
       //Peers trying to join
@@ -126,6 +128,8 @@ export class SessionHomePage {
     this.menuController.enable(false,'sessionMenu');
     this.menuController.enable(true,'mainMenu');
 
+    this.noteService.reset();
+
     this.playerServ.getConns().forEach(c => {
       if(!this.isHost)
         c.send({removed:this.pseudo})
@@ -136,7 +140,7 @@ export class SessionHomePage {
 
     let len = this.playerServ.playersList.length;
     for (let i = 0; i < len; i++) {
-      this.playerServ.playersList.pop();      
+      this.playerServ.playersList.pop();
     }
 
     this.playerServ.resetPlayer();
@@ -191,10 +195,19 @@ export class SessionHomePage {
       swipeToClose: true,
       componentProps: {
         isModal: true //Adapt format for in-modal use
-     },
+      },
     }).then(modal => {
       modal.present();
-    })
+    });
+  }
+
+  openNotesModal() {
+    this.modalCtr.create({
+      component: NotesPage,
+      swipeToClose: true,
+    }).then(modal => {
+      modal.present();
+    });
   }
 
   async makeAnIdAlert(id) {

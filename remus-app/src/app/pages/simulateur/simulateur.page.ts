@@ -19,16 +19,16 @@ export class SimulateurPage implements OnInit {
     static: true
   }) slider: IonSlides;
 
-  //Simulateur var
-  @Input() isModal : boolean;
+  // Simulateur var
+  @Input() isModal: boolean;
   public diceHistory: string[];
   segment = 0;
 
 
-  //Historique var
+  // Historique var
   finalValue: string;
 
-  //Dice thrower var
+  // Dice thrower var
   result : number;
   diceSum : number;
     diceSelected : Map<Dice, number>;
