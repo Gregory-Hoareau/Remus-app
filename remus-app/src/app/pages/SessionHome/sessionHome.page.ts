@@ -53,9 +53,9 @@ export class SessionHomePage {
         }
       });
     }
+    
     this.menuController.enable(true,'playerList');
     this.menuController.enable(false,'mainMenu');
-    this.menuController.enable(true,'sessionMenu');
 
   }
 
@@ -125,7 +125,6 @@ export class SessionHomePage {
 
   ngOnDestroy() {
     this.menuController.enable(false,'playerList');
-    this.menuController.enable(false,'sessionMenu');
     this.menuController.enable(true,'mainMenu');
 
     this.noteService.reset();

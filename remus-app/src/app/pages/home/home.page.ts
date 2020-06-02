@@ -19,11 +19,6 @@ export class HomePage {
 
   }
 
-  async ngOnInit(){
-
-    //this.playerServ.playersList=[];
-
-  }
 
   async joinModal() {
     const joiningmodal = await this.modalCtr.create({

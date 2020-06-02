@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { Player } from 'src/app/models/player.models';
 import { text } from '@fortawesome/fontawesome-svg-core';
+import { Conversation } from 'src/app/models/conversation.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayersService {
   playersList: Player[]
+  conversations: Map<Player,Conversation>
+
   isHost: boolean;
 
   constructor(private alertCtrl: AlertController) {
