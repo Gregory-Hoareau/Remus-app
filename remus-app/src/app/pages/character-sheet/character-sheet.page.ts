@@ -177,6 +177,11 @@ export class CharacterSheetPage implements OnInit {
     this.crowdsourcing.postCharacterSheet(this.character).subscribe(sheet => {
       console.log(sheet);
       console.log('Character sheet upload on the server');
+      this.toastController.create({
+        duration: 1000,
+        message: 'La fichier a été envoyé au serveur',
+        position: 'bottom',
+      }).then(toast => {toast.present()});
     })
   }
 
@@ -201,6 +206,12 @@ export class CharacterSheetPage implements OnInit {
     console.log('WRITING IN FILE');
     await this.file.writeExistingFile(path, filename+'.json', JSON.stringify(this.character));
     console.log('END WRITING');
+
+    this.toastController.create({
+      duration: 1000,
+      message: 'La fichier a été téléchargé dans les données de l\'application',
+      position: 'bottom',
+    }).then(toast => {toast.present()});
   }
 
   private async replaceFileAlert(): Promise<boolean> {
