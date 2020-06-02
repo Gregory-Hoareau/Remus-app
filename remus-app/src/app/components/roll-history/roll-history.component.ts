@@ -10,12 +10,16 @@ import { DiceHistoryService } from 'src/app/providers/diceHistory/dice-history.s
 export class RollHistoryComponent implements OnInit {
 
   @Input()
-  private roll: DiceRoll;
+  roll: DiceRoll;
 
-  constructor(private historyService:DiceHistoryService) {
+  roll_name: string;
+
+  constructor(public historyService:DiceHistoryService) {
     this.roll={result:0,modificator:0,dices:null}
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.roll_name = this.historyService.selectedDiceString(this.roll);
+  }
 
 }

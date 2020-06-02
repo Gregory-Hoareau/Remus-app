@@ -252,7 +252,7 @@ export class SimulateurPage implements OnInit {
     this.presentAlertConfirm('<h1>' + this.result + '</h1>' + '<br>' + this.finalSeparatedValue)
     this.diceHistoryService.addDiceRoll({
       dices: this.diceSelected,
-      modificator: (this.modificateur === 0? this.modificateur: undefined),
+      modificator: (this.modificateur === 0? undefined: this.modificateur),
       separatedValue: this.finalSeparatedValue,
       result: this.result,
     });
