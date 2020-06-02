@@ -139,6 +139,7 @@ export class SessionHomePage {
       this.playerServ.playersList.pop();      
     }
 
+    this.playerServ.resetPlayer();
 
     this.peer.disconnect();
     this.peer.destroy();

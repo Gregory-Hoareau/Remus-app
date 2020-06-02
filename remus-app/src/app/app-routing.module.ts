@@ -45,6 +45,10 @@ export const routes: Routes = [
   {
     path: 'crowdsourcing',
     loadChildren: () => import('./pages/crowdsourcing/crowdsourcing.module').then( m => m.CrowdsourcingPageModule)
+  },
+  {
+    path: 'session-chat',
+    loadChildren: () => import('./pages/session-chat/session-chat.module').then( m => m.SessionChatPageModule)
   }
 
 ];

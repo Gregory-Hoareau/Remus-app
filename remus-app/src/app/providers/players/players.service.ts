@@ -14,6 +14,11 @@ export class PlayersService {
     this.playersList = []
   }
 
+  resetPlayer(){
+    this.playersList.forEach(() => {
+      this.playersList.pop();
+    });
+  }
 
   kickAlert(player: Player) {
     this.alertCtrl.create({
