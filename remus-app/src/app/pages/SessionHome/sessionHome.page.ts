@@ -182,8 +182,9 @@ export class SessionHomePage {
       componentProps: {
          charInd: -1,
       },
-      cssClass: 'custom-modal-css',
+      //cssClass: 'custom-modal-css',
       swipeToClose: true,
+      id: 'Character'
     });
 
     modal.onWillDismiss().then((dataReturned) => {

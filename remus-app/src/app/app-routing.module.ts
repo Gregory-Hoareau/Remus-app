@@ -49,7 +49,11 @@ export const routes: Routes = [
   {
     path: 'session-chat',
     loadChildren: () => import('./pages/session-chat/session-chat.module').then( m => m.SessionChatPageModule)
+  },  {
+    path: 'load-character',
+    loadChildren: () => import('./pages/load-character/load-character.module').then( m => m.LoadCharacterPageModule)
   }
+
 
 ];
 

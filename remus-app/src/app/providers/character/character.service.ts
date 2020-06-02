@@ -61,4 +61,14 @@ export class CharacterService {
     }
   }
 
+  import(character: CharacterSheet) {
+    if (this.playerService.isHost) {
+      this.characters.push(character);
+    } else {
+      this.characters[0] = character;
+    }
+      
+  }
+  
+
 }

@@ -8,7 +8,9 @@ import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { CharacterService } from 'src/app/providers/character/character.service';
 import { CrowdsourcingService } from 'src/app/providers/crowdsourcing/crowdsourcing.service';
-import { resolve } from 'url';
+import { LoadCharacterPage } from '../load-character/load-character.page';
+import { faFileImport, faFileExport } from '@fortawesome/free-solid-svg-icons'
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-character-sheet',
@@ -19,12 +21,16 @@ export class CharacterSheetPage implements OnInit {
 
   character: CharacterSheet;
   read_only: boolean;
+  importing: boolean;
+  importIcon = faFileImport;
+  exportIcon = faFileExport;
 
   constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File,
     private characterService:CharacterService, private modalCtrl:ModalController,
     private navParams: NavParams, private toastController: ToastController,
     private crowdsourcing: CrowdsourcingService) {
-      this.read_only = navParams.get('display')
+      this.read_only = navParams.get('display');
+      this.importing = navParams.get('import')
       if (this.read_only) {
         this.character = navParams.get('character');
       } else {
@@ -280,6 +286,27 @@ export class CharacterSheetPage implements OnInit {
       await this.file.createDir(this.file.dataDirectory, 'characterSheet', false)
       console.log('Storage created')
     });
+  }
+
+  importCharacter() {
+    this.characterService.import(this.character);
+    this.modalCtrl.dismiss(undefined, 'Clear', 'Character')
+    this.toastController.create({
+      duration: 1000,
+      message: 'La feuille de personnage a été importé',
+      position: 'bottom',
+    }).then(toast=> {
+      toast.present();
+    })
+    this.modalCtrl.dismiss();
+  }
+
+  async importCharacterForPlayer() {
+    const modal = await this.modalCtrl.create({
+      component: LoadCharacterPage
+    })
+    
+    await modal.present()
   }
 
 }
