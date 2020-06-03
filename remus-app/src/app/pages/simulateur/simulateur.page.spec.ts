@@ -5,6 +5,7 @@ import { SimulateurPage } from './simulateur.page';
 import { Location, LocationStrategy } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 describe('SimulateurPage', () => {
   let component: SimulateurPage;
@@ -16,6 +17,8 @@ describe('SimulateurPage', () => {
       imports: [
         IonicModule.forRoot(),
         RouterTestingModule,
+        ReactiveFormsModule,
+        FormsModule
       ],
       providers: [
       ],
