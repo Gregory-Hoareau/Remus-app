@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <ion-list class="character-list">
     <ion-item *ngFor="let character of characters" (click)="displayCharacter(character)">
       <ion-label>{{character.name}}</ion-label>
     </ion-item>

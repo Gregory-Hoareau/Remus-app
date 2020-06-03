@@ -13,7 +13,7 @@ import { LoadCharacterPage } from '../load-character/load-character.page';
 })
 export class SelectCharacterPage implements OnInit {
 
-  private characters: CharacterSheet[];
+  characters: CharacterSheet[];
   importIcon = faFileImport;
 
   constructor(private characterService: CharacterService, private modalCtrl:ModalController) {

@@ -11,6 +11,7 @@ import { CrowdsourcingService } from 'src/app/providers/crowdsourcing/crowdsourc
 import { LoadCharacterPage } from '../load-character/load-character.page';
 import { faFileImport, faFileExport } from '@fortawesome/free-solid-svg-icons'
 import { ThrowStmt } from '@angular/compiler';
+import { Skill } from 'src/app/models/skill.model';
 
 @Component({
   selector: 'app-character-sheet',
@@ -80,6 +81,10 @@ export class CharacterSheetPage implements OnInit {
     await alert.present();
   }
 
+  changeTraitValue(index, val) {
+    this.character.traits[index].value = val;
+  }
+
   async editTraitAlert(index) {
     console.log(this.character.traits)
     const trait = this.character.traits[index];
@@ -102,12 +107,7 @@ export class CharacterSheetPage implements OnInit {
         text: 'Valider',
         handler: data => {
           if (data[trait.name] !== '') {
-            const allTrait = this.character.traits;
-            for (const t of allTrait) {
-              if (t.name === trait.name) {
-                t.value = data[trait.name];
-              }
-            }
+            this.changeTraitValue(index, data[trait.name])
           }
           this.changeSavedToast();
         },
@@ -131,7 +131,9 @@ export class CharacterSheetPage implements OnInit {
     }).then(toast => {toast.present()});
   }
 
-
+  addSkill(skill: Skill) {
+    this.character.skills.push(skill);
+  }
 
   async addNewSkillAlert() {
     const alert = await this.alertCtrl.create({
@@ -145,7 +147,7 @@ export class CharacterSheetPage implements OnInit {
         text: 'Valider',
         handler: data => {
           if (data.skill !== '') {
-            this.character.skills.push(data.skill);
+            this.addSkill(data.skill);
           }
           this.changeSavedToast();
         }
