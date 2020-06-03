@@ -45,7 +45,6 @@ export class NotesPage implements OnInit {
     }).then((alert) => {
       alert.present();
     });
-
   }
 
   detailModal(note) {

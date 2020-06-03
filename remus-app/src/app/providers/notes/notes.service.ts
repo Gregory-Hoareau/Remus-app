@@ -17,37 +17,35 @@ export class NotesService {
 
   load(): Promise<boolean> {
 
-    return new Promise((resolve) => {
-
+    return new Promise(resolve => {
       this.storage.get('notes').then((notes) => {
 
-        if(notes != null){
+        if(notes != null)
           this.notes = notes;
-        }
 
         this.loaded = true;
         resolve(true);
 
       });
-
     });
-
   }
 
   save(): void {
     this.storage.set('notes', this.notes);
   }
 
-  createNote(title): void {
-
-    this.notes.push({
+  createNote(title): Note {
+    const note = {
       title: title,
       content: ''
-    });
+    } as Note
 
-    this.save();
+    this.notes.push(note);
+    //this.save();
 
+    return note
   }
+
   reset(): void {
     this.notes.forEach( note => {
       this.deleteNote(note);
