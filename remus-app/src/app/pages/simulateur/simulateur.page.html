@@ -18,13 +18,13 @@
           </div>
           <div class="control">
             <div class="buttons">
-              <ion-button  class="launch" *ngIf="selectedDices !== ''" (click)="launchDice()">Lancer</ion-button>
-              <ion-button shape="round" *ngIf="selectedDices !== ''" class="refresh" (click)="resetDices()">
+              <ion-button class="launch" *ngIf="listOfDiceAsString !== ''" (click)="launchDice()">Lancer</ion-button>
+              <ion-button shape="round" *ngIf="listOfDiceAsString !== ''" class="refresh" (click)="resetDices()">
                 <ion-icon  name="refresh-outline" ></ion-icon>
               </ion-button>
             </div>
         
-            <ion-card-content class="selectDices">{{selectedDices}}</ion-card-content>
+            <ion-card-content class="selectDices">{{listOfDiceAsString}}</ion-card-content>
             
             <br><br>
             <form>
@@ -34,7 +34,7 @@
           </div>
 
         <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-          <ion-fab-button *ngIf="selectedDices !== ''" class="dice" (click)="newMacroAlert()">
+          <ion-fab-button *ngIf="listOfDiceAsString !== ''" class="dice" (click)="newMacroAlert()">
             <ion-icon name="add-outline"></ion-icon>
           </ion-fab-button>
         </ion-fab>
@@ -43,7 +43,7 @@
 
       <!-- MACRO -->
       <ion-slide class="macroPage">
-        <app-roll-macro class="macroPage" *ngFor="let macro of macroService.macros" [macro]= macro (click)="macroLaunch(macro.dices,macro.modificator)"></app-roll-macro>
+        <app-roll-macro class="macroPage" *ngFor="let macro of macroService.macros" [macro]= macro (click)="macroLaunch(macro)"></app-roll-macro>
       </ion-slide>
 
       <!-- HISTORIQUE -->

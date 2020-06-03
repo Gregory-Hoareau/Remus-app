@@ -31,8 +31,8 @@ export class SimulateurPage implements OnInit {
   // Dice thrower var
   result : number;
   diceSum : number;
-    diceSelected : Map<Dice, number>;
-  selectedDices : string;
+  diceSelected : Map<Dice, number>;
+  listOfDiceAsString : string;
   separetedValue : string;
   finalSeparatedValue : string;
   launched : boolean;
@@ -53,7 +53,7 @@ export class SimulateurPage implements OnInit {
     this.diceSum = 0;
     this.totalDiceSum = 0;
     this.diceSelected = new Map<Dice, number>();
-    this.selectedDices = "";
+    this.listOfDiceAsString = "";
    this.separetedValue = "";
     this.launched = false;
     this.finalSeparatedValue = "";
@@ -78,13 +78,7 @@ export class SimulateurPage implements OnInit {
         text: 'Valider',
         handler: data => {
           if (data.macroName !== '') {
-              const macro = {
-                name: data.macroName,
-                dices: this.diceSelected,
-                stringDices: this.selectedDices,
-                modificator: this.modificateur,
-              } as Macro
-              this.macroService.macros.push(macro);
+            this.macroService.createMacro(data.macroName, this.diceSelected, this.listOfDiceAsString, this.modificateur);
           }
         }
       }]
@@ -92,13 +86,14 @@ export class SimulateurPage implements OnInit {
     await alert.present();
   }
 
-  macroLaunch(dices, modificator) {
+  macroLaunch(macro: Macro) {
     this.resetDices()
-    this.modificateur = modificator;
-    this.diceSelected = dices;
+    this.modificateur = macro.modificator;
+    this.diceSelected = macro.dices;
     for (const dice of this.diceSelected.keys()) {
       for (let itter = 0 ; itter < this.diceSelected.get(dice) ; itter++ ) {
         this.dices.push(dice.value);
+        this.totalDiceSum += dice.value;
       }
     }
     this.printSumDices(this.diceSelected);
@@ -121,12 +116,12 @@ export class SimulateurPage implements OnInit {
   }
 
   printSumDices(map: Map<Dice, number>) {
-    this.selectedDices = ''
+    this.listOfDiceAsString = ''
     for (const dice of map.keys()) {
-      if (this.selectedDices === '') {
-        this.selectedDices = this.diceSelected.get(dice) + dice.name;
+      if (this.listOfDiceAsString === '') {
+        this.listOfDiceAsString = this.diceSelected.get(dice) + dice.name;
       } else {
-        this.selectedDices = this.selectedDices + ' + ' + this.diceSelected.get(dice) + dice.name;
+        this.listOfDiceAsString = this.listOfDiceAsString + ' + ' + this.diceSelected.get(dice) + dice.name;
       }
       console.log(dice);
     }
@@ -178,11 +173,11 @@ export class SimulateurPage implements OnInit {
   async presentAlertConfirm(data) {
     let title;
     if (this.modificateur > 0) {
-      title = this.selectedDices + ' + ' + this.modificateur;
+      title = this.listOfDiceAsString + ' + ' + this.modificateur;
     } else if (this.modificateur < 0) {
-      title = this.selectedDices + this.modificateur;
+      title = this.listOfDiceAsString + this.modificateur;
     } else {
-      title = this.selectedDices + '';
+      title = this.listOfDiceAsString + '';
     }
     const alert = await this.alertController.create({
       header: title,
