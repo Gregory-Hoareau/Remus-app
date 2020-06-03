@@ -393,6 +393,7 @@ export class SessionHomePage {
     }
     if (data.achivement) {
       this.achivementService.achivements.push({titre: data.achivement, description: data.description, checked: false});
+      this.achivementService.setUpAvancee();
     }
     if (data.achivementPartage) {
       this.achivementService.partage = data.achivementPartage;
@@ -400,6 +401,7 @@ export class SessionHomePage {
     }
     if (data.achivementValide) {
       this.achivementService.validAchivement(data.achivementValide);
+      this.achivementService.setUpAvancee();
     }
   }
 

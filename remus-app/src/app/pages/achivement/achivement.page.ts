@@ -24,15 +24,7 @@ export class AchivementPage {
   constructor(private modalCtrl: ModalController, private playersService:PlayersService,private router: Router, private alertController: AlertController, private achivementService: AchivementService) {
     this.achivements = achivementService.achivements;
     this.players = playersService.playersList;
-    let temp = 0;
-    this.achivements.forEach(p => {
-      if (p.checked) {
-        temp = temp + 1 ;
-      }
-    });
-    if( this.achivements.length !== 0) {
-      this.avancee = ((temp / this.achivements.length));
-    }
+    this.avancee = this.achivementService.avancee;
   }
 
 
@@ -79,15 +71,8 @@ export class AchivementPage {
           this.playersService.playersList.forEach(p => {
             p.conn.send({achivement: data.titre, description: data.description });
           });
-          let temp = 0;
-          this.achivements.forEach(p => {
-            if (p.checked) {
-              temp = temp + 1 ;
-            }
-          });
-          if( this.achivements.length !== 0) {
-            this.avancee = ((temp / this.achivements.length));
-          }
+          this.achivementService.setUpAvancee();
+          this.avancee = this.achivementService.avancee;
         }
       }
      ]
@@ -100,15 +85,8 @@ export class AchivementPage {
     this.playersService.playersList.forEach(p => {
       p.conn.send({achivementValide: titre});
     });
-    let temp = 0;
-    this.achivements.forEach(p => {
-      if (p.checked) {
-        temp = temp + 1 ;
-      }
-    });
-    if ( this.achivements.length !== 0) {
-      this.avancee = ((temp / this.achivements.length));
-    }
+   this.achivementService.setUpAvancee();
+    this.avancee = this.achivementService.avancee;
   }
 
   async activatePartage() {
@@ -162,7 +140,15 @@ export class AchivementPage {
     await alert.present();
   }
 
-  getAvancee() {
-    return this.avancee;
+  setUpAvancee() {
+    let temp = 0;
+    this.achivements.forEach(p => {
+      if (p.checked) {
+        temp = temp + 1 ;
+      }
+    });
+    if ( this.achivements.length !== 0) {
+      this.avancee = ((temp / this.achivements.length));
+    }
   }
 }

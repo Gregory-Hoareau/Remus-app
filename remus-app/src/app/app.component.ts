@@ -27,7 +27,7 @@ export class AppComponent {
 
   public appPages = [
     {
-      title: 'Home',
+      title: 'Accueil',
       url: '/home',
       icon: faHome
     },
@@ -37,7 +37,7 @@ export class AppComponent {
       icon: faDiceD20
     },
     {
-      title: 'Crowdsourcing',
+      title: 'Communauté',
       url: '/crowdsourcing',
       icon: faPeopleArrows
     }

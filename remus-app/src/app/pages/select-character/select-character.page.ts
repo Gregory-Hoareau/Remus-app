@@ -24,6 +24,10 @@ export class SelectCharacterPage implements OnInit {
   ngOnInit() {
   }
 
+  trash(character: CharacterSheet) {
+    this.characters.splice(this.characters.indexOf(character), 1);
+  }
+  
 
   importCharacter() {
     this.modalCtrl.create({

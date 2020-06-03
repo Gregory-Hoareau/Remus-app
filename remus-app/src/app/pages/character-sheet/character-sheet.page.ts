@@ -38,7 +38,6 @@ export class CharacterSheetPage implements OnInit {
         const index = navParams.get('charInd');
         this.character = this.characterService.getCharacter(index);
       }
-      
     }
 
   ngOnInit() {
