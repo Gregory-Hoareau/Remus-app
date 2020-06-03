@@ -81,20 +81,55 @@ export class AchivementPage {
       p.conn.send({achivementValide: titre});
     });
   }
-  activatePartage() {
-    this.achivementService.partage = !this.achivementService.partage;
-    this.players.forEach(p => {
-      p.conn.send({achivementPartage: true});
-      console.log(this.achivementService.partage);
+
+  async activatePartage() {
+    const alert = await this.alertController.create({
+      cssClass: 'custom-popup-css',
+      message : 'Vous êtes sur le point de partager les succés avec les autres joueurs. Voulez-vous continuer?',
+      buttons: [{
+        text: 'Non',
+        role: 'non',
+        handler: () => {
+          alert.dismiss();
+        }
+      }, {
+        text: 'Oui',
+        handler: (data) => {
+          this.achivementService.partage = !this.achivementService.partage;
+          this.players.forEach(p => {
+            p.conn.send({achivementPartage: true});
+            console.log(this.achivementService.partage);
+          });
+        }
+      }
+      ]
     });
+    await alert.present();
   }
 
-  desactivatePartage() {
+  async desactivatePartage() {
 
-    this.achivementService.partage = !this.achivementService.partage;
-    this.players.forEach(p => {
-      p.conn.send({achivementPartage: false});
-      console.log(this.achivementService.partage);
+    const alert = await this.alertController.create({
+      cssClass: 'custom-popup-css',
+      message : 'Vous êtes sur le point de retier le partage des succés avec les autres joueurs. Voulez-vous continuer?',
+      buttons: [{
+        text: 'Non',
+        role: 'non',
+        handler: () => {
+          alert.dismiss();
+        }
+      }, {
+        text: 'Oui',
+        handler: (data) => {
+          this.achivementService.partage = !this.achivementService.partage;
+          this.players.forEach(p => {
+            p.conn.send({achivementPartage: false});
+            console.log(this.achivementService.partage);
+          });
+        }
+      }
+      ]
     });
+    await alert.present();
   }
 }

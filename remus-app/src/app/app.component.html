@@ -28,6 +28,12 @@
       <ion-content>
         <ion-menu-toggle auto-hide="false">
           <ion-list>
+            <ion-item (click)="quit()" >
+              <fa-icon [icon]="powerIcon"></fa-icon>
+              <ion-label>
+                Quitter
+              </ion-label>
+            </ion-item>
             <ion-item class="players"  *ngFor="let player of players" >
               {{player.name}}
               <fa-icon (click)="openChat(player)" class="icons" [icon]="chatIcon"></fa-icon>
