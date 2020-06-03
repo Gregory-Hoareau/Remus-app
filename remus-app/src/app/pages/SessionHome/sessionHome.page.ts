@@ -239,7 +239,6 @@ export class SessionHomePage {
         const navigationExtras: NavigationExtras = {
           state: dataReturned.data
         };
-        this.location.back();
       }
     });
 

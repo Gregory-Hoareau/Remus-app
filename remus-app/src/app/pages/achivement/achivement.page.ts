@@ -19,11 +19,22 @@ export class AchivementPage {
   eye=faEye;
   achivements: Achivement[];
   players: Player[];
+  avancee = 1;
 
   constructor(private modalCtrl: ModalController, private playersService:PlayersService,private router: Router, private alertController: AlertController, private achivementService: AchivementService) {
     this.achivements = achivementService.achivements;
     this.players = playersService.playersList;
+    let temp = 0;
+    this.achivements.forEach(p => {
+      if (p.checked) {
+        temp = temp + 1 ;
+      }
+    });
+    if( this.achivements.length !== 0) {
+      this.avancee = ((temp / this.achivements.length));
+    }
   }
+
 
   async showAchivement(achivement: Achivement) {
     const alert = await this.alertController.create({
@@ -68,6 +79,15 @@ export class AchivementPage {
           this.playersService.playersList.forEach(p => {
             p.conn.send({achivement: data.titre, description: data.description });
           });
+          let temp = 0;
+          this.achivements.forEach(p => {
+            if (p.checked) {
+              temp = temp + 1 ;
+            }
+          });
+          if( this.achivements.length !== 0) {
+            this.avancee = ((temp / this.achivements.length));
+          }
         }
       }
      ]
@@ -80,6 +100,15 @@ export class AchivementPage {
     this.playersService.playersList.forEach(p => {
       p.conn.send({achivementValide: titre});
     });
+    let temp = 0;
+    this.achivements.forEach(p => {
+      if (p.checked) {
+        temp = temp + 1 ;
+      }
+    });
+    if ( this.achivements.length !== 0) {
+      this.avancee = ((temp / this.achivements.length));
+    }
   }
 
   async activatePartage() {
@@ -131,5 +160,9 @@ export class AchivementPage {
       ]
     });
     await alert.present();
+  }
+
+  getAvancee() {
+    return this.avancee;
   }
 }
