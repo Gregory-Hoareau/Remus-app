@@ -8,29 +8,23 @@ import {AchivementPage} from './achivement.page';
 
 describe('AchivementPage', () => {
   let component: AchivementPage;
-  let router: Router;
-  let location: Location;
   let fixture: ComponentFixture<AchivementPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        AchivementPage
       ],
       imports: [
         IonicModule.forRoot(),
-        RouterTestingModule,
-        ReactiveFormsModule,
+        RouterTestingModule
       ],
       providers: [
         Location,
       ]
     }).compileComponents();
 
-    router = TestBed.get(Router);
-    location = TestBed.get(Location);
-
     fixture = TestBed.createComponent(AchivementPage);
-    router.initialNavigation();
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

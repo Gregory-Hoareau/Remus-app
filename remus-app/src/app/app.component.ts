@@ -8,6 +8,8 @@ import {faDiceD20, faHome, faPowerOff, faCommentAlt, faUserSlash, faPeopleArrows
 import {PlayersService} from './providers/players/players.service';
 import { Player } from './models/player.models';
 import { SessionChatPage } from './pages/session-chat/session-chat.page';
+import {AchivementPage} from './pages/achivement/achivement.page';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -48,8 +50,8 @@ export class AppComponent {
       private statusBar: StatusBar,
       private router: Router,
       private playersServ: PlayersService,
-      private navCtrl: NavController,
       private modalCtrl: ModalController,
+      private location: Location
   ) {
     this.players = this.playersServ.playersList;
     this.initializeApp();
@@ -68,7 +70,29 @@ export class AppComponent {
   }
 
   quit() {
-    this.navCtrl.navigateBack(['/home']);
+    this.location.back();
+  }
+
+  async openAchivementModal() {
+    const modal = await this.modalCtrl.create({
+      component: AchivementPage,
+      componentProps: {
+        charInd: -1,
+      },
+      cssClass: 'custom-modal-css',
+      swipeToClose: true,
+    });
+
+    modal.onWillDismiss().then((dataReturned) => {
+      if (dataReturned !== null && dataReturned.data !== '') {
+        const navigationExtras: NavigationExtras = {
+          state: dataReturned.data
+        };
+        this.location.back();
+      }
+    });
+
+    return modal.present();
   }
 
   openChat(player: Player) {
