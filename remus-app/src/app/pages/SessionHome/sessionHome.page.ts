@@ -231,7 +231,6 @@ export class SessionHomePage {
       componentProps: {
         charInd: -1,
       },
-      cssClass: 'custom-modal-css',
       swipeToClose: true,
     });
 
@@ -397,9 +396,10 @@ export class SessionHomePage {
       this.achivementService.achivements.push({titre: data.achivement, description: data.description, checked: false});
     }
     if (data.achivementPartage) {
-      this.achivementService.partage = !this.achivementService.partage;
+      this.achivementService.partage = data.achivementPartage;
+      console.log(data.achivementPartage.toString());
     }
-    if(data.achivementValide) {
+    if (data.achivementValide) {
       this.achivementService.validAchivement(data.achivementValide);
     }
   }

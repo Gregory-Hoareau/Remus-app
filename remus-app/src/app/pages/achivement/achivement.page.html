@@ -1,13 +1,16 @@
 <ion-header [translucent]="true">
+    <ion-toolbar>
     <ion-title class="ion-text-center"  size="large">
       Succés
     </ion-title>
+    <ion-buttons slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-list *ngIf="playersService.isHost " >
-    <ion-item  *ngFor="let achivement of achivements" >
-        <ion-title (click)="showAchivement(achivement)" >{{achivement.titre}}</ion-title>
+    <ion-item  *ngFor="let achivement of achivements" (click)="showAchivement(achivement)"  >
+        <ion-title >{{achivement.titre}}</ion-title>
         <ion-checkbox [checked]="this.achivement.checked" (ionChange)="validAchivement(achivement.titre)"></ion-checkbox>
     </ion-item>
   </ion-list>
@@ -26,9 +29,9 @@
 
 
   <ion-fab *ngIf="playersService.isHost" vertical="bottom" horizontal="begin" slot="fixed">
-    <ion-fab-button *ngIf="achivementService.partage" (click)="activatePartage()">
+    <ion-fab-button  *ngIf="achivementService.partage" (click)="desactivatePartage()">
         <ion-img class="customImg" src="/assets/eye-regular.svg"></ion-img>
-    </ion-fab-button>
+        </ion-fab-button>
      <ion-fab-button *ngIf="!achivementService.partage" color="white" (click)="activatePartage()">
          <ion-img class="customImg" src="/assets/eye-regular.svg"></ion-img>
      </ion-fab-button>

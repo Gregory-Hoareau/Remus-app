@@ -7,6 +7,7 @@ import {Achivement} from "../../models/achivement.model";
 import {AchivementService} from "../../providers/achivement/achivement.service";
 import {PlayersService} from "../../providers/players/players.service";
 import {faEye} from "@fortawesome/free-solid-svg-icons";
+import {Player} from "../../models/player.models";
 
 @Component({
   selector: 'app-achivement',
@@ -17,9 +18,11 @@ export class AchivementPage {
 
   eye=faEye;
   achivements: Achivement[];
+  players: Player[];
 
-  constructor(private playersService:PlayersService,private router: Router, private alertController: AlertController, private achivementService: AchivementService) {
+  constructor(private modalCtrl: ModalController, private playersService:PlayersService,private router: Router, private alertController: AlertController, private achivementService: AchivementService) {
     this.achivements = achivementService.achivements;
+    this.players = playersService.playersList;
   }
 
   async showAchivement(achivement: Achivement) {
@@ -80,8 +83,18 @@ export class AchivementPage {
   }
   activatePartage() {
     this.achivementService.partage = !this.achivementService.partage;
-    this.playersService.playersList.forEach(p => {
-      p.conn.send({achivementPartage: this.achivementService.partage});
+    this.players.forEach(p => {
+      p.conn.send({achivementPartage: true});
+      console.log(this.achivementService.partage);
+    });
+  }
+
+  desactivatePartage() {
+
+    this.achivementService.partage = !this.achivementService.partage;
+    this.players.forEach(p => {
+      p.conn.send({achivementPartage: false});
+      console.log(this.achivementService.partage);
     });
   }
 }
