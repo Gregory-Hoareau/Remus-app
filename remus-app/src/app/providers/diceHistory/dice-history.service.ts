@@ -24,13 +24,13 @@ export class DiceHistoryService {
 
   selectedDiceString(roll: DiceRoll) {
     let res = "";
-    for(const die of roll.dices) {
+    for(const die of roll.dices.keys()) {
       console.log('DIE')
       console.log(die)
       if (res !== "") {
         res+= ' + ';
       }
-      res += die[1] + die[0].name;
+      res += roll.dices.get(die) + die.name;
     }
     if (roll.modificator) {
       if(roll.modificator > 0) {
