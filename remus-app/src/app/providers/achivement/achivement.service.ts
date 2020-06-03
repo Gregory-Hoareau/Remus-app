@@ -24,6 +24,10 @@ export class AchivementService {
       }
     });
   }
+  remove(achivement: Achivement){
+    this.achivements.splice(this.achivements.indexOf(achivement),1);
+    this.setUpAvancee();
+  }
 setUpAvancee(){
   let temp = 0;
   this.achivements.forEach(p => {

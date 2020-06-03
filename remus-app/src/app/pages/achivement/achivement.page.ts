@@ -8,6 +8,7 @@ import {AchivementService} from "../../providers/achivement/achivement.service";
 import {PlayersService} from "../../providers/players/players.service";
 import {faEye} from "@fortawesome/free-solid-svg-icons";
 import {Player} from "../../models/player.models";
+import {CharacterSheet} from "../../models/character-sheet.model";
 
 @Component({
   selector: 'app-achivement',
@@ -23,8 +24,9 @@ export class AchivementPage {
 
   constructor(private modalCtrl: ModalController, private playersService:PlayersService,private router: Router, private alertController: AlertController, private achivementService: AchivementService) {
     this.achivements = achivementService.achivements;
-    this.players = playersService.playersList;
+    this.achivementService.setUpAvancee();
     this.avancee = this.achivementService.avancee;
+   
   }
 
 
@@ -80,6 +82,15 @@ export class AchivementPage {
     await alert.present();
   }
 
+  trash(achivement: Achivement) {
+    this.achivements.splice(this.achivements.indexOf(achivement), 1);
+    this.achivementService.setUpAvancee();
+    this.avancee = this.achivementService.avancee;
+    this.playersService.playersList.forEach(p => {
+      p.conn.send({removeAchivement: achivement});
+    });
+  }
+
   validAchivement(titre:string) {
     this.achivementService.validAchivement(titre);
     this.playersService.playersList.forEach(p => {
@@ -101,7 +112,7 @@ export class AchivementPage {
         }
       }, {
         text: 'Oui',
-        handler: (data) => {
+        handler: () => {
           this.achivementService.partage = !this.achivementService.partage;
           this.players.forEach(p => {
             p.conn.send({achivementPartage: true});
@@ -138,17 +149,5 @@ export class AchivementPage {
       ]
     });
     await alert.present();
-  }
-
-  setUpAvancee() {
-    let temp = 0;
-    this.achivements.forEach(p => {
-      if (p.checked) {
-        temp = temp + 1 ;
-      }
-    });
-    if ( this.achivements.length !== 0) {
-      this.avancee = ((temp / this.achivements.length));
-    }
   }
 }

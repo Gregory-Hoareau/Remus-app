@@ -61,14 +61,15 @@ export class CharacterService {
     }
   }
 
+  remove(character: CharacterSheet) {
+    this.characters.splice(this.characters.indexOf(character),1);
+  }
   import(character: CharacterSheet) {
     if (this.playerService.isHost) {
       this.characters.push(character);
     } else {
       this.characters[0] = character;
     }
-      
   }
-  
 
 }

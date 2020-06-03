@@ -26,8 +26,9 @@ export class SelectCharacterPage implements OnInit {
 
   trash(character: CharacterSheet) {
     this.characters.splice(this.characters.indexOf(character), 1);
+    this.characterService.remove(character);
   }
-  
+
 
   importCharacter() {
     this.modalCtrl.create({

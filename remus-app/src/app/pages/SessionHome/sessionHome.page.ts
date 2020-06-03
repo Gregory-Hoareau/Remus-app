@@ -403,6 +403,9 @@ export class SessionHomePage {
       this.achivementService.validAchivement(data.achivementValide);
       this.achivementService.setUpAvancee();
     }
+    if(data.removeAchivement){
+      this.achivementService.remove(data.removeAchivement);
+    }
   }
 
   navigateToChar() {
