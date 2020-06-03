@@ -40,6 +40,7 @@
 .container {
   display:flex;
   justify-content: center;
+  position: relative;
 }
 
 /* Make the image responsive */
@@ -49,14 +50,28 @@
 
 /* Style the button and place it in the middle of the container/image */
 .container .btn {
+  z-index: 2;
   position: absolute;
   color: red;
-  top: 10%;
+  top: 5%;
   left: 90%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
-  font-size: 20px;
   cursor: pointer;
+  margin: auto;
+  font-size: x-large;
+}
+.container .brushbtn {
+  z-index: 2;
+  position: absolute;
+  color: black;
+  bottom: 0%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  font-size: 5px;
+  cursor: pointer;
+  margin: auto;
 }
 
 .realSmall {
