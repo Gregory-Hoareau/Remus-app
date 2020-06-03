@@ -15,7 +15,15 @@ export class SessionChatPage implements OnInit {
   @Input() player: Player;
   @Input() conv: Conversation;
 
-  constructor(private formBuilder: FormBuilder, private playerServ: PlayersService) { 
+  constructor(private formBuilder: FormBuilder, private playerServ: PlayersService) {
+    this.player = {
+      name: '',
+      conn: undefined
+    }
+    this.conv = {
+      messages: [
+      ]
+    }
   }
 
   ngOnInit() {    
