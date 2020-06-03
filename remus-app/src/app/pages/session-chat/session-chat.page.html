@@ -1,18 +1,18 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>{{player.name}}</ion-title>
+    <ion-buttons slot="end" (click)="this.modalController.dismiss()"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content scroll-y="true">
   <ion-card *ngFor="let message of conv.messages"> {{message[0].name}} : {{message[1]}}</ion-card>
 </ion-content>
 
 <ion-footer>
-
   <form [formGroup]="myForm" (ngSubmit)="send()">
     <ion-item>
-      <ion-textarea formControlName="message" placeholder="Envoyer un message à {{player.name}}"></ion-textarea>
+      <ion-textarea required formControlName="message" placeholder="Envoyer un message à {{player.name}}"></ion-textarea>
     </ion-item>
     <ion-button block color="primary" type="submit" [disabled]="myForm.invalid">
       send
