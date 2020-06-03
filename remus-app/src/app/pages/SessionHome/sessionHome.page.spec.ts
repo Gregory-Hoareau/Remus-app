@@ -8,19 +8,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CharacterSheetPageModule } from '../character-sheet/character-sheet.module';
 import { routes } from 'src/app/app-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Observable } from 'rxjs';
+import { IonicStorageModule } from '@ionic/storage';
 
 describe('SessionHomePage', () => {
   let component: SessionHomePage;
   let fixture: ComponentFixture<SessionHomePage>;
 
   const fakeActivatedRoute = {
-    queryParams: {
-      subscribe: (fn: (value: Params) => void) => fn({
-        extras: {
-          state: {},
-        }
-      }),
-    }
+    queryParams: new Observable()
   } as ActivatedRoute;
 
   const fakeRoute = {
@@ -40,6 +36,7 @@ describe('SessionHomePage', () => {
         IonicModule.forRoot(),
         RouterTestingModule.withRoutes(routes),
         FontAwesomeModule,
+        IonicStorageModule.forRoot()
       ],
       providers: [
         {provide: ActivatedRoute, useValue: fakeActivatedRoute},

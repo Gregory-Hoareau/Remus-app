@@ -15,6 +15,7 @@ import {NotesService} from "../../providers/notes/notes.service";
 import { Player } from 'src/app/models/player.models';
 import { AchivementPage } from '../achivement/achivement.page';
 import {CanvasPage} from "../canvas/canvas.page";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -45,9 +46,9 @@ export class SessionHomePage {
 
   constructor(public achivementService:AchivementService,public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
-              private file: File, private navCtrl: NavController, private playerServ: PlayersService,
+              private file: File, private playerServ: PlayersService,
               private toastController: ToastController, private menuController: MenuController,
-              private noteService: NotesService) {
+              private noteService: NotesService, private location: Location) {
     if(this.route.queryParams){
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
@@ -78,7 +79,7 @@ export class SessionHomePage {
       //Peers trying to join
       this.roomName='Salle d\'attente';
       if(!this.roomid)
-        this.navCtrl.navigateBack(['/home']);
+        this.location.back();
       
       
       this.peer.on('open', id => {
@@ -200,7 +201,7 @@ export class SessionHomePage {
       }
     });
 
-    return await modal.present();
+    return modal.present();
   }
 
   openDiceRollerModal() {
@@ -239,7 +240,7 @@ export class SessionHomePage {
         const navigationExtras: NavigationExtras = {
           state: dataReturned.data
         };
-        this.navCtrl.navigateBack(['sessionHome']);
+        this.location.back();
       }
     });
 
@@ -260,8 +261,7 @@ export class SessionHomePage {
       });
     });
   }
-
-  async makeAnIdAlert(id) {
+  makeAnIdAlert(id) {
     this.alerteController.create({
       header: 'Nouvelle partie !',
       message: id,
@@ -280,7 +280,7 @@ export class SessionHomePage {
     })
   }
 
-  async makeApprovalAlert(player, conn) {
+  makeApprovalAlert(player, conn) {
     this.alerteController.create({
       header: 'Nouveau joueur !',
       message: player,
@@ -306,7 +306,7 @@ export class SessionHomePage {
     })
   }
 
-  async makeKickAlert(reason) {
+  makeKickAlert(reason) {
     this.loader.dismiss()
     this.alerteController.create({
       header: 'Vous avez été viré de la partie',
@@ -314,7 +314,7 @@ export class SessionHomePage {
       buttons: [{
         text: 'Ok',
         handler: () => {
-          this.navCtrl.navigateBack(['/home']);
+          this.location.back();
         }}]
     }).then(alert => {
       alert.present();
@@ -325,7 +325,7 @@ export class SessionHomePage {
     this.loader = await this.loadingController.create({
       message: 'En attente de la réponse de l\'hote'
     });
-    this.loader.present();
+    return this.loader.present();
   }
 
   // tslint:disable-next-line:no-unnecessary-initializer
