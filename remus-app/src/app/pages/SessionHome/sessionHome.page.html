@@ -28,16 +28,23 @@
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button class="dice" (click)="openDiceRollerModal()">
-      <fa-icon class="icon" [icon]="diceIcon"></fa-icon>
+    <ion-fab-button>
+      <ion-icon name="arrow-up-circle"></ion-icon>
     </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button class="dice" (click)="openDiceRollerModal()">
+        <fa-icon class="icon" [icon]="diceIcon"></fa-icon>
+      </ion-fab-button>
+      <ion-fab-button class="dice" (click)="openNotesModal()">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button class="dice" (click)="openAchivementModal()">
+        <fa-icon class="icon" [icon]="trophyIcon"></fa-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
 
-  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-    <ion-fab-button class="dice" (click)="openNotesModal()">
-      <ion-icon name="create-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+
 </ion-content>
 
 <ion-footer >

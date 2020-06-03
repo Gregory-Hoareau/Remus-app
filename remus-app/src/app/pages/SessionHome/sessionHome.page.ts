@@ -8,11 +8,12 @@ import Peer from 'peerjs';
 import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
 import { SimulateurPage } from '../simulateur/simulateur.page';
-import {faDiceD20, faTable} from '@fortawesome/free-solid-svg-icons';
+import {faDiceD20, faTable, faTrophy} from '@fortawesome/free-solid-svg-icons';
 import {AchivementService} from "../../providers/achivement/achivement.service";
 import {NotesPage} from "../notes/notes.page";
 import {NotesService} from "../../providers/notes/notes.service";
 import { Player } from 'src/app/models/player.models';
+import { AchivementPage } from '../achivement/achivement.page';
 
 @Component({
   selector: 'app-home',
@@ -39,6 +40,7 @@ export class SessionHomePage {
   image: string = null;
   loader: any;
   diceIcon = faDiceD20;
+  trophyIcon = faTrophy;
 
   constructor(public achivementService:AchivementService,public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
@@ -219,6 +221,28 @@ export class SessionHomePage {
     }).then(modal => {
       modal.present();
     });
+  }
+
+  async openAchivementModal() {
+    const modal = await this.modalCtr.create({
+      component: AchivementPage,
+      componentProps: {
+        charInd: -1,
+      },
+      cssClass: 'custom-modal-css',
+      swipeToClose: true,
+    });
+
+    modal.onWillDismiss().then((dataReturned) => {
+      if (dataReturned !== null && dataReturned.data !== '') {
+        const navigationExtras: NavigationExtras = {
+          state: dataReturned.data
+        };
+        this.navCtrl.navigateBack(['sessionHome']);
+      }
+    });
+
+    return await modal.present();
   }
 
   async makeAnIdAlert(id) {

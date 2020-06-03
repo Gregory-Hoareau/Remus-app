@@ -32,8 +32,7 @@ export class AchivementPage {
         handler: () => {
           alert.dismiss();
         }
-      }
-      ]
+      }]
     });
     await alert.present();
   }

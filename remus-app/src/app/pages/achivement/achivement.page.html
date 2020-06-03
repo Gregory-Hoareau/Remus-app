@@ -6,13 +6,11 @@
 
 <ion-content [fullscreen]="true">
   <ion-list *ngIf="playersService.isHost " >
-    <ion-item  *ngFor="let achivement of achivements"  >
+    <ion-item  *ngFor="let achivement of achivements" >
         <ion-title (click)="showAchivement(achivement)" >{{achivement.titre}}</ion-title>
         <ion-checkbox [checked]="this.achivement.checked" (ionChange)="validAchivement(achivement.titre)"></ion-checkbox>
     </ion-item>
   </ion-list>
-
-
 
 
     <ion-list *ngIf="!playersService.isHost && achivementService.partage" >

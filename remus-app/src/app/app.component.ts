@@ -8,7 +8,6 @@ import {faDiceD20, faHome, faPowerOff, faCommentAlt, faUserSlash, faPeopleArrows
 import {PlayersService} from './providers/players/players.service';
 import { Player } from './models/player.models';
 import { SessionChatPage } from './pages/session-chat/session-chat.page';
-import {AchivementPage} from './pages/achivement/achivement.page';
 
 
 @Component({
@@ -43,12 +42,6 @@ export class AppComponent {
 
   ];
 
-  public achievmentPage = {
-    title: 'Achivement',
-    url: '/achivement',
-    icon: faTrophy
-  };
-
   constructor(
       private platform: Platform,
       private splashScreen: SplashScreen,
@@ -76,28 +69,6 @@ export class AppComponent {
 
   quit() {
     this.navCtrl.navigateBack(['/home']);
-  }
-
-  async openAchivementModal() {
-    const modal = await this.modalCtrl.create({
-      component: AchivementPage,
-      componentProps: {
-        charInd: -1,
-      },
-      cssClass: 'custom-modal-css',
-      swipeToClose: true,
-    });
-
-    modal.onWillDismiss().then((dataReturned) => {
-      if (dataReturned !== null && dataReturned.data !== '') {
-        const navigationExtras: NavigationExtras = {
-          state: dataReturned.data
-        };
-        this.navCtrl.navigateBack(['sessionHome']);
-      }
-    });
-
-    return await modal.present();
   }
 
   openChat(player: Player) {
