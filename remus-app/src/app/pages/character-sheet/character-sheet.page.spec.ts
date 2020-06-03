@@ -6,6 +6,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HttpClientXsrfModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('CharacterSheetPage', () => {
   let component: CharacterSheetPage;
@@ -18,6 +21,8 @@ describe('CharacterSheetPage', () => {
         IonicModule.forRoot(),
         MatExpansionModule,
         BrowserAnimationsModule,
+        FontAwesomeModule,
+        HttpClientTestingModule
       ],
       providers: [
         ImagePicker,
