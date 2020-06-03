@@ -20,6 +20,7 @@ import {IonicStorageModule} from '@ionic/storage';
 import { SessionChatPageModule } from './pages/session-chat/session-chat.module';
 import {AchivementPage} from './pages/achivement/achivement.page';
 import {AchivementPageModule} from './pages/achivement/achivement.module';
+import {Base64ToGallery} from '@ionic-native/base64-to-gallery/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -47,6 +48,7 @@ import {AchivementPageModule} from './pages/achivement/achivement.module';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CharacterService,
     NavParams,
+    Base64ToGallery
   ],
 
   bootstrap: [AppComponent]

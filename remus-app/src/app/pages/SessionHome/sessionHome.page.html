@@ -25,6 +25,11 @@
   <div *ngIf="image" class="container">
       <img [src]="image" alt="">
     <ion-buttons class="btn" slot="end" (click)="closeImage()"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
+    <ion-fab vertical="start" horizontal="start" slot="fixed">
+      <ion-fab-button class="dice" (click)="openCanvasModal()">
+        <ion-icon name="brush"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

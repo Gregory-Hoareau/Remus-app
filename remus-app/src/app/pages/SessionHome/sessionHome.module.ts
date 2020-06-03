@@ -15,6 +15,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SimulateurPageModule } from '../simulateur/simulateur.module';
 import {AchivementPageModule} from '../achivement/achivement.module';
 import {NotesPageModule} from '../notes/notes.module';
+import {CanvasPageModule} from '../canvas/canvas.module';
 
 
 
@@ -30,7 +31,8 @@ import {NotesPageModule} from '../notes/notes.module';
     SelectCharacterPageModule,
     FontAwesomeModule,
     SimulateurPageModule,
-    NotesPageModule
+    NotesPageModule,
+    CanvasPageModule
   ],
   declarations: [SessionHomePage],
   providers: [File]

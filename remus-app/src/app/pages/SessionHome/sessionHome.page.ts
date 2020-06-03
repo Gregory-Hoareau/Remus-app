@@ -14,6 +14,7 @@ import {NotesPage} from "../notes/notes.page";
 import {NotesService} from "../../providers/notes/notes.service";
 import { Player } from 'src/app/models/player.models';
 import { AchivementPage } from '../achivement/achivement.page';
+import {CanvasPage} from "../canvas/canvas.page";
 
 @Component({
   selector: 'app-home',
@@ -243,6 +244,21 @@ export class SessionHomePage {
     });
 
     return await modal.present();
+  }
+
+  openCanvasModal() {
+    this.modalCtr.create({
+      component: CanvasPage,
+      swipeToClose: true,
+      componentProps: {
+        image: this.image,
+      }
+    }).then(modal => {
+      modal.present();
+      modal.onDidDismiss().then((data) => {
+        this.image = data.data;
+      });
+    });
   }
 
   async makeAnIdAlert(id) {
