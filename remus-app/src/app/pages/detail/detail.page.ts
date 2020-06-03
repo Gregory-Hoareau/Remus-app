@@ -14,6 +14,7 @@ export class DetailPage implements OnInit {
   public note: Note;
 
   constructor(private route: ActivatedRoute, private notesService: NotesService, private navCtrl: NavController, private modalCtrl: ModalController) {
+    this.note = {title: '', content:''};
   }
 
   ngOnInit() {}
