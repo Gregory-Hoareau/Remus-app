@@ -263,6 +263,7 @@ export class CharacterSheetPage implements OnInit {
           type: 'text',
           name: 'filename',
           placeholder: this.character.name,
+          value: this.character.name
         }
       ],
       buttons: [
