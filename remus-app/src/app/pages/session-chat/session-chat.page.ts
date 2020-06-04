@@ -28,6 +28,10 @@ export class SessionChatPage implements OnInit {
     }
   }
 
+  closeModal() {
+    this.modalController.dismiss();
+  }
+
   ngOnInit() {    
     this.myForm = this.formBuilder.group({
         message: null

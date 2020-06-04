@@ -385,12 +385,12 @@ export class SessionHomePage {
     }
     if (data.removed) {
       var node = document.createElement("ION-CARD");
-      node.appendChild(document.createTextNode(data.removed+' à quitté la salle'));
+      node.appendChild(document.createTextNode(data.removed+' a quitté la salle'));
       document.getElementById("mainContent").appendChild(node);
       //Notify players
       this.toastController.create({
         duration: 2000,
-        message: data.removed + ' à quité la partie',
+        message: data.removed + ' a quité la partie',
       }).then(toast => {toast.present()});
 
       const id = this.playerServ.getPlayerByName(data.removed);

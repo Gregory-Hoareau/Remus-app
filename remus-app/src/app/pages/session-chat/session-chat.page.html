@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>{{player.name}}</ion-title>
-    <ion-buttons slot="end" (click)="this.modalController.dismiss()"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
+    <ion-buttons slot="end" (click)="closeModal()">
+      <ion-icon class="ion-margin" name="close-outline"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
