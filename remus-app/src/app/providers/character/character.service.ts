@@ -43,17 +43,21 @@ export class CharacterService {
     this.characters = playerService.isHost? all_characters: [];
   }
 
+  getEmptyCharacter() {
+    return {...this.empty_characters};
+  }
+
   getCharacter(index = -1) {
     if (index === -1) { // Se la personne qui envoie la requête n'est pas le MJ
       if (this.characters.length === 0) {
-        const newChar = {...this.empty_characters}
+        const newChar = this.getEmptyCharacter();
         this.characters.push(newChar);
         return newChar;
       } else {
         return this.characters[0];
       }
     } else if (index === null) { // Si le MJ veut créer une nouveau PNJ
-      const newChar = {...this.empty_characters}
+      const newChar = this.getEmptyCharacter();
       this.characters.push(newChar);
       return newChar;
     } else {
@@ -64,6 +68,11 @@ export class CharacterService {
   remove(character: CharacterSheet) {
     this.characters.splice(this.characters.indexOf(character),1);
   }
+
+  addCharacter(character: CharacterSheet) {
+    this.characters.push(character);
+  }
+
   import(character: CharacterSheet) {
     if (this.playerService.isHost) {
       this.characters.push(character);

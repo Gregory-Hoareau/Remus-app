@@ -27,7 +27,6 @@ export class CrowdsourcingService {
   }
 
   postCharacterSheet(sheet: CharacterSheet) {
-    //console.log(sheet);
     return this.http.post<CharacterSheet>(this.character_sheet_url, sheet);
   }
 }
