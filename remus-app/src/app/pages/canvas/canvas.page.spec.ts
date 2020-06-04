@@ -13,7 +13,7 @@ describe('CanvasPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CanvasPage ],
+      declarations: [CanvasPage],
       imports: [
         IonicModule.forRoot(),
         ReactiveFormsModule,
@@ -33,5 +33,19 @@ describe('CanvasPage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should be same image', () => {
+    const img = new Image();
+    img.src = component.image;
+    expect(component.loadImage(component.image)).toEqual(img);
+  });
+
+  it('should set then export the same image', () => {
+    const trueImg = component.loadImage(component.image);
+    component.setBackground(trueImg);
+    component.exportEditedImage();
+    expect(component.testImage).toEqual(component.image);
+
   });
 });
