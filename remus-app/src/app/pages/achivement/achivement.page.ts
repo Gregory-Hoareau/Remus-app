@@ -19,7 +19,7 @@ export class AchivementPage {
 
   eye=faEye;
   achivements: Achivement[];
-  players: Player[];
+  players: Player[] =null;
   avancee = 1;
 
   constructor(private modalCtrl: ModalController, private playersService:PlayersService,private router: Router, private alertController: AlertController, private achivementService: AchivementService) {
@@ -69,12 +69,7 @@ export class AchivementPage {
       }, {
         text: 'Confirm',
         handler: (data) => {
-          this.achivementService.achivements.push({titre: data.titre, checked: false, description: data.description });
-          this.playersService.playersList.forEach(p => {
-            p.conn.send({achivement: data.titre, description: data.description });
-          });
-          this.achivementService.setUpAvancee();
-          this.avancee = this.achivementService.avancee;
+          this.addAchivement(data);
         }
       }
      ]
@@ -89,6 +84,15 @@ export class AchivementPage {
     this.playersService.playersList.forEach(p => {
       p.conn.send({removeAchivement: achivement});
     });
+  }
+
+  addAchivement(data){
+    this.achivementService.addAchivement({titre: data.titre, checked: false, description: data.description });
+    this.playersService.playersList.forEach(p => {
+      p.conn.send({achivement: data.titre, description: data.description });
+    });
+    this.achivementService.setUpAvancee();
+    this.avancee = this.achivementService.avancee;
   }
 
   validAchivement(titre:string) {
@@ -124,7 +128,7 @@ export class AchivementPage {
     });
     await alert.present();
   }
-
+  // bug connu : Le bouton ne fonctionne qu'une fois sur deux.
   async desactivatePartage() {
 
     const alert = await this.alertController.create({

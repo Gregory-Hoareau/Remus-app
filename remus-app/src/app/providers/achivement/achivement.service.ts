@@ -7,15 +7,17 @@ import {Achivement} from '../../models/achivement.model';
 })
 export class AchivementService {
   achivements: Achivement[];
-  partage:boolean;
-  avancee:any;
+  partage:boolean = false;
+  avancee:any = 0;
 
   constructor() {
 
     this.achivements = [];
-    this.partage = false;
     // tslint:disable-next-line:no-unused-expression
     this.setUpAvancee;
+  }
+  addAchivement(achivement:Achivement){
+    this.achivements.push(achivement);
   }
   validAchivement(titre: string) {
     this.achivements.forEach(a => {
@@ -38,7 +40,7 @@ setUpAvancee(){
   if ( this.achivements.length !== 0) {
     this.avancee = ((temp / this.achivements.length));
   } else {
-    this.avancee =  1;
+    this.avancee = 0.0;
   }
 }
 
