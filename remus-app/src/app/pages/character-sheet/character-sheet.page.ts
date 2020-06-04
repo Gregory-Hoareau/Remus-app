@@ -47,8 +47,14 @@ export class CharacterSheetPage implements OnInit {
     let field;
     switch (title) {
       case 'background': field = 'textarea'; break;
-      case 'age': field = 'number'; break;
+      case 'age': 
+        field = 'number'; 
+        break;
       default: field = 'text'; break;
+    }
+    let val = this.character[title];
+    if(title === 'age') {
+      val = (val>-1)? val: '';
     }
     const alert = await this.alertCtrl.create({
       header: title.charAt(0).toUpperCase() + title.slice(1),
@@ -56,7 +62,7 @@ export class CharacterSheetPage implements OnInit {
         name: title,
         type: field,
         placeholder: title,
-        value: this.character[title]
+        value: val
       }],
       buttons: [{
           text: 'Annuler',
@@ -146,7 +152,7 @@ export class CharacterSheetPage implements OnInit {
         text: 'Valider',
         handler: data => {
           if (data.skill !== '') {
-            this.addSkill(data.skill);
+            this.addSkill({name: data.skill});
           }
           this.changeSavedToast();
         }
@@ -256,7 +262,7 @@ export class CharacterSheetPage implements OnInit {
     });
     const alert = await this.alertCtrl.create({
       header: 'Enregistrer',
-      message: 'Sous quel nom voulez-vous enregistrer la fiche de personnage',
+      message: 'Sous quel nom voulez-vous enregistrer la fiche de personnage?',
       backdropDismiss: false,
       inputs: [
         {
