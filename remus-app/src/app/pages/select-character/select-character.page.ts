@@ -13,19 +13,16 @@ import { LoadCharacterPage } from '../load-character/load-character.page';
 })
 export class SelectCharacterPage implements OnInit {
 
-  characters: CharacterSheet[];
   importIcon = faFileImport;
 
   constructor(private characterService: CharacterService, private modalCtrl:ModalController) {
-    this.characters = this.characterService.characters;
-    console.log(this.characters)
   }
 
   ngOnInit() {
   }
 
   trash(character: CharacterSheet) {
-    this.characters.splice(this.characters.indexOf(character), 1);
+    console.log("removing ", character)
     this.characterService.remove(character);
   }
 
