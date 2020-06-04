@@ -61,13 +61,13 @@ export class AchivementPage {
       }
       ],
       buttons: [{
-        text: 'Cancel',
+        text: 'Annuler',
         role: 'cancel',
         handler: () => {
           alert.dismiss();
         }
       }, {
-        text: 'Confirm',
+        text: 'Confirmer',
         handler: (data) => {
           this.addAchivement(data);
         }
