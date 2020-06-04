@@ -16,6 +16,7 @@ import { SimulateurPageModule } from '../simulateur/simulateur.module';
 import {AchivementPageModule} from '../achivement/achivement.module';
 import {NotesPageModule} from '../notes/notes.module';
 import {CanvasPageModule} from '../canvas/canvas.module';
+import { CrowdsourcingPageModule } from '../crowdsourcing/crowdsourcing.module';
 
 
 
@@ -32,7 +33,8 @@ import {CanvasPageModule} from '../canvas/canvas.module';
     FontAwesomeModule,
     SimulateurPageModule,
     NotesPageModule,
-    CanvasPageModule
+    CanvasPageModule,
+    CrowdsourcingPageModule,
   ],
   declarations: [SessionHomePage],
   providers: [File]
