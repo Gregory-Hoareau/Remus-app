@@ -13,6 +13,7 @@ export class CanvasPage implements AfterViewInit {
   @Input()
   public image: string;
 
+  testImage: string;
   settings: boolean;
   portrait: boolean;
   permissions: boolean;
@@ -127,7 +128,7 @@ export class CanvasPage implements AfterViewInit {
   exportEditedImage() {
     const dataUrl = this.canvasElement.toDataURL();
     const options: Base64ToGalleryOptions = { prefix: 'edited_', mediaScanner:  false };
-
+    this.testImage = dataUrl;
     this.base64ToGallery.base64ToGallery(dataUrl, options).then(
           async res => {
             const toast = await this.toastCtrl.create({
