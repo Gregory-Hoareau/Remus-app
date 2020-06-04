@@ -395,7 +395,7 @@ export class SessionHomePage {
       this.achivementService.achivements.push({titre: data.achivement, description: data.description, checked: false});
       this.achivementService.setUpAvancee();
     }
-    if (data.achivementPartage) {
+    if (data.achivementPartage !== undefined) {
       this.achivementService.partage = data.achivementPartage;
       console.log(data.achivementPartage.toString());
     }
