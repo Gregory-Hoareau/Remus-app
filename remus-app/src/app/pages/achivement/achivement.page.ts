@@ -23,6 +23,7 @@ export class AchivementPage {
   avancee = 1;
 
   constructor(private modalCtrl: ModalController, private playersService:PlayersService,private router: Router, private alertController: AlertController, private achivementService: AchivementService) {
+    this.players =this.playersService.playersList;
     this.achivements = achivementService.achivements;
     this.achivementService.setUpAvancee();
     this.avancee = this.achivementService.avancee;
@@ -81,14 +82,14 @@ export class AchivementPage {
     this.achivements.splice(this.achivements.indexOf(achivement), 1);
     this.achivementService.setUpAvancee();
     this.avancee = this.achivementService.avancee;
-    this.playersService.playersList.forEach(p => {
+    this.players.forEach(p => {
       p.conn.send({removeAchivement: achivement});
     });
   }
 
-  addAchivement(data){
+  addAchivement(data) {
     this.achivementService.addAchivement({titre: data.titre, checked: false, description: data.description });
-    this.playersService.playersList.forEach(p => {
+    this.players.forEach(p => {
       p.conn.send({achivement: data.titre, description: data.description });
     });
     this.achivementService.setUpAvancee();
@@ -97,10 +98,10 @@ export class AchivementPage {
 
   validAchivement(titre:string) {
     this.achivementService.validAchivement(titre);
-    this.playersService.playersList.forEach(p => {
+    this.players.forEach(p => {
       p.conn.send({achivementValide: titre});
     });
-   this.achivementService.setUpAvancee();
+    this.achivementService.setUpAvancee();
     this.avancee = this.achivementService.avancee;
   }
 
