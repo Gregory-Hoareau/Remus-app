@@ -85,3 +85,36 @@ Actions :
 - Reussir
 
 ## Sprint 3
+
+### Risk #1
+
+**Si** on améliore pas le design de l'application
+**Alors** l'application perd de son cahrme et de son attraction envers les utilisateurs malgré toutes les fonctionnalitées proposées
+
+Probabilité : :fire:
+Importance : :fire:
+
+Actions :
+- se renseigner sur des design qui pourrait être cohérent avec notre application et plaire au plus grand nombre (peut etre google form)
+
+### Risk #2
+
+**Si** on ne réussi pas a établir l'identification des utilisateurs par téléphone (id)
+**Alors** n'importe quel utilisateur pourra se faire passer pour quelqu'un d'autre et prendre sa place 
+
+Probabilité : :fire:
+Importance : :fire:
+
+Actions :
+- se renseigner sur une implementation permettant de reconnaitre les telephone en leur attribuant un identifiant qu'ils conserveront indéfiniment (déjà trouvé)
+
+### Risk #3
+
+**Si** on ne parvient pas à rendre nos fiches de personnages modulable et a utiliser des dés spéciaux
+**Alors** l'application d'assistant au JDR ne pourra s'adapter a tous les jeux de rôles et se verra contraintes a ceux utilisant les fiches de personnages et les dés basiques
+
+Probabilité : :grimacing:
+Importance : :grimacing:
+
+Actions :
+- implémenter un maximum de type de fiche et de dés spéciaux, pour convenir au plus grand nombre de JDR et donc d'utilisateurs
