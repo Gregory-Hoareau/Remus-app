@@ -29,14 +29,14 @@
             <img src="/assets/add-picture.png" (click)="addPicture()">
           </div>
           <div class="personnal">
-            <p class="name">Nom: {{character.name}} <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('name')"></ion-icon></p>
-            <p class="age">Age: <span *ngIf="character.age > -1">{{character.age}}</span> <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('age')"></ion-icon></p>
-            <p class="sex">Sexe: {{character.sex}} <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('sex')"></ion-icon></p>
+            <p class="name">Nom: {{character.name}} <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('name')"></ion-icon></p>
+            <p class="age">Age: <span *ngIf="character.age > -1">{{character.age}}</span> <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('age')"></ion-icon></p>
+            <p class="sex">Sexe: {{character.sex}} <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('sex')"></ion-icon></p>
           </div>
         </div>
 
         <div class="private-info">
-          <p>Background: <ion-icon slot="end" name="create-outline" (click)="editPersonalAlert('background')"></ion-icon></p>
+          <p>Background: <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('background')"></ion-icon></p>
           <div class="background-display">
             {{character.background}}
           </div>
@@ -51,9 +51,9 @@
 
       <div class="traits">
         <ion-list>
-          <ion-item *ngFor="let trait of character.traits">
+          <ion-item *ngFor="let trait of character.traits; let i = index">
               <span>{{trait.name}}: <span *ngIf="trait.value > -1">{{trait.value}}</span>
-              <ion-icon name="create-outline" (click)="editTraitAlert(trait.name)"></ion-icon>
+              <ion-icon *ngIf="!read_only" name="create-outline" (click)="editTraitAlert(i)"></ion-icon>
             </span>
           </ion-item>
         </ion-list>
@@ -67,13 +67,13 @@
       </mat-expansion-panel-header>
 
       <div class="skills">
-        <ion-button (click)="addNewSkillAlert()">+</ion-button>
+        <ion-button *ngIf="!read_only" (click)="addNewSkillAlert()">+</ion-button>
         <ion-list>
           <ion-item-sliding *ngFor="let skill of character.skills; let i = index">
             <ion-item>
-              <ion-label>{{skill}}</ion-label>
+              <ion-label>{{skill.name}}</ion-label>
             </ion-item>
-            <ion-item-options side="start">
+            <ion-item-options *ngIf="!read_only" side="start">
               <ion-item-option color="danger" (click)="deleteSkill(i)">Delete</ion-item-option>
             </ion-item-options>
           </ion-item-sliding>
@@ -81,6 +81,32 @@
       </div>
 
     </mat-expansion-panel>
-
   </mat-accordion>
+
+
+  <div class="buttons" *ngIf="!read_only">
+    <ion-button (click)="shareCharacter()">
+      <ion-icon class="icon" name="cloud-upload"></ion-icon>
+      Uploader le personnage
+    </ion-button>
+    <ion-button (click)="importCharacterForPlayer()">
+      <fa-icon class="icon" [icon]="importIcon"></fa-icon>
+      Importer
+    </ion-button>
+  </div>
+
+  <div class="buttons" *ngIf="read_only && !importing">
+    <ion-button (click)="downloadCharacter()">
+      <ion-icon name="cloud-download"></ion-icon>
+      Télécharger le personnage
+    </ion-button>
+  </div>
+
+  <div class="buttons" *ngIf="importing">
+    <ion-button (click)="importCharacter()">
+      <fa-icon class="icon" [icon]="importIcon"></fa-icon>
+      Importer
+    </ion-button>
+  </div>
+  
 </ion-content>

@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="end">
       <ion-menu-toggle menu="playerList">
-        <ion-button *ngIf="isHost">
+        <ion-button>
           <ion-icon name="person" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-menu-toggle>
@@ -17,23 +17,42 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="flex" [fullscreen]="true">
+<ion-content class="flex not-scrollable" id="mainContent" [fullscreen]="true">
   <ion-card>
     {{description}}
   </ion-card>
-  <ion-card *ngFor="let player of playerServ.playersList">
-    {{player.name}} has joined the room
-  </ion-card>
+  <!-- Shows share image if on is selected; Should be generated in code for better persistence -->
   <div *ngIf="image" class="container">
-      <img [src]="image" alt="">
-    <ion-buttons class="btn" slot="end" (click)="closeImage()"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
-  </div>
-  
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button class="dice" (click)="openDiceRollerModal()">
-      <fa-icon class="icon" [icon]="diceIcon"></fa-icon>
+    <img [src]="image" alt="">
+    <ion-buttons class="btn" slot="end" (click)="closeImage()">
+        <ion-icon class="ion-margin" name="close-outline"></ion-icon>
+    </ion-buttons>
+    <ion-fab-button  color="light" size="small" class="brushbtn" slot="end" (click)="openCanvasModal()">
+        <ion-icon name="brush"></ion-icon>
     </ion-fab-button>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="arrow-up-circle"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button class="dice" (click)="openDiceRollerModal()">
+        <fa-icon class="icon" [icon]="diceIcon"></fa-icon>
+      </ion-fab-button>
+      <ion-fab-button class="dice" (click)="openNotesModal()">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button class="dice" (click)="openAchivementModal()">
+        <fa-icon class="icon" [icon]="trophyIcon"></fa-icon>
+      </ion-fab-button>
+      <ion-fab-button class="dice" (click)="openCrowdsouricngModal()">
+        <fa-icon class="icon" [icon]="crowdsourcing"></fa-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
+
+
 </ion-content>
 
 <ion-footer >

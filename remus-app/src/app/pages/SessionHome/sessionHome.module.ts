@@ -13,6 +13,10 @@ import {CharacterSheetPageModule} from '../character-sheet/character-sheet.modul
 import { SelectCharacterPageModule } from '../select-character/select-character.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SimulateurPageModule } from '../simulateur/simulateur.module';
+import {AchivementPageModule} from '../achivement/achivement.module';
+import {NotesPageModule} from '../notes/notes.module';
+import {CanvasPageModule} from '../canvas/canvas.module';
+import { CrowdsourcingPageModule } from '../crowdsourcing/crowdsourcing.module';
 
 
 
@@ -23,10 +27,14 @@ import { SimulateurPageModule } from '../simulateur/simulateur.module';
     IonicModule,
     SessionHomePageRoutingModule,
     DocPopupModule,
+      AchivementPageModule,
     CharacterSheetPageModule,
     SelectCharacterPageModule,
     FontAwesomeModule,
     SimulateurPageModule,
+    NotesPageModule,
+    CanvasPageModule,
+    CrowdsourcingPageModule,
   ],
   declarations: [SessionHomePage],
   providers: [File]

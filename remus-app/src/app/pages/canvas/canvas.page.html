@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Ionic Canvas Drawing
+    </ion-title>
+    <ion-buttons slot="end" (click)="displaySettings()">
+      <ion-icon class="ion-margin" name="cog-outline"></ion-icon>
+    </ion-buttons>
+    <ion-buttons slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [forceOverscroll]="false">
+  <div *ngIf="settings">
+  <ion-row>
+    <ion-col *ngFor="let color of colors" [style.background]="color" class="color-block" tappable
+             (click)="selectColor(color)"></ion-col>
+  </ion-row>
+  <ion-radio-group [(ngModel)]="selectedColor">
+    <ion-row>
+      <ion-col *ngFor="let color of colors" class="ion-text-center">
+        <ion-radio [value]="color"></ion-radio>
+      </ion-col>
+    </ion-row>
+  </ion-radio-group>
+
+  <ion-range min="2" max="20" color="primary" [(ngModel)]="lineWidth">
+    <ion-icon size="small" slot="start" name="brush"></ion-icon>
+    <ion-icon slot="end" name="brush"></ion-icon>
+  </ion-range>
+</div>
+<div class="canvasContainer">
+  <canvas #imageCanvas (mousedown)="startDrawing($event)" (touchstart)="startDrawing($event)"
+          (touchmove)="moved($event)" (mousemove)="moved($event)" (mouseup)="endDrawing()" (touchend)="endDrawing()"></canvas>
+</div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="dice" (click)="exportEditedImage()">
+      <ion-icon name="download-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

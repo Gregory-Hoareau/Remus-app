@@ -1,0 +1,66 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+    <ion-title class="ion-text-center"  size="large">
+      Succés
+    </ion-title>
+    <ion-buttons slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+    <div class="bar"  >
+        <ion-progress-bar class="percentage has-tip " [value]="this.achivementService.avancee">
+        </ion-progress-bar>
+    </div>
+
+  <ion-list *ngIf="playersService.isHost " >
+      <ion-item-sliding  *ngFor="let achivement of achivements">
+          <ion-item-options side="start">
+              <ion-item-option  color="white" (click)="validAchivement(achivement.titre)">
+                  <ion-checkbox [checked]="this.achivement.checked" ></ion-checkbox>
+              </ion-item-option>
+          </ion-item-options>
+          <ion-item  (click)="showAchivement(achivement)"  >
+              <ion-title >{{achivement.titre}}</ion-title>
+          </ion-item>
+          <ion-item-options side="end">
+              <ion-item-option color="danger"(click)="trash(achivement)" >
+                  <ion-icon name="trash"  ></ion-icon>
+              </ion-item-option>
+          </ion-item-options>
+
+      </ion-item-sliding>
+  </ion-list>
+
+
+    <ion-list *ngIf="!playersService.isHost && achivementService.partage" >
+        <ion-item  *ngFor="let achivement of achivements" (click)="showAchivement(achivement)" >
+            <ion-title >{{achivement.titre}}</ion-title>
+            <ion-checkbox [checked]="this.achivement.checked" [disabled]="true" ></ion-checkbox>
+        </ion-item>
+    </ion-list>
+
+    <ion-text class="ion-text-center" *ngIf="!playersService.isHost && !achivementService.partage" >
+        Le Maître du Jeu n'a pas souhaité partager les succès.
+    </ion-text>
+
+
+  <ion-fab *ngIf="playersService.isHost" vertical="bottom" horizontal="begin" slot="fixed">
+    <ion-fab-button  *ngIf="achivementService.partage" (click)="desactivatePartage()">
+        <ion-img class="customImg" src="/assets/eye-regular.svg"></ion-img>
+        </ion-fab-button>
+     <ion-fab-button *ngIf="!achivementService.partage" color="white" (click)="activatePartage()">
+         <ion-img class="customImg" src="/assets/eye-regular.svg"></ion-img>
+     </ion-fab-button>
+  </ion-fab>
+
+    <ion-fab *ngIf="playersService.isHost" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="newAchivement()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>
+
+
+

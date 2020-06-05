@@ -1,4 +1,5 @@
 import {Trait} from './trait.model';
+import { Skill } from './skill.model';
 
 export interface CharacterSheet {
     img: string;
@@ -7,7 +8,7 @@ export interface CharacterSheet {
     sex: string;
     background: string;
     traits: Trait[];
-    skills: string[];
+    skills: Skill[];
 }
 
 

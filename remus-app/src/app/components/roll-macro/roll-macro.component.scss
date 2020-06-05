@@ -1,0 +1,27 @@
+.macro {
+  display: flex;
+  width: 98%;
+  margin: 1%;
+  padding: 1%;
+  border: solid grey 1px;
+}
+
+.macroName {
+  width: 100%;
+  font-size: x-large;
+  padding: 2%;
+  align-self: center;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.macroContent {
+  vertical-align: middle;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  margin: 1% 5%;
+  align-self: center;
+  flex-direction: column;
+  color: darkblue;
+}

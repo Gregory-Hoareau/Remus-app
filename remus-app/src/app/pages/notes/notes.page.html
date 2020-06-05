@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Notes
+    </ion-title>
+    <ion-buttons slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item button detail *ngFor="let note of noteService.notes" (click)="detailModal(note)" routerDirection="forward">
+      <ion-label>{{ note.title }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button class="dice" (click)="addNote()">
+      <ion-icon name="create-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

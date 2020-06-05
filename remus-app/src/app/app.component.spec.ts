@@ -1,12 +1,12 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 
-import { Platform } from '@ionic/angular';
+import { Platform, ModalController, AngularDelegate } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 describe('AppComponent', () => {
 
@@ -25,8 +25,13 @@ describe('AppComponent', () => {
         { provide: StatusBar, useValue: statusBarSpy },
         { provide: SplashScreen, useValue: splashScreenSpy },
         { provide: Platform, useValue: platformSpy },
-        { provide: Router, useClass: class {navigate = jasmine.createSpy('navigate');}}
-      ],
+        { provide: Router, useClass: class {navigate = jasmine.createSpy('navigate');}},
+        Location,
+        ModalController,
+        AngularDelegate
+      ], imports: [
+        RouterModule.forRoot([])
+      ]
     }).compileComponents();
   }));
 

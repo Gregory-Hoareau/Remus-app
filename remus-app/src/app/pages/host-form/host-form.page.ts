@@ -15,13 +15,9 @@ export class HostFormPage implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder,
-     private modalController: ModalController, 
-     private navParams: NavParams) {}
+     private modalController: ModalController) {}
 
   ngOnInit() {
-    this.name = this.navParams.data.name;
-    this.description = this.navParams.data.description;
-
     this.myForm = this.formBuilder.group({
       name: [this.name],
       password: [''],

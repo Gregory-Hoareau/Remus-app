@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ note.title }}</ion-title>
+    <ion-buttons slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
+    <ion-buttons slot="start">
+      <ion-button (click)="deleteNote()">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+  <ion-textarea [autoGrow]="true" (input)="noteChanged()" [(ngModel)]="note.content" placeholder="...Besoin de vous souvenir de quelque chose ? notez le ici !"></ion-textarea>
+</ion-content>

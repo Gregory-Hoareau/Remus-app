@@ -37,11 +37,27 @@ export const routes: Routes = [
   {
     path: 'simulateur',
     loadChildren: () => import('./pages/simulateur/simulateur.module').then(m => m.SimulateurPageModule)
-  },  {
+  },
+  {
     path: 'select-character',
     loadChildren: () => import('./pages/select-character/select-character.module').then( m => m.SelectCharacterPageModule)
+  },
+  {
+    path: 'crowdsourcing',
+    loadChildren: () => import('./pages/crowdsourcing/crowdsourcing.module').then( m => m.CrowdsourcingPageModule)
+  },
+  {
+    path: 'session-chat',
+    loadChildren: () => import('./pages/session-chat/session-chat.module').then( m => m.SessionChatPageModule)
+  },
+  {
+    path: 'achivement',
+    loadChildren: () => import('./pages/achivement/achivement.module').then(m=>m.AchivementPageModule)
+  },
+  {
+    path: 'load-character',
+    loadChildren: () => import('./pages/load-character/load-character.module').then( m => m.LoadCharacterPageModule)
   }
-
 
 
 ];

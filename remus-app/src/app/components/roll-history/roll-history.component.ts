@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DiceRoll } from 'src/app/models/dice-roll.model';
-import { DiceHistoryService } from 'src/app/providers/dice/dice-history.service';
+import { DiceHistoryService } from 'src/app/providers/diceHistory/dice-history.service';
+import { Dice } from 'src/app/models/dice.model';
 
 @Component({
   selector: 'app-roll-history',
@@ -10,12 +11,16 @@ import { DiceHistoryService } from 'src/app/providers/dice/dice-history.service'
 export class RollHistoryComponent implements OnInit {
 
   @Input()
-  private roll: DiceRoll;
+  roll: DiceRoll;
 
-  constructor(private historyService:DiceHistoryService) {
-    this.roll={result:0,modificator:0,dices:null}
+  roll_name: string;
+
+  constructor(public historyService:DiceHistoryService) {
+    this.roll={result:0,modificator:0,dices:new Map<Dice,number>()}
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.roll_name = this.historyService.selectedDiceString(this.roll);
+  }
 
 }

@@ -4,6 +4,7 @@ import { HostFormPage} from '../host-form/host-form.page';
 import { IonRouterOutlet } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
 import {JoinFormPage} from '../join-form/join-form.page';
+import { PlayersService } from 'src/app/providers/players/players.service';
 
 @Component({
   selector: 'app-home',
@@ -14,9 +15,10 @@ export class HomePage {
 
   dataReturned: any;
 
-  constructor(private router: Router, private modalCtr: ModalController) {
+  constructor(private router: Router, private modalCtr: ModalController, private playerServ:PlayersService) {
 
   }
+
 
   async joinModal() {
     const joiningmodal = await this.modalCtr.create({

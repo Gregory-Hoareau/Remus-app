@@ -8,6 +8,8 @@ import { SelectCharacterPageRoutingModule } from './select-character-routing.mod
 
 import { SelectCharacterPage } from './select-character.page';
 import { CharacterSheetPageModule } from '../character-sheet/character-sheet.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LoadCharacterPageModule } from '../load-character/load-character.module';
 
 @NgModule({
   imports: [
@@ -16,7 +18,11 @@ import { CharacterSheetPageModule } from '../character-sheet/character-sheet.mod
     IonicModule,
     SelectCharacterPageRoutingModule,
     CharacterSheetPageModule,
+    FontAwesomeModule,
+    LoadCharacterPageModule,
   ],
-  declarations: [SelectCharacterPage]
+  declarations: [
+    SelectCharacterPage
+  ]
 })
 export class SelectCharacterPageModule {}
