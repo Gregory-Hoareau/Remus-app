@@ -6,6 +6,9 @@ import { Macro } from 'src/app/models/macro.model';
 import {MacroService} from '../../providers/macro/macro.service';
 import {Dice} from '../../models/dice.model';
 import {DiceService} from '../../providers/dice/dice.service';
+import {Gyroscope, GyroscopeOptions, GyroscopeOrientation} from '@ionic-native/gyroscope/ngx';
+import {DeviceMotion, DeviceMotionAccelerationData} from "@ionic-native/device-motion/ngx";
+import {Shake} from "@ionic-native/shake/ngx";
 
 
 @Component({
@@ -29,6 +32,7 @@ export class SimulateurPage implements OnInit {
   finalValue: string;
 
   // Dice thrower var
+  gyroscope : boolean;
   result : number;
   diceSum : number;
   diceSelected : Map<Dice, number>;
@@ -41,14 +45,16 @@ export class SimulateurPage implements OnInit {
   dices : number[];
   modificateur : number;
   modifResult : string;
+  sub: any;
 
 
 
 
-  constructor(public alertController: AlertController, private diceService: DiceService,
+  constructor(public shakeDetector: Shake, public alertController: AlertController, private diceService: DiceService,
     private diceHistoryService: DiceHistoryService, private modalCtrl: ModalController, private alertCtrl: AlertController, private macroService: MacroService)  { }
-
+    
   ngOnInit() {
+    this.gyroscope = false;
     this.modificateur = 0;
     this.diceSum = 0;
     this.totalDiceSum = 0;
@@ -108,6 +114,17 @@ export class SimulateurPage implements OnInit {
     this.segment = await this.slider.getActiveIndex();
   }
 
+  gyroscopeSetting() {
+    if (this.gyroscope) {
+      this.sub.unsubscribe();
+      this.gyroscope = false;
+    } else if (!this.gyroscope){
+      this.sub = this.shakeDetector.startWatch(50).subscribe(() => {
+        this.launchDice();
+      });
+      this.gyroscope = true;
+    }
+  }
 
   // Dice thrower functions
   getRandomInt(max) {

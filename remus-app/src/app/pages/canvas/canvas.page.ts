@@ -34,10 +34,13 @@ export class CanvasPage implements AfterViewInit {
     this.permissions = false;
   }
 
+  // ask for permission when the modal is opened
   ionViewWillEnter() {
     this.checkPermissions();
   }
 
+  // right after init build the canvas inn which the picture will be edited
+  // canvas is build in function of the image choosed to be in background in order to keep the right dimension of the original image
   ngAfterViewInit() {
     const img = this.loadImage(this.image);
     this.canvasElement = this.canvas.nativeElement;
@@ -47,6 +50,7 @@ export class CanvasPage implements AfterViewInit {
     this.setBackground(img);
   }
 
+  // verify if the application have the permissions to write in the gallery (if not, then ask for it)
   checkPermissions() {
     this.androidPermissions
         .checkPermission(this.androidPermissions
@@ -65,6 +69,7 @@ export class CanvasPage implements AfterViewInit {
     }
   }
 
+  // function to show (or hide) the settings for the canvas (color / size of the stroke)
   displaySettings() {
     if (this.settings) {
       this.settings = false;
@@ -73,11 +78,15 @@ export class CanvasPage implements AfterViewInit {
     }
   }
 
+  // function to load an image from a string in base64 to a classical image format
   loadImage(image) {
     const img = new Image();
     img.src = image;
     return img;
   }
+  
+  // function taking in acount an event trigerred on the html page listening for a first touch in the field of the canvas
+  // in order to save the position of the first touch in two variables
   startDrawing(ev) {
     this.drawing = true;
     const canvasPosition = this.canvasElement.getBoundingClientRect();
@@ -86,14 +95,17 @@ export class CanvasPage implements AfterViewInit {
     this.saveY = ev.pageY - canvasPosition.y;
   }
 
+  // function taking an event corresponding to the end of the draw (the finger releasing the screen)
+  // allow us to know when the draw should be finished (triggered in the html too)
   endDrawing() {
     this.drawing = false;
   }
 
+  // set the color of the pen to draw to the color choosen by the user
   selectColor(color) {
     this.selectedColor = color;
   }
-
+  // set an image in the backgroung of the canvas
   setBackground(img) {
     const ctx = this.canvasElement.getContext('2d');
 
@@ -101,6 +113,9 @@ export class CanvasPage implements AfterViewInit {
       ctx.drawImage(img,0,0, this.canvasElement.width, this.canvasElement.height);
     };
   }
+
+  // take an event in param allow us to follow the finger moving on the canvas by calculating the difference between
+  // the saved position and current position then draw on that pass
   moved(ev) {
     if (!this.drawing) { return; }
 
@@ -125,6 +140,8 @@ export class CanvasPage implements AfterViewInit {
     this.saveY = currentY;
   }
 
+  // transform the content of the canvas to an url (string in base64) then export it to the gallery
+  // with base64ToGallery plugin
   exportEditedImage() {
     const dataUrl = this.canvasElement.toDataURL();
     const options: Base64ToGalleryOptions = { prefix: 'edited_', mediaScanner:  false };

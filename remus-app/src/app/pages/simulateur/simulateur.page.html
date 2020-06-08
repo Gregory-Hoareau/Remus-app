@@ -13,6 +13,10 @@
     <ion-slides #slides class="slides" (ionSlideDidChange)="slideChanged()" scrollbar="true">
       <!-- DICE -->
       <ion-slide class="dicesPage">
+          <div class="settings">
+              <ion-toggle (ionChange)="gyroscopeSetting()"></ion-toggle>
+              <ion-label>Activer le lancer par secousse</ion-label>
+          </div>
           <div class="dices">
             <ion-img class="small" *ngFor="let dice of this.diceService.diceList" (click)="increaseDiceSum(dice)" src="/assets/{{dice.name}}.svg"></ion-img>
           </div>
@@ -35,7 +39,7 @@
 
         <ion-fab vertical="bottom" horizontal="end" slot="fixed">
           <ion-fab-button *ngIf="listOfDiceAsString !== ''" class="dice" (click)="newMacroAlert()">
-            <ion-icon name="add-outline"></ion-icon>
+            <ion-icon name="save-outline"></ion-icon>
           </ion-fab-button>
         </ion-fab>
       </ion-slide>
