@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CharacterSheet } from 'src/app/models/character-sheet.model';
+import { CharacterSheet, DnDCharacterSheet, WoDCharacterSheet, AventureCharacterSheet, WtACharacterSheet } from 'src/app/models/character-sheet.model';
 import { all_characters } from 'src/mocks/character'
 import { PlayersService } from '../players/players.service';
 
@@ -8,57 +8,59 @@ import { PlayersService } from '../players/players.service';
 })
 export class CharacterService {
 
-  private empty_characters: CharacterSheet = {
-    img: null,
-    name: '',
-    age: -1,
-    sex: '',
-    background: '',
-    traits: [{
-      name: 'Force',
-      value: -1,
-    }, {
-      name: 'Endurance',
-      value: -1,
-    }, {
-      name: 'Intelligence',
-      value: -1,
-    }, {
-      name: 'Perception',
-      value: -1,
-    }, {
-      name: 'Charisme',
-      value: -1,
-    }, {
-      name: 'Dextérité',
-      value: -1,
-    }],
-    skills: [
-    ]
-  };
+  readonly default_template = 'D&D';
+  private template: string;
+  private empty_characters: () => CharacterSheet; // Fonction renvoyant une fiche de personnage vide
 
   characters: CharacterSheet[];
 
   constructor(private playerService: PlayersService) {
     this.characters = playerService.isHost? all_characters: [];
+    this.template = this.default_template;
+  }
+
+  setTemplate(new_template) {
+    this.template = new_template;
+  }
+
+  private selectCharacterSheetTemplate() {
+    switch(this.template) {
+      case 'Aventure':
+        this.empty_characters = () => {
+          return new AventureCharacterSheet();
+        }
+        break;
+      case 'WtA':
+        this.empty_characters = () => {
+          return new WtACharacterSheet();
+        }
+        break;
+      case 'D&D':
+      default:
+        this.empty_characters = () => {
+          return new DnDCharacterSheet();
+        }
+        break;
+    }
   }
 
   getEmptyCharacter() {
-    return {...this.empty_characters};
+    this.selectCharacterSheetTemplate();
+    return this.empty_characters();
   }
 
   getCharacter(index = -1) {
     if (index === -1) { // Se la personne qui envoie la requête n'est pas le MJ
       if (this.characters.length === 0) {
         const newChar = this.getEmptyCharacter();
-        this.characters.push(newChar);
+        //this.characters.push(newChar);
         return newChar;
       } else {
         return this.characters[0];
       }
     } else if (index === null) { // Si le MJ veut créer une nouveau PNJ
       const newChar = this.getEmptyCharacter();
-      this.characters.push(newChar);
+      //this.characters.push(newChar);
       return newChar;
     } else {
       return this.characters[index];

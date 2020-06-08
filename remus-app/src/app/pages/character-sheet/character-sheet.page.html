@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')">
+    <ion-buttons slot="end" (click)="closeModal()">
       <ion-icon class="ion-margin" name="close-outline"></ion-icon>
     </ion-buttons>
     <ion-title>
@@ -33,6 +33,13 @@
             <p class="age">Age: <span *ngIf="character.age > -1">{{character.age}}</span> <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('age')"></ion-icon></p>
             <p class="sex">Sexe: {{character.sex}} <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('sex')"></ion-icon></p>
           </div>
+        </div>
+
+        <div class="optional_data" *ngIf="character.other_personal">
+          <p class="data" *ngFor="let d of character.other_personal; let i = index">
+            {{d.name}}: {{d.value}}
+            <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editOptionalDataAlert(d, i)"></ion-icon>
+          </p>
         </div>
 
         <div class="private-info">
