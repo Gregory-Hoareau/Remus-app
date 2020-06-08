@@ -19,6 +19,10 @@ export class CharacterService {
     this.template = this.default_template;
   }
 
+  getTemplate() {
+    return this.template;
+  }
+
   setTemplate(new_template) {
     this.template = new_template;
   }

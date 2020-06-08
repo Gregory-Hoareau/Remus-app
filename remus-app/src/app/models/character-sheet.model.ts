@@ -3,6 +3,7 @@ import { Skill } from './skill.model';
 import { PersonalData } from './personal-data.model';
 
 export abstract class CharacterSheet {
+    template: string = undefined;
     img: string = null;
     name: string = '';
     age: number = -1;
@@ -36,6 +37,7 @@ export abstract class CharacterSheet {
 
 // Character Sheet of Dongeons and dragons
 export class DnDCharacterSheet extends CharacterSheet {
+    template = 'D&D';
     other_personal = [{
         name: 'Race',
         value: ''
@@ -53,6 +55,7 @@ export class DnDCharacterSheet extends CharacterSheet {
 
 // Character Sheet for Aventure (RPG of Mayhar)
 export class AventureCharacterSheet extends CharacterSheet {
+    template = 'Aventure'
     other_personal = [{
         name: 'Race',
         value: ''
@@ -80,6 +83,7 @@ export abstract class WoDCharacterSheet extends CharacterSheet {
 }
 
 export class WtACharacterSheet extends WoDCharacterSheet {
+    template = 'WtA';
     other_personal = [{
         name: 'Race',
         value: ''

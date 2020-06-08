@@ -17,6 +17,7 @@ import { AchivementPage } from '../achivement/achivement.page';
 import {CanvasPage} from "../canvas/canvas.page";
 import { Location } from '@angular/common';
 import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
+import { CharacterService } from 'src/app/providers/character/character.service';
 
 @Component({
   selector: 'app-home',
@@ -50,7 +51,8 @@ export class SessionHomePage {
               private alerteController: AlertController, private loadingController: LoadingController,
               private file: File, private playerServ: PlayersService,
               private toastController: ToastController, private menuController: MenuController,
-              private noteService: NotesService, private location: Location) {
+              private noteService: NotesService, private location: Location,
+              private characterService: CharacterService) {
     if(this.route.queryParams){
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
@@ -295,6 +297,7 @@ export class SessionHomePage {
               con.send({newPlayer: player, peer: conn.peer});
             });
             conn.send({roomName: this.roomName, roomDesc: this.description});
+            conn.send({template: this.characterService.getTemplate()})
             //Add new player to peronnal player list
             this.playerServ.playersList.push({name: player, conn: conn});
         }},
@@ -354,7 +357,7 @@ export class SessionHomePage {
     if (data.newPlayer) {
 
       var node = document.createElement("ION-CARD");
-      node.appendChild(document.createTextNode(data.newPlayer+' has joined the room'));
+      node.appendChild(document.createTextNode(data.newPlayer+' a rejoint la salle'));
       document.getElementById("mainContent").appendChild(node);
 
       if (this.isHost) {
@@ -418,6 +421,9 @@ export class SessionHomePage {
     }
     if(data.removeAchivement){
       this.achivementService.remove(data.removeAchivement);
+    }
+    if(data.template) {
+      this.characterService.setTemplate(data.template);
     }
   }
 

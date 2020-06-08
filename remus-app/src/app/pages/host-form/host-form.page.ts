@@ -31,8 +31,7 @@ export class HostFormPage implements OnInit {
 
 
   async closeModal(onClosedData: any) {
-    console.log('HERE')
-    console.table(onClosedData.template);
+    console.table(onClosedData);
     this.characterService.setTemplate(onClosedData.template);
     await this.modalController.dismiss(onClosedData);
   }
