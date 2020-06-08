@@ -17,6 +17,7 @@ import { AchivementPage } from '../achivement/achivement.page';
 import {CanvasPage} from "../canvas/canvas.page";
 import { Location } from '@angular/common';
 import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
+import { Conversation } from 'src/app/models/conversation.model';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,6 @@ import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
 export class SessionHomePage {
 
   //Personal info
-  isHost: boolean;
   roomName: string;
   description: string;
   peer: Peer;
@@ -116,7 +116,6 @@ export class SessionHomePage {
     } else {
       //Initialise hosting
       this.pseudo="Host"
-      this.isHost = true;
       this.roomid = this.myid;
       this.playerServ.isHost = true;
 
@@ -139,6 +138,7 @@ export class SessionHomePage {
   }
 
   ngOnDestroy() {
+    this.playerServ.isHost=false;
     this.loader.dismiss()
 
     this.menuController.enable(false,'playerList');
@@ -147,7 +147,7 @@ export class SessionHomePage {
     this.noteService.reset();
 
     this.playerServ.getConns().forEach(c => {
-      if(!this.isHost)
+      if(!this.playerServ.isHost)
         c.send({removed:this.pseudo})
       else
         c.send({kick:'l\'hote à quité la partie'})
@@ -357,7 +357,7 @@ export class SessionHomePage {
       node.appendChild(document.createTextNode(data.newPlayer+' has joined the room'));
       document.getElementById("mainContent").appendChild(node);
 
-      if (this.isHost) {
+      if (this.playerServ.isHost) {
         this.makeApprovalAlert(data.newPlayer, conn);
       } else {
         var con = this.peer.connect(data.peer, {serialization: 'json'})
@@ -400,9 +400,9 @@ export class SessionHomePage {
       let p: Player;
       p = this.playerServ.getPlayerById(conn.peer);
       if (!this.playerServ.conversations.get(p))
-        this.playerServ.conversations.set(p,{messages:[]})
+        this.playerServ.conversations.set(p, new Conversation());
       console.log("recieved message : ", data.message, " from ", p)
-      this.playerServ.conversations.get(p).messages.push([p,data.message])
+      this.playerServ.conversations.get(p).messages.push({timestamp: new Date(),player:p,message:data.message, target:this.playerServ.me()})
     }
     if (data.achivement) {
       this.achivementService.achivements.push({titre: data.achivement, description: data.description, checked: false});

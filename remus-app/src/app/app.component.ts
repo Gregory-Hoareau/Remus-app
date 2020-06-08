@@ -10,6 +10,7 @@ import { Player } from './models/player.models';
 import { SessionChatPage } from './pages/session-chat/session-chat.page';
 import {AchivementPage} from './pages/achivement/achivement.page';
 import { Location } from '@angular/common';
+import { Conversation } from './models/conversation.model';
 
 
 @Component({
@@ -19,7 +20,6 @@ import { Location } from '@angular/common';
 })
 
 export class AppComponent {
-  players: Player[];
   achievmentIcon = faTrophy;
   powerIcon = faPowerOff;
   chatIcon = faCommentAlt;
@@ -53,7 +53,6 @@ export class AppComponent {
       private modalCtrl: ModalController,
       private location: Location
   ) {
-    this.players = this.playersServ.playersList;
     this.initializeApp();
   }
 
@@ -73,7 +72,6 @@ export class AppComponent {
 
   kick(player: Player) {
     this.playersServ.kickAlert(player);
-    this.players = this.playersServ.playersList;
   }
 
   quit() {
@@ -102,10 +100,10 @@ export class AppComponent {
     return modal.present();
   }
 
-  openChat(player: Player) {
+  openChat(player: Player = {name: 'all', conn:undefined}) {
     console.log('CLICKED ON ', player);
     if (!this.playersServ.conversations.get(player)) {
-      this.playersServ.conversations.set(player, {messages: []});
+      this.playersServ.conversations.set(player, new Conversation());
     }
     this.modalCtrl.create({
       component: SessionChatPage,

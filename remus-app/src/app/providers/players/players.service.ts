@@ -76,7 +76,7 @@ export class PlayersService {
     return player;
   }
 
-  getConns(){
+  getConns() {
     var conns: any[] = [];
     this.playersList.forEach(player => {
       conns.push(player.conn);
@@ -84,5 +84,7 @@ export class PlayersService {
     return conns;
   }
   
-
+  me() {
+    return {name: this.myName, conn: undefined} as Player;
+  }
 }

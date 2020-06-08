@@ -23,9 +23,7 @@ export class SessionChatPage implements OnInit {
       name: '',
       conn: undefined
     }
-    this.conv = {
-      messages: []
-    }
+    this.conv = new Conversation()
   }
 
   closeModal() {
@@ -41,12 +39,14 @@ export class SessionChatPage implements OnInit {
 
 
   async send() {
-    console.table(this.myForm.getRawValue())
+    
+    console.log(this.conv)
+    console.table(Array.from(this.conv.messages));
     const message = this.myForm.getRawValue().message
     this.myForm.reset()
     console.log("sending ", message, "to player ", this.player)
     this.player.conn.send({message:message});
-    this.conv.messages.push([{name:this.playerServ.myName,conn:undefined},message])
+    this.conv.messages.push({timestamp:new Date(),player:this.playerServ.me(),message:message, target:this.player})
     setTimeout(() => {  this.content.scrollToBottom(100) }, 100);
     
   }

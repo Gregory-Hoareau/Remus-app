@@ -1,5 +1,9 @@
 import { Player } from './player.models';
 
-export interface Conversation {
-    messages: [Player,string][]
+export class Conversation {
+    messages: Array<{timestamp:Date ,player: Player,message: string, target: Player}>;
+
+    constructor(){
+        this.messages = [];
+    }
 }

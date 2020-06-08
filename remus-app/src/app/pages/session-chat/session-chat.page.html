@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content scroll-y="true">
-  <ion-card *ngFor="let message of conv.messages"> {{message[0].name}} : {{message[1]}}</ion-card>
+  <ion-card *ngFor="let message of conv.messages"> {{message.timestamp}} {{message.player.name}} : {{message.message}}</ion-card>
 </ion-content>
 
 <ion-footer>
