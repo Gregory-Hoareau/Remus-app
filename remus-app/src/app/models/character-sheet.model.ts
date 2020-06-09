@@ -3,7 +3,7 @@ import { Skill } from './skill.model';
 import { PersonalData } from './personal-data.model';
 
 export abstract class CharacterSheet {
-    template: string = undefined;
+    template: string = null;
     img: string = null;
     name: string = '';
     age: number = -1;
@@ -11,7 +11,7 @@ export abstract class CharacterSheet {
     background: string = '';
     traits: Trait[] = [];
     skills: Skill[] = [];
-    other_personal?: PersonalData[] = undefined;
+    other_personal?: PersonalData[] = null;
 
     isEmpty() {
         let empty_skill = true;

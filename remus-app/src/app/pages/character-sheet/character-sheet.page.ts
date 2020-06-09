@@ -43,7 +43,9 @@ export class CharacterSheetPage implements OnInit {
     }
 
   ngOnInit() {
-    this.newly_created = this.character.isEmpty()
+    if (!this.read_only) {
+      this.newly_created = this.character.isEmpty()
+    }
   }
 
   async editOptionalDataAlert(d: PersonalData, index: number) {
@@ -348,7 +350,7 @@ export class CharacterSheetPage implements OnInit {
   }
 
   closeModal() {
-    if(this.newly_created && !this.character.isEmpty()) {
+    if(!this.read_only && this.newly_created && !this.character.isEmpty()) {
       this.characterService.addCharacter(this.character)
     }
     this.modalCtrl.dismiss(undefined, 'cancel')
