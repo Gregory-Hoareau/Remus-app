@@ -9,11 +9,13 @@ export class DiceService {
 
   Normal: Dice[];
   StarWars: SpecialDice[];
+  LegendOfTheFiveRings: SpecialDice[];
   specialGame: Map<string, Dice[]>;
 
   constructor() {
     this.Normal = [];
     this.StarWars = [];
+    this.LegendOfTheFiveRings = [];
     this.specialGame = new Map<string, Dice[]>();
     this.Normal.push(
         {name: 'd4', value: 4},
@@ -34,8 +36,15 @@ export class DiceService {
         {name: ' Force', value: 12, faces: this.fillTheTab(12, 'starWars/force')}
 
     );
-    this.specialGame.set('StarWars', this.StarWars);
+
+    this.LegendOfTheFiveRings.push(
+        {name: ' Noir', value: 6, faces: this.fillTheTab(6, 'L5RDice/noir')},
+        {name: ' Blanche', value: 12, faces: this.fillTheTab(12, 'L5RDice/blanc')}
+    )
+
     this.specialGame.set('Normal', this.Normal);
+    this.specialGame.set('Star Wars', this.StarWars);
+    this.specialGame.set('Legend Of The Five Rings', this.LegendOfTheFiveRings);
 
   }
   fillTheTab(value, path) {
