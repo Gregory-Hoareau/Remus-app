@@ -10,12 +10,13 @@ export class MacroService {
   constructor() {
     this.macros = [];
   }
-  createMacro(name, diceSelected, listOfDiceAsString, modificateur){
+  createMacro(name, diceSelected, listOfDiceAsString, modificateur, isItNormal){
     const macro = {
       name: name,
       dices: diceSelected,
       stringDices: listOfDiceAsString,
       modificator: modificateur,
+      isItNormalDices: isItNormal,
     } as Macro
     this.macros.push(macro);
   }

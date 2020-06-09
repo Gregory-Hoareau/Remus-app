@@ -6,6 +6,8 @@ Remus est une application crossplatform qui à pour but de simplifier la vie des
 
 Icons fournis par : https://game-icons.net
 
+[Documentation du projet](https://github.com/PNS-PS7and8/pns-innov1920-pns-innov1920-g/wiki)
+
 ## Installation for the frontend
 
 To run this example in production or development mode you have to make sure, `ionic` and `cordova` are installed globally on your machine. After that you can install all necessary dependencies for running this example.

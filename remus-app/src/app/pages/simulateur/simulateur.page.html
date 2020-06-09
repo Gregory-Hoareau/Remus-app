@@ -18,9 +18,13 @@
               <ion-toggle (ionChange)="gyroscopeSetting()"></ion-toggle>
               <ion-label>Activer le lancer par secousse</ion-label>
           </div>
-          <div class="dices">
-            <ion-img class="small"  *ngFor="let dice of this.diceService.diceList" (click)="increaseDiceSum(dice)" src="/assets/{{dice.name}}.svg"></ion-img>
+          <div *ngIf="normalDices" class="dices">
+            <ion-img class="small" *ngFor="let dice of this.diceService.Normal" (click)="increaseDiceSum(dice)" src="/assets/{{dice.name}}.svg"></ion-img>
           </div>
+          <div *ngIf="!normalDices" class="dices">
+              <ion-img *ngFor="let dice of this.diceService.specialGame.get(specialDiceSet)" (click)="increaseDiceSum(dice)" class="small pastèque" src="{{dice.faces[2]}}"></ion-img>
+          </div>
+          <ion-button (click)="specialDicesAlert()">Changer le set de dés</ion-button>
          <br><br>
           <div class="control">
             <div class="buttons">
@@ -33,7 +37,7 @@
             <ion-card-content class="selectDices" >{{listOfDiceAsString}}</ion-card-content>
             
             <br><br>
-            <form>
+            <form *ngIf="normalDices">
               <label style="font-weight: bold" for="modif">Modificateur :</label><br>
               <input type="number" id="modif" value="" name="fname" [(ngModel)]="modificateur">
             </form>
@@ -41,7 +45,7 @@
 
 
         <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-          <ion-fab-button color="medium" *ngIf="listOfDiceAsString !== ''" class="dice" (click)="newMacroAlert()">
+          <ion-fab-button color= "medium" *ngIf="listOfDiceAsString !== ''" class="dice" (click)="newMacroAlert()">
             <ion-icon name="save-outline"></ion-icon>
           </ion-fab-button>
         </ion-fab>

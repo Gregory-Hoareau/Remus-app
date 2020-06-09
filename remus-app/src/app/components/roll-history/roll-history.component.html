@@ -21,5 +21,8 @@
     <ion-text style="font-weight: bold" class="value">
       {{roll.separatedValue}}
     </ion-text>
+    <div class="popupSpecialDice">
+      <ion-img *ngFor="let dice of roll.faces" class="resultHistoryDices" src="{{dice}}"></ion-img>
+    </div>
   </div>
 </div>

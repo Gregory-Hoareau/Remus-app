@@ -63,3 +63,21 @@
 .not-scrollable {
   --overflow: hidden;
 }
+
+ion-img {
+  &.resultPopupDices {
+    width: 30%;
+    padding: 1px;
+  }
+
+  &.resultHistoryDices {
+    width: 15%;
+    padding: 1px;
+  }
+}
+
+div .popupSpecialDice {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center
+}
