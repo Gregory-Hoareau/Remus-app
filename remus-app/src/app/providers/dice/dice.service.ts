@@ -39,7 +39,7 @@ export class DiceService {
 
     this.LegendOfTheFiveRings.push(
         {name: ' Noir', value: 6, faces: this.fillTheTab(6, 'L5RDice/noir')},
-        {name: ' Blanche', value: 12, faces: this.fillTheTab(12, 'L5RDice/blanc')}
+        {name: ' Blanc', value: 12, faces: this.fillTheTab(12, 'L5RDice/blanc')}
     )
 
     this.specialGame.set('Normal', this.Normal);
