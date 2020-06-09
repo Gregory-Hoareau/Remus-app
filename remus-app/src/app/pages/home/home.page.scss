@@ -1,8 +1,39 @@
 ion-title {
   text-align: center;
+  color:  #333333;
 }
 
 
 ion-button {
-  margin-bottom: 5%;
+
+}
+
+.new-background-color{
+  --background:#faefe1;
+}
+.left-side{
+  position: relative;
+  height: 100%;
+  width: 44%;
+  background-color: #807d7a;
+}
+.right-side{
+  position: relative;
+  height: 100%;
+  width: 56%;
+  float: right;
+}
+
+ion-content{
+  --background: #fff url('../../../assets/home-image.png') no-repeat center center / cover;
+}
+
+.contain{
+  margin-left: 3%;
+  position: absolute;
+  top:40%;
+  font-size: 30px;
+  font-family: 'Playfair display',sans-serif;
+  text-align: center;
+  transform: translateY(-40%);
 }

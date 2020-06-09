@@ -9,6 +9,9 @@ import { SimulateurPage } from './simulateur.page';
 import { RollHistoryComponent } from 'src/app/components/roll-history/roll-history.component';
 import { RollMacroComponent} from '../../components/roll-macro/roll-macro.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {Gyroscope} from '@ionic-native/gyroscope/ngx';
+import {DeviceMotion} from '@ionic-native/device-motion/ngx';
+import {Shake} from '@ionic-native/shake/ngx';
 
 @NgModule({
     imports: [
@@ -26,6 +29,11 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
   exports: [
     RollHistoryComponent,
       RollMacroComponent
+  ],
+  providers: [
+    Gyroscope,
+      DeviceMotion,
+      Shake
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

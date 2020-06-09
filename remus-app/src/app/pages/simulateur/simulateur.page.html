@@ -1,5 +1,6 @@
-<ion-header>
-  <ion-toolbar>
+
+<ion-header  >
+  <ion-toolbar class="new-background-color" >
     <ion-buttons *ngIf='!isModal' slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -13,29 +14,35 @@
     <ion-slides #slides class="slides" (ionSlideDidChange)="slideChanged()" scrollbar="true">
       <!-- DICE -->
       <ion-slide class="dicesPage">
-          <div class="dices">
-            <ion-img class="small" *ngFor="let dice of this.diceService.diceList" (click)="increaseDiceSum(dice)" src="/assets/{{dice.name}}.svg"></ion-img>
+          <div class="settings">
+              <ion-toggle (ionChange)="gyroscopeSetting()"></ion-toggle>
+              <ion-label>Activer le lancer par secousse</ion-label>
           </div>
+          <div class="dices">
+            <ion-img class="small"  *ngFor="let dice of this.diceService.diceList" (click)="increaseDiceSum(dice)" src="/assets/{{dice.name}}.svg"></ion-img>
+          </div>
+         <br><br>
           <div class="control">
             <div class="buttons">
-              <ion-button class="launch" *ngIf="listOfDiceAsString !== ''" (click)="launchDice()">Lancer</ion-button>
-              <ion-button shape="round" *ngIf="listOfDiceAsString !== ''" class="refresh" (click)="resetDices()">
+              <ion-button  class="launch" color="medium" *ngIf="listOfDiceAsString !== ''" (click)="launchDice()">Lancer</ion-button>
+              <ion-button shape="round" color="medium" *ngIf="listOfDiceAsString !== ''" class="refresh" (click)="resetDices()">
                 <ion-icon  name="refresh-outline" ></ion-icon>
               </ion-button>
             </div>
         
-            <ion-card-content class="selectDices">{{listOfDiceAsString}}</ion-card-content>
+            <ion-card-content class="selectDices" >{{listOfDiceAsString}}</ion-card-content>
             
             <br><br>
             <form>
-              <label for="modif">Modificateur :</label><br>
+              <label style="font-weight: bold" for="modif">Modificateur :</label><br>
               <input type="number" id="modif" value="" name="fname" [(ngModel)]="modificateur">
             </form>
           </div>
 
+
         <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-          <ion-fab-button *ngIf="listOfDiceAsString !== ''" class="dice" (click)="newMacroAlert()">
-            <ion-icon name="add-outline"></ion-icon>
+          <ion-fab-button color="medium" *ngIf="listOfDiceAsString !== ''" class="dice" (click)="newMacroAlert()">
+            <ion-icon name="save-outline"></ion-icon>
           </ion-fab-button>
         </ion-fab>
       </ion-slide>
@@ -59,7 +66,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
+  <ion-toolbar class="new-background-color">
     <ion-segment  [(ngModel)]="segment" (ionChange)="segmentChanged($event)"  color="warning">
       <ion-segment-button value="0">
         <ion-label>Dés</ion-label>
