@@ -4,10 +4,6 @@ ion-title {
 }
 
 
-ion-button {
-
-}
-
 .new-background-color{
   --background:#faefe1;
 }
@@ -29,10 +25,11 @@ ion-content{
 }
 
 .contain{
-  margin-left: 3%;
+  margin: 3% 0;
+  width: 100%;
   position: absolute;
   top:40%;
-  font-size: 30px;
+  font-size: 120%;
   font-family: 'Playfair display',sans-serif;
   text-align: center;
   transform: translateY(-40%);
