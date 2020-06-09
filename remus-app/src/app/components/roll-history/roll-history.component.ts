@@ -16,7 +16,7 @@ export class RollHistoryComponent implements OnInit {
   roll_name: string;
 
   constructor(public historyService:DiceHistoryService) {
-    this.roll={result:0,modificator:0,dices:new Map<Dice,number>()}
+    this.roll={result:0,modificator:0,dices:new Map<Dice,number>(),faces: []}
   }
 
   ngOnInit() {

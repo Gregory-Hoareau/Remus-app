@@ -9,6 +9,7 @@ import {DiceService} from '../../providers/dice/dice.service';
 import {Gyroscope, GyroscopeOptions, GyroscopeOrientation} from '@ionic-native/gyroscope/ngx';
 import {DeviceMotion, DeviceMotionAccelerationData} from "@ionic-native/device-motion/ngx";
 import {Shake} from "@ionic-native/shake/ngx";
+import {SpecialDice} from "../../models/special-dice.model";
 
 
 @Component({
@@ -32,12 +33,17 @@ export class SimulateurPage implements OnInit {
   finalValue: string;
 
   // Dice thrower var
+  normalDices: boolean;
+  typeOfDiceHasBeenChanged: boolean;
   gyroscope : boolean;
   result : number;
   diceSum : number;
-  diceSelected : Map<Dice, number>;
+  specialDices: SpecialDice[];
+  diceSelected : Map<SpecialDice, number>;
+  specialDiceSet: string;
   listOfDiceAsString : string;
   separetedValue : string;
+  specialFaces: string[];
   finalSeparatedValue : string;
   launched : boolean;
   modifying : boolean;
@@ -52,24 +58,66 @@ export class SimulateurPage implements OnInit {
 
   constructor(public shakeDetector: Shake, public alertController: AlertController, private diceService: DiceService,
     private diceHistoryService: DiceHistoryService, private modalCtrl: ModalController, private alertCtrl: AlertController, private macroService: MacroService)  { }
-    
+
   ngOnInit() {
+    this.typeOfDiceHasBeenChanged = false;
+    this.specialDiceSet = '';
+    this.normalDices = true;
     this.gyroscope = false;
     this.modificateur = 0;
     this.diceSum = 0;
     this.totalDiceSum = 0;
-    this.diceSelected = new Map<Dice, number>();
+    this.diceSelected = new Map<SpecialDice, number>();
     this.listOfDiceAsString = "";
-   this.separetedValue = "";
+    this.separetedValue = "";
     this.launched = false;
     this.finalSeparatedValue = "";
     this.dices = [];
     this.modifying = false;
+    this.specialFaces = [];
+    this.specialDices = [];
   }
 
   ionViewDidEnter() {
     this.slider.update()
     console.table(this.macroService.macros);
+  }
+
+  async specialDicesAlert() {
+    const tab = [];
+    for (const i of this.diceService.specialGame.keys()) {
+      if ( i === 'Normal') {
+        tab.push({
+          label: i,
+          type: 'radio' as const,
+          value: i,
+          checked: true,
+        });
+      } else {
+        tab.push({
+          label: i,
+          type: 'radio' as const,
+          value: i,
+        });
+      }
+    }
+    const alert = await this.alertCtrl.create({
+      header: 'Sélectionner le JDR dont vous souhaitez utiliser les dés spéciaux :',
+      inputs: tab,
+      buttons: [{
+        text: 'Valider',
+        handler: data => {
+          this.resetDices();
+          if (this.diceService.specialGame.get(data) === this.diceService.Normal) {
+            this.normalDices = true;
+          } else {
+            this.normalDices = false;
+            this.specialDiceSet = data;
+          }
+        }
+      }]
+    });
+    await alert.present();
   }
 
   async newMacroAlert() {
@@ -84,7 +132,7 @@ export class SimulateurPage implements OnInit {
         text: 'Valider',
         handler: data => {
           if (data.macroName !== '') {
-            this.macroService.createMacro(data.macroName, this.diceSelected, this.listOfDiceAsString, this.modificateur);
+            this.macroService.createMacro(data.macroName, this.diceSelected, this.listOfDiceAsString, this.modificateur, this.normalDices);
           }
         }
       }]
@@ -93,16 +141,20 @@ export class SimulateurPage implements OnInit {
   }
 
   macroLaunch(macro: Macro) {
+    if (this.normalDices !== macro.isItNormalDices){
+      this.normalDices = macro.isItNormalDices;
+      this.typeOfDiceHasBeenChanged = true;
+    }
     this.resetDices()
     this.modificateur = macro.modificator;
     this.diceSelected = macro.dices;
     for (const dice of this.diceSelected.keys()) {
       for (let itter = 0 ; itter < this.diceSelected.get(dice) ; itter++ ) {
         this.dices.push(dice.value);
+        this.specialDices.push(dice);
         this.totalDiceSum += dice.value;
       }
     }
-    this.printSumDices(this.diceSelected);
     this.launchDice();
   }
   // Simulateur funcitons
@@ -149,19 +201,22 @@ export class SimulateurPage implements OnInit {
     console.log(this.modificateur)
   }
 
-  increaseDiceSum(dice: Dice) {
+  increaseDiceSum(dice: SpecialDice) {
     if (this.launched === true) {
       this.launched = false;
       this.dices = [];
-      this.diceSelected = new Map<Dice, number>();
+      this.diceSelected = new Map<SpecialDice, number>();
       this.diceSum = 0;
       this.separetedValue = '';
       this.totalDiceSum = 0;
       this.modifResult = '';
       this.modifying = false;
+      this.specialDices = [];
+      this.specialFaces = [];
     }
-    this.dices.push(dice.value);
-    this.totalDiceSum = this.totalDiceSum + dice.value;
+      this.dices.push(dice.value);
+      this.specialDices.push(dice);
+      this.totalDiceSum = this.totalDiceSum + dice.value;
     const temp = this.diceSelected.get(dice)
     console.log(temp)
     if (!this.diceSelected.has(dice)) {
@@ -178,13 +233,16 @@ export class SimulateurPage implements OnInit {
   resetDices() {
     this.diceSum = 0;
     this.dices = [];
-    this.diceSelected = new Map<Dice, number>();
+    this.diceSelected = new Map<SpecialDice, number>();
     this.printSumDices(this.diceSelected);
     this.totalDiceSum = 0;
     this.finalSeparatedValue = '';
     this.result  = null;
     this.modificateur = 0;
     this.modifying = false;
+    this.separetedValue = '';
+    this.specialDices = [];
+    this.specialFaces = [];
   }
 
   async presentAlertConfirm(data) {
@@ -203,9 +261,50 @@ export class SimulateurPage implements OnInit {
       buttons: [
         {
           text: 'Ok',
-          role: 'Ok',
+          role: 'cancel',
           cssClass: 'buttons',
           handler: () => {
+            if(this.typeOfDiceHasBeenChanged) {
+              this.typeOfDiceHasBeenChanged = false;
+              this.normalDices = !this.normalDices;
+              this.resetDices();
+            }
+          }
+        }, {
+          cssClass: 'buttons',
+          text: 'Again',
+          handler: () => {
+            this.launchDice();
+          }
+        }
+      ]
+    });
+    await alert.present();
+    const result = await alert.onDidDismiss();
+    console.log(result);
+  }
+
+  async presentAlertConfirmSpecial(data: string[]) {
+    let message = '';
+    for (const path of data) {
+      message = message + '<ion-img class="resultPopupDices" src=' + path + '></ion-img>';
+    }
+    const finalResult = '<div class="popupSpecialDice">' + message + '</div>';
+    const alert = await this.alertController.create({
+      backdropDismiss: false,
+      message: finalResult,
+      cssClass: 'dice_result',
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          cssClass: 'buttons',
+          handler: () => {
+            if(this.typeOfDiceHasBeenChanged) {
+              this.typeOfDiceHasBeenChanged = false;
+              this.normalDices = !this.normalDices;
+              this.resetDices();
+            }
           }
         }, {
           cssClass: 'buttons',
@@ -237,37 +336,52 @@ export class SimulateurPage implements OnInit {
       this.separetedValue = "";
       this.modifResult = "";
       this.modifying = false;
+      this.specialFaces =  [];
     }
-    for (var dice of this.dices) {
-      let res = this.getRandomInt(dice);
-      this.diceSum = this.diceSum + res;
-      if (this.separetedValue == "") {
-        this.separetedValue = res.toString();
-      } else {
-        this.separetedValue = this.separetedValue + " - " + res.toString();
+    if (this.normalDices) {
+      for (let dice of this.dices) {
+        let res = this.getRandomInt(dice);
+        this.diceSum = this.diceSum + res;
+        if (this.separetedValue === '') {
+          this.separetedValue = res.toString();
+        } else {
+          this.separetedValue = this.separetedValue + ' - ' + res.toString();
+        }
       }
-    }
-    console.log(this.totalDiceSum)
-    if(this.modificateur != 0){
-      this.modifying = true;
-    }
-    if (this.modificateur > 0){
-      this.modifResult = this.diceSum.toString() + " + " + this.modificateur.toString();
-    }else if (this.modificateur < 0){
-      this.modifResult = this.diceSum.toString() + this.modificateur.toString();
+      console.log(this.totalDiceSum)
+      if (this.modificateur !== 0) {
+        this.modifying = true;
+      }
+      if (this.modificateur > 0){
+        this.modifResult = this.diceSum.toString() + ' + ' + this.modificateur.toString();
+      }else if (this.modificateur < 0){
+        this.modifResult = this.diceSum.toString() + this.modificateur.toString();
+      } else {
+        this.modifResult = this.diceSum.toString();
+      }
+      this.result = this.diceSum + this.modificateur;
+      this.finalSeparatedValue = this.separetedValue;
+      this.presentAlertConfirm('<h1>' + this.result + '</h1>' + '<br>' + this.finalSeparatedValue)
+      this.diceHistoryService.addDiceRoll({
+        dices: this.diceSelected,
+        modificator: (this.modificateur === 0? undefined: this.modificateur),
+        separatedValue: this.finalSeparatedValue,
+        result: this.result,
+      });
     } else {
-      this.modifResult = this.diceSum.toString();
+      for (const dice of this.specialDices) {
+        console.log(dice)
+        let res = this.getRandomInt(dice.value);
+        this.specialFaces.push(dice.faces[res - 1]);
+      }
+      this.presentAlertConfirmSpecial(this.specialFaces);
+      console.log(this.totalDiceSum);
+      this.diceHistoryService.addDiceRoll({
+        dices: this.diceSelected,
+        faces: this.specialFaces,
+      });
     }
-    this.result = this.diceSum + this.modificateur;
-    this.finalSeparatedValue = this.separetedValue;
     this.launched = true;
-    this.presentAlertConfirm('<h1>' + this.result + '</h1>' + '<br>' + this.finalSeparatedValue)
-    this.diceHistoryService.addDiceRoll({
-      dices: this.diceSelected,
-      modificator: (this.modificateur === 0? undefined: this.modificateur),
-      separatedValue: this.finalSeparatedValue,
-      result: this.result,
-    });
   }
 
 

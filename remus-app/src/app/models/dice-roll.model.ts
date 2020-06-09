@@ -5,4 +5,5 @@ export interface DiceRoll {
     modificator?: number;
     result?: number;
     separatedValue?: string;
+    faces?: string[];
 }

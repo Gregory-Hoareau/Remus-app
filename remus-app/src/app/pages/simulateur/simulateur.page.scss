@@ -1,14 +1,23 @@
-ion-img {
-    &.small {
-      width: 25%;
-    }
-  }
-
 .settings {
   align-items: center;
   display: flex;
 }
-  
+
+ion-img {
+  &.small {
+    width: 25%;
+  }
+}
+
+ion-thumbnail {
+  width:70%;
+}
+
+.pastèque {
+  width: auto;
+  height: auto;
+}
+
   .dices {
     display: flex;
     flex-wrap: wrap;
@@ -23,8 +32,7 @@ ion-img {
     display: flex;
     justify-content: space-between;
   }
-
-
+  
   .refresh {
     flex-basis: content;
   }

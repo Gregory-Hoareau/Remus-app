@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SimulateurPageRoutingModule } from './simulateur-routing.module'
 import { IonicModule } from '@ionic/angular';
-
-
 import { SimulateurPage } from './simulateur.page';
 import { RollHistoryComponent } from 'src/app/components/roll-history/roll-history.component';
 import { RollMacroComponent} from '../../components/roll-macro/roll-macro.component';

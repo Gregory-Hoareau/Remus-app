@@ -12,7 +12,7 @@ export class RollMacroComponent implements OnInit {
   private macro: Macro;
 
   constructor() {
-    this.macro = {name: '', dices: null, modificator: 0, stringDices: ''};
+    this.macro = {name: '', dices: null, modificator: 0, stringDices: '', isItNormalDices: true};
   }
 
   ngOnInit() {}
