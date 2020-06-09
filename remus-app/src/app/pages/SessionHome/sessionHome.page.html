@@ -37,16 +37,16 @@
       <ion-icon name="arrow-up-circle"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button class="dice" (click)="openDiceRollerModal()">
+      <ion-fab-button class="dice" (click)="openDiceRollerModal()" data-desc="Lanceur de dés">
         <fa-icon class="icon" [icon]="diceIcon"></fa-icon>
       </ion-fab-button>
-      <ion-fab-button class="dice" (click)="openNotesModal()">
+      <ion-fab-button class="dice" (click)="openNotesModal()" data-desc="Notes">
         <ion-icon name="create-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button class="dice" (click)="openAchivementModal()">
+      <ion-fab-button class="dice" (click)="openAchivementModal()" data-desc="Succès">
         <fa-icon class="icon" [icon]="trophyIcon"></fa-icon>
       </ion-fab-button>
-      <ion-fab-button class="dice" (click)="openCrowdsouricngModal()">
+      <ion-fab-button class="dice" (click)="openCrowdsouricngModal()" data-desc="Communauté">
         <fa-icon class="icon" [icon]="crowdsourcing"></fa-icon>
       </ion-fab-button>
     </ion-fab-list>
