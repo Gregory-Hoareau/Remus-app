@@ -28,13 +28,13 @@ export class PlayersService {
 
   kickAlert(player: Player) {
     this.alertCtrl.create({
-      header: 'Voulez vraiment renvoyé ce joueur ?',
-      message: 'Vous êtes sur le point de renvoyé "' + player.name + '". Êtes vous sûre de votre décission',
+      header: 'Voulez-vous vraiment renvoyer ce joueur ?',
+      message: 'Vous êtes sur le point de renvoyé "' + player.name + '". Êtes vous sûre de votre décision ?',
       inputs: [
         {
           type:'text',
           name:'reason',
-          value:'Le Mj fait ce qu\'il veut et vous l\'avez énervée'
+          value:'Le Mj fait ce qu\'il veut et vous l\'avez énervé'
         }
       ],
       buttons: [{

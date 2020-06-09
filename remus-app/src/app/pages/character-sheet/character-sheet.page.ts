@@ -333,7 +333,7 @@ export class CharacterSheetPage implements OnInit {
     this.modalCtrl.dismiss(undefined, 'Clear', 'Character')
     this.toastController.create({
       duration: 1000,
-      message: 'La feuille de personnage a été importé',
+      message: 'La feuille de personnage a été importée',
       position: 'bottom',
     }).then(toast=> {
       toast.present();

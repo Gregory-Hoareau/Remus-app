@@ -313,7 +313,7 @@ export class SessionHomePage {
     this.loader.dismiss()
     this.alerteController.create({
       header: 'Vous avez été viré de la partie',
-      message: 'raison : ' + reason,
+      message: 'Raison : ' + reason,
       buttons: [{
         text: 'Ok',
         handler: () => {
