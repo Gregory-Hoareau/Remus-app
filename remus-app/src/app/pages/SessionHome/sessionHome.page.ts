@@ -137,7 +137,7 @@ export class SessionHomePage {
     this.playerServ.myName = this.pseudo;
   }
 
-  ngOnDestroy() {
+  ionViewWillLeave() {
     this.playerServ.isHost=false;
     this.loader.dismiss()
 
@@ -402,7 +402,7 @@ export class SessionHomePage {
       if (!this.playerServ.conversations.get(p))
         this.playerServ.conversations.set(p, new Conversation());
       console.log("recieved message : ", data.message, " from ", p)
-      this.playerServ.conversations.get(p).messages.push({timestamp: new Date(),player:p,message:data.message, target:this.playerServ.me()})
+      this.playerServ.conversations.get(p).addMessage({timestamp: new Date(),player:p,message:data.message, target:this.playerServ.me()})
     }
     if (data.achivement) {
       this.achivementService.achivements.push({titre: data.achivement, description: data.description, checked: false});

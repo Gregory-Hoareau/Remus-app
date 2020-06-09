@@ -3,6 +3,7 @@ import { AlertController, NavController } from '@ionic/angular';
 import { Player } from 'src/app/models/player.models';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { Conversation } from 'src/app/models/conversation.model';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Injectable({
   providedIn: 'root'

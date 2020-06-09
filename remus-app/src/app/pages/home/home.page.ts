@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, MenuController } from '@ionic/angular';
 import { HostFormPage} from '../host-form/host-form.page';
 import { IonRouterOutlet } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
@@ -15,10 +15,15 @@ export class HomePage {
 
   dataReturned: any;
 
-  constructor(private router: Router, private modalCtr: ModalController, private playerServ:PlayersService) {
+  constructor(private router: Router, private modalCtr: ModalController, private playerServ:PlayersService, private menuController: MenuController) {
 
   }
 
+
+  ionViewDidEnter() {
+    this.menuController.enable(false,'playerList');
+    this.menuController.enable(true,'mainMenu');
+  }
 
   async joinModal() {
     const joiningmodal = await this.modalCtr.create({

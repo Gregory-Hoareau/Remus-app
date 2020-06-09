@@ -47,7 +47,7 @@ export class SessionChatPage implements OnInit {
     this.myForm.reset()
     console.log("sending ", message, "to player ", this.player)
     this.player.conn.send({message:message});
-    this.conv.messages.push(new Message(new Date(),this.playerServ.me(),message, this.player));
+    this.conv.addMessage(new Message(new Date(),this.playerServ.me(),message, this.player));
     setTimeout(() => {  this.content.scrollToBottom(100) }, 100);
     
   }
