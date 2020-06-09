@@ -1,7 +1,8 @@
-import { Player } from './player.models';
+import { Message } from './message.model';
 
 export class Conversation {
-    messages: Array<{timestamp:Date ,player: Player,message: string, target: Player}>;
+
+    messages: Array<Message>;
 
     constructor(){
         this.messages = [];

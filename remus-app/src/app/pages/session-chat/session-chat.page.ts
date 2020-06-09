@@ -4,6 +4,7 @@ import { Conversation } from 'src/app/models/conversation.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { PlayersService } from 'src/app/providers/players/players.service';
 import { ModalController, IonContent } from '@ionic/angular';
+import { Message } from 'src/app/models/message.model';
 
 @Component({
   selector: 'app-session-chat',
@@ -46,7 +47,7 @@ export class SessionChatPage implements OnInit {
     this.myForm.reset()
     console.log("sending ", message, "to player ", this.player)
     this.player.conn.send({message:message});
-    this.conv.messages.push({timestamp:new Date(),player:this.playerServ.me(),message:message, target:this.player})
+    this.conv.messages.push(new Message(new Date(),this.playerServ.me(),message, this.player));
     setTimeout(() => {  this.content.scrollToBottom(100) }, 100);
     
   }
