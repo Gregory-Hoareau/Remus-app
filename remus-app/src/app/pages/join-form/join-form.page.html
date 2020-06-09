@@ -19,4 +19,10 @@
       Rejoindre
     </ion-button>
   </form>
+
+  <div class="error" [hidden]="!error">
+    <p class="message">
+      L'identifiant de la salle doit contenir 5 caractères.
+    </p>
+  </div>
 </ion-content>

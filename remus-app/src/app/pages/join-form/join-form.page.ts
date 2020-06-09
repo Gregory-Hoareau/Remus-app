@@ -13,6 +13,7 @@ export class JoinFormPage implements OnInit {
   myForm: FormGroup;
   @Input() id: string;
   @Input() pseudo: string;
+  error: boolean = false;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -31,7 +32,12 @@ export class JoinFormPage implements OnInit {
 
   async closeModal(onClosedData: any) {
     console.table(onClosedData);
-    await this.modalController.dismiss(onClosedData);
+    if (onClosedData.id.length !== 5) {
+      this.error = true;
+    } else {
+      await this.modalController.dismiss(onClosedData); 
+    }
+    
   }
 
   onSubmit() {
