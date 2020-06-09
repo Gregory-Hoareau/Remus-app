@@ -19,8 +19,21 @@
       <ion-label position="floating">Description <ion-text color="danger">*</ion-text></ion-label>
       <ion-input required formControlName="description" type="text"></ion-input>
     </ion-item>
+    <ion-item class="select">
+      <ion-label>Fiche personnage</ion-label>
+      <ion-select formControlName="template" placeholder="Select Pizza">
+        <ion-select-option value="D&D">Donjons et Dragons</ion-select-option>
+        <ion-select-option value="WtA">Loug Garou l'Apcalypse</ion-select-option>
+        <ion-select-option value="Aventure">Aventure</ion-select-option>
+      </ion-select>
+    </ion-item>
     <ion-button (click)="closeModal(myForm.getRawValue())" type="button" block expand="block" color="medium" [disabled]="myForm.invalid">
       Héberger
     </ion-button>
   </form>
+
+  
+
+  
+  
 </ion-content>

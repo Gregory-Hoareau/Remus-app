@@ -6,6 +6,12 @@ ion-toolbar {
     --padding-end: 0px;
     --padding-start: 0px;
 }
+
 .new-background-color{
     --background: #faefe1;
+}
+
+.select {
+    display: flex;
+    flex-direction: column;
 }

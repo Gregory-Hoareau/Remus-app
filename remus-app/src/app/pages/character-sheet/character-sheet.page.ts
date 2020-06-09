@@ -12,6 +12,7 @@ import { LoadCharacterPage } from '../load-character/load-character.page';
 import { faFileImport, faFileExport } from '@fortawesome/free-solid-svg-icons'
 import { ThrowStmt } from '@angular/compiler';
 import { Skill } from 'src/app/models/skill.model';
+import { PersonalData } from 'src/app/models/personal-data.model';
 
 @Component({
   selector: 'app-character-sheet',
@@ -25,6 +26,7 @@ export class CharacterSheetPage implements OnInit {
   importing: boolean;
   importIcon = faFileImport;
   exportIcon = faFileExport;
+  private newly_created = false;
 
   constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File,
     private characterService:CharacterService, private modalCtrl:ModalController,
@@ -41,6 +43,36 @@ export class CharacterSheetPage implements OnInit {
     }
 
   ngOnInit() {
+    if (!this.read_only) {
+      this.newly_created = this.character.isEmpty()
+    }
+  }
+
+  async editOptionalDataAlert(d: PersonalData, index: number) {
+    const alert = await this.alertCtrl.create({
+      header: d.name.charAt(0).toUpperCase() + d.name.slice(1),
+      inputs: [{
+        name: d.name,
+        type: 'text',
+        placeholder: d.name,
+        value: d.value
+      }],
+      buttons: [{
+          text: 'Annuler',
+          handler: () => {
+            console.log('Action cancel');
+          }
+        },
+        {
+        text: 'Valider',
+        handler: data => {
+          if (data[d.name] !== '') {
+            this.character.other_personal[index].value = data[d.name];
+          }
+          this.changeSavedToast();
+        }}],
+    })
+    alert.present();
   }
 
   async editPersonalAlert(title) {
@@ -301,7 +333,7 @@ export class CharacterSheetPage implements OnInit {
     this.modalCtrl.dismiss(undefined, 'Clear', 'Character')
     this.toastController.create({
       duration: 1000,
-      message: 'La feuille de personnage a été importé',
+      message: 'La feuille de personnage a été importée',
       position: 'bottom',
     }).then(toast=> {
       toast.present();
@@ -315,6 +347,13 @@ export class CharacterSheetPage implements OnInit {
     })
     
     await modal.present()
+  }
+
+  closeModal() {
+    if(!this.read_only && this.newly_created && !this.character.isEmpty()) {
+      this.characterService.addCharacter(this.character)
+    }
+    this.modalCtrl.dismiss(undefined, 'cancel')
   }
 
 }

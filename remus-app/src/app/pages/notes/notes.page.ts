@@ -28,7 +28,7 @@ export class NotesPage implements OnInit {
         {
           type: 'text',
           name: 'title',
-          placeholder: 'titre de la note'
+          placeholder: 'Titre de la note'
         }
       ],
       buttons: [

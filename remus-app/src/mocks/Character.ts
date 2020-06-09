@@ -37,7 +37,7 @@ export let all_characters: CharacterSheet[] = [
             name: 'Bagarre',
           }
         ]
-      },
+      } as CharacterSheet,
       {
         img: null,
         name: 'Albus',
@@ -71,5 +71,5 @@ export let all_characters: CharacterSheet[] = [
             name: 'Connaisance Magique',
           }
         ]
-      }
+      } as CharacterSheet
 ]
