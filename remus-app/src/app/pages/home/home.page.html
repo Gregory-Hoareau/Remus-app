@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+  <ion-toolbar  class="new-background-color">
+    <ion-buttons style="color:  #333333" slot="start">
+      <ion-menu-button ></ion-menu-button>
     </ion-buttons>
     <ion-title >
       Remus : Assistant pour JDR
@@ -10,10 +10,23 @@
 </ion-header>
 
 <ion-content class="not-scrollable " [fullscreen]="true">
+  <div class="left-side" >
+    <div class="contain">
+    <ion-text class="label" style="color: white">BIENVENUE <br> SUR  <br> REMUS</ion-text>
+    <ion-button  style="margin-top: 10vh" size="large"  (click)="openModal()" color="light" expand="block" fill="outline" shape="round">
+      Héberger
+    </ion-button>
+    <ion-button size="large" (click)="joinModal()" color="light" expand="block"  fill="outline" shape="round" >
+      Rejoindre
+    </ion-button>
+    </div>
+  </div>
+  <ion-content class="right-side">
+  </ion-content>
   <!-- Soon available campains here -->
 </ion-content>
 
-<ion-footer>
+<!--ion-footer>
   <ion-toolbar>
     <ion-button margin (click)="openModal()" color="dark" expand="block" fill="outline" shape="round">
       Heberger
@@ -22,6 +35,6 @@
       Rejoindre
     </ion-button>
   </ion-toolbar>
-</ion-footer>
+</ion-footer-->
 
 

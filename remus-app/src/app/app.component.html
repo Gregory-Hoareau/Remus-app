@@ -2,16 +2,16 @@
   <ion-split-pane contentId="main-content">
     <ion-menu side="start" menuId="mainMenu" contentId="main-content" type="overlay">
       <ion-header>
-        <ion-toolbar>
-          <ion-title>Menu</ion-title>
+        <ion-toolbar  class="new-background-color">
+          <ion-title style="color:  #333333">Menu</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        <ion-list>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
-              <fa-icon [icon]="p.icon"></fa-icon>
-              <ion-label>
+        <ion-list style="background: #807d7a" >
+          <ion-menu-toggle  style="background: #807d7a" auto-hide="false" *ngFor="let p of appPages">
+            <ion-item color="medium"  [routerDirection]="'root'" [routerLink]="[p.url]">
+              <fa-icon  [icon]="p.icon"></fa-icon>
+              <ion-label style=" font-family: 'Playfair display',sans-serif" >
                 {{p.title}}
               </ion-label>
             </ion-item>
@@ -21,7 +21,7 @@
     </ion-menu>
     <ion-menu disabled="true" side="end" menuId="playerList" contentId="main-content" type="overlay">
       <ion-header>
-        <ion-toolbar>
+        <ion-toolbar class="new-background-color">
           <ion-title>Joueurs Connectés</ion-title>
         </ion-toolbar>
       </ion-header>

@@ -23,7 +23,8 @@ ion-img {
     display: flex;
     justify-content: space-between;
   }
-  
+
+
   .refresh {
     flex-basis: content;
   }
@@ -56,4 +57,16 @@ app-roll-history {
   width: 100%;
   flex-direction: column;
   justify-content: flex-start;
+}
+ion-content{
+  --background: #fff url('../../../assets/Fond-dés.jpg')   no-repeat center center / cover;
+
+}
+.new-background-color{
+  --background: #faefe1;
+}
+.selectDices{
+  font-size: large;
+  font-weight: bold;
+  color: black;
 }
