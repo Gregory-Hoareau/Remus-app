@@ -1,6 +1,8 @@
 ion-title {
   text-align: center;
   color:  #333333;
+  font-family: 'Playfair display',serif;
+  font-size: 5vw;
 }
 
 
@@ -29,7 +31,7 @@ ion-content{
   width: 100%;
   position: absolute;
   top:40%;
-  font-size: 120%;
+  font-size: 6vw;
   font-family: 'Playfair display',sans-serif;
   text-align: center;
   transform: translateY(-40%);

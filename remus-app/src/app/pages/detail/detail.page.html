@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar class="new-background-color">
-    <ion-title>{{ note.title }}</ion-title>
+    <ion-title style="font-family: 'Playfair display',serif">{{ note.title }}</ion-title>
     <ion-buttons slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
     <ion-buttons slot="start">
       <ion-button (click)="deleteNote()">
