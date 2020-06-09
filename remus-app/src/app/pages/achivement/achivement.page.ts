@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, ModalController} from '@ionic/angular';
+import {AlertController, ModalController, IonItemSliding} from '@ionic/angular';
 import { HostFormPage} from '../host-form/host-form.page';
 import { Router, NavigationExtras } from '@angular/router';
 import {JoinFormPage} from '../join-form/join-form.page';
@@ -21,6 +21,8 @@ export class AchivementPage {
   achivements: Achivement[];
   players: Player[] =null;
   avancee = 1;
+  private startOpen = false;
+  private endOpen = false;
 
   constructor(private modalCtrl: ModalController, private playersService:PlayersService,private router: Router, private alertController: AlertController, private achivementService: AchivementService) {
     this.players =this.playersService.playersList;
@@ -31,7 +33,8 @@ export class AchivementPage {
   }
 
 
-  async showAchivement(achivement: Achivement) {
+  async showAchivement(achivement: Achivement, sliding: IonItemSliding) {
+    sliding.close();
     const alert = await this.alertController.create({
       header: achivement.titre,
       message : achivement.description,
@@ -76,6 +79,16 @@ export class AchivementPage {
      ]
     });
     await alert.present();
+  }
+
+  startClick(itemSliding: IonItemSliding, event) {
+    event.stopPropagation();
+    itemSliding.open('start');
+  }
+
+  endClick(itemSliding: IonItemSliding) {
+    event.stopPropagation();
+    itemSliding.open('end');
   }
 
   trash(achivement: Achivement) {
