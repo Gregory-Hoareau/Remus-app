@@ -1,15 +1,19 @@
-.new-background-color{
-  --background: #faefe1;
-}
+
 ion-content{
-  --background: #fff url('../../../assets/notes-image.png')   no-repeat center center / cover;
+  --background: #fff url('../../../assets/book.png')   no-repeat center center / cover;
+}
 
+ion-item {
+  --background: #00000000
+}
+
+ion-toolbar {
+  --opacity: 0;
+}
+
+ion-list {
+  --opacity: 0;
+  display: var(--opacity);
 }
 
 
-ion-item{
-  --background: #fff url('../../../assets/notes-item.png')   no-repeat center center / cover;
-  height: 6.5vh;
-  background-size: cover;
-
-}

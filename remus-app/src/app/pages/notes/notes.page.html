@@ -1,5 +1,5 @@
-<ion-header>
-  <ion-toolbar class="new-background-color">
+<ion-header >
+  <ion-toolbar class="ion-no-border" class="new-background-color">
     <ion-title style="font-family: 'Playfair display', serif">
       Notes
     </ion-title>
@@ -8,11 +8,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-<div style="background-image: url('../../../assets/notes-head.png');background-size: cover" class="head"><br><br>
-</div>
-  <ion-list style="background:  url('../../../assets/notes-fond.png')">
-    <ion-item  lines="none" button detail *ngFor="let note of noteService.notes" (click)="detailModal(note)" routerDirection="forward" >
-      <ion-label>{{ note.title }}</ion-label>
+
+  <ion-list>
+    <ion-item lines="none" button detail *ngFor="let note of noteService.notes" (click)="detailModal(note)" routerDirection="forward" >
+      {{ note.title }}
     </ion-item>
   </ion-list>
 
