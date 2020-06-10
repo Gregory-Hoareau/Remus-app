@@ -34,7 +34,13 @@
                 Quitter
               </ion-label>
             </ion-item>
-            <ion-item class="players"  *ngFor="let player of players" >
+            <!--<ion-item *ngIf="playersServ.isHost" (click)="openChat(undefined)">
+              <fa-icon [icon]="chatIcon"></fa-icon>
+              <ion-label>
+                Conversations
+              </ion-label>
+            </ion-item>-->
+            <ion-item class="players"  *ngFor="let player of playersServ.playersList" >
               {{player.name}}
               <fa-icon (click)="openChat(player)" class="icons" [icon]="chatIcon"></fa-icon>
               <fa-icon (click)="kick(player)" class="icons" [icon]="kickIcon"></fa-icon>

@@ -4,6 +4,7 @@ import { Conversation } from 'src/app/models/conversation.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { PlayersService } from 'src/app/providers/players/players.service';
 import { ModalController, IonContent } from '@ionic/angular';
+import { Message } from 'src/app/models/message.model';
 
 @Component({
   selector: 'app-session-chat',
@@ -14,17 +15,18 @@ export class SessionChatPage implements OnInit {
 
   myForm : FormGroup;
   @ViewChild(IonContent,null) content: IonContent;
+  @Input() target: Player;
   @Input() player: Player;
-  @Input() conv: Conversation;
 
   constructor(private formBuilder: FormBuilder, private playerServ: PlayersService,
     private modalController: ModalController) {
-    this.player = {
+    this.target = {
       name: '',
       conn: undefined
     }
-    this.conv = {
-      messages: []
+    this.player = {
+      name: '',
+      conn: undefined
     }
   }
 
@@ -41,14 +43,39 @@ export class SessionChatPage implements OnInit {
 
 
   async send() {
-    console.table(this.myForm.getRawValue())
     const message = this.myForm.getRawValue().message
     this.myForm.reset()
-    console.log("sending ", message, "to player ", this.player)
-    this.player.conn.send({message:message});
-    this.conv.messages.push([{name:this.playerServ.myName,conn:undefined},message])
+    console.log("sending ", message, "to player ", this.target)
+    this.target.conn.send({message:message});
+    if(!this.playerServ.isHost)
+      this.playerServ.getPlayerByName("Host").conn.send({message:message,target:this.target.name})
+    this.playerServ.getConv(this.target).addMessage(new Message(new Date(),this.playerServ.me(),message, this.target));
     setTimeout(() => {  this.content.scrollToBottom(100) }, 100);
-    
+    this.getFilteredConv()
+  }
+
+  getFilteredConv(): Conversation{
+    let filteredConv:Conversation = new Conversation();
+    this.playerServ.playersList.forEach(player => {
+      //console.log("Conv avec ", player.name, this.playerServ.getConv(player));
+      if(this.playerServ.getConv(player))
+        filteredConv = filteredConv.concat(this.playerServ.getConv(player)) as Conversation;
+    });
+    filteredConv = filteredConv.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+    //console.log("Conversations : ", filteredConv);
+    return filteredConv.filter(message => 
+      (message.target==this.target /*&&  message.player==this.player*/)
+      || (/*message.target==this.player &&*/ message.player==this.target)) as Conversation;
+  }
+
+  changeTarget(event)  {
+    console.log(event.target.value)
+    this.target=event.target.value;
+  }
+
+  changePlayer(event)  {
+    console.log(event.target.player)
+    this.player=event.target.player;
   }
 
 }

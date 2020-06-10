@@ -18,6 +18,7 @@ import {CanvasPage} from '../canvas/canvas.page';
 import { Location } from '@angular/common';
 import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
 import { CharacterService } from 'src/app/providers/character/character.service';
+import { Conversation } from 'src/app/models/conversation.model';
 
 @Component({
   selector: 'app-home',
@@ -120,7 +121,6 @@ export class SessionHomePage {
     } else {
       // Initialise hosting
       this.pseudo = 'Host';
-      this.isHost = true;
       this.roomid = this.myid;
       this.playerServ.isHost = true;
 
@@ -139,11 +139,12 @@ export class SessionHomePage {
       });
 
     }
-    this.playerServ.myName = this.pseudo;
+    this.playerServ.myPlayer.name = this.pseudo;
   }
 
-  ngOnDestroy() {
-    this.loader.dismiss();
+  ionViewWillLeave() {
+    this.playerServ.isHost=false;
+    this.loader.dismiss()
 
     this.menuController.enable(false, 'playerList');
     this.menuController.enable(true, 'mainMenu');
@@ -151,7 +152,7 @@ export class SessionHomePage {
     this.noteService.reset();
 
     this.playerServ.getConns().forEach(c => {
-      if (!this.isHost) {
+      if (!this.playerServ.isHost) {
         c.send({removed: this.pseudo});
       } else {
         c.send({kick: 'l\'hote à quité la partie'});
@@ -365,7 +366,7 @@ export class SessionHomePage {
       node.appendChild(document.createTextNode(data.newPlayer + ' a rejoint la salle'));
       document.getElementById('mainContent').appendChild(node);
 
-      if (this.isHost) {
+      if (this.playerServ.isHost) {
         this.makeApprovalAlert(data.newPlayer, conn);
       } else {
         const con = this.peer.connect(data.peer, {serialization: 'json'});
@@ -407,7 +408,8 @@ export class SessionHomePage {
         message: data.removed + ' a quité la partie',
       }).then(toast => {toast.present(); });
 
-      const id = this.playerServ.getPlayerByName(data.removed);
+      const player = this.playerServ.getPlayerByName(data.removed);
+      const id = this.playerServ.playersList.indexOf(player)
       this.playerServ.playersList.splice(id, 1);
     }
     if (data.message) {
@@ -417,8 +419,10 @@ export class SessionHomePage {
         this.playerServ.conversations.set(p, {messages: []});
       }
       console.log('recieved message : ', data.message, ' from ', p);
-      this.playerServ.conversations.get(p).messages.push([p, data.message]);
-      this.toastController.create({
+        if(data.target)
+            this.playerServ.conversations.get(p).addMessage({timestamp: new Date(),player:p,message:data.message, target:this.playerServ.getPlayerByName(data.target)})
+        else
+            this.playerServ.conversations.get(p).addMessage({timestamp: new Date(),player:p,message:data.message, target:this.playerServ.me()})      this.toastController.create({
         message: p.name + ' vous a envoyé une message :\n' + data.message,
         duration: 3000,
         position : 'top'

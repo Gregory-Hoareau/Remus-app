@@ -2,17 +2,17 @@
   <ion-toolbar class="new-background-color">
     <ion-buttons slot="end">
       <ion-menu-toggle menu="playerList">
-        <ion-button  >
+        <ion-button>
           <ion-icon name="person" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-menu-toggle>
     </ion-buttons>
     <div class="hcs">
-      <fa-icon class="realSmall"  *ngIf="isHost" [icon]="crown" style="color: #ffc409"></fa-icon>
+      <fa-icon class="realSmall"  *ngIf="playerServ.isHost" [icon]="crown" style="color: #ffc409"></fa-icon>
     <ion-title style="font-family: 'Playfair display',serif">
       {{roomName}}
     </ion-title>
-    {{roomid}}
+      {{roomid}}
     </div>
   </ion-toolbar>
 </ion-header>
@@ -57,8 +57,8 @@
 
 <ion-footer class="new-background-color">
   <ion-toolbar  id="end">
-    <ion-button  color= "medium" *ngIf="isHost" id="ButtonPerso" (click)="masterCharacterModal()">Mes Personnages</ion-button>
-    <ion-button  color= "medium" *ngIf="!isHost" id="ButtonPerso" (click)="openModal('char')">Mon personnage</ion-button>
+    <ion-button  color= "medium" *ngIf="playerServ.isHost" id="ButtonPerso" (click)="masterCharacterModal()">Mes Personnages</ion-button>
+    <ion-button  color= "medium" *ngIf="!playerServ.isHost" id="ButtonPerso" (click)="openModal('char')">Mon personnage</ion-button>
     <!--<ion-button id="ButtonDoc" (click)="presentAlertConfirm()" >Documents partagés</ion-button>-->
     <ion-button id="ButtonDoc"  color= "medium" (click)="openModal('doc')" >Documents partagés</ion-button>
   </ion-toolbar>

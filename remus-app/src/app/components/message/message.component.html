@@ -1,0 +1,8 @@
+<div>
+  <div *ngIf="show" class="identifier">
+    <strong>{{m.player.name}}</strong> <span *ngIf="playerServ.isHost"> à {{m.target.name}}</span>  <span id="timestamp">{{m.timestamp.getHours()}}:{{m.timestamp.getMinutes()}}</span> 
+  </div>
+  <div id="message">
+    {{m.message}}
+  </div>
+</div>

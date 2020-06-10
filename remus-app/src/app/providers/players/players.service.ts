@@ -3,21 +3,23 @@ import { AlertController, NavController } from '@ionic/angular';
 import { Player } from 'src/app/models/player.models';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { Conversation } from 'src/app/models/conversation.model';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayersService {
   // tslint:disable-next-line:ban-types
-  myName: String;
   playersList: Player[];
   conversations: Map<Player, Conversation>;
+  myPlayer: Player;
 
   isHost: boolean;
 
   constructor(private alertCtrl: AlertController) {
     this.playersList = [];
     this.conversations = new Map<Player, Conversation>();
+    this.myPlayer = {name: '', conn: undefined} as Player;
   }
 
   resetPlayer(){
@@ -57,12 +59,13 @@ export class PlayersService {
     
   }
 
-  getPlayerByName(name: string) {
+  getPlayerByName(name: string): Player {
+    let player: Player;
     this.playersList.forEach(p => {
       if(p.name === name)
-        return this.playersList.indexOf(p);
+        player=p;
     });
-    return 0;
+    return player;
   }
 
   getPlayerById(id: string): Player {
@@ -76,7 +79,7 @@ export class PlayersService {
     return player;
   }
 
-  getConns(){
+  getConns() {
     var conns: any[] = [];
     this.playersList.forEach(player => {
       conns.push(player.conn);
@@ -84,5 +87,13 @@ export class PlayersService {
     return conns;
   }
   
+  me() {
+    return this.myPlayer;
+  }
 
+  getConv(player:Player) {
+    if (!this.conversations.get(player))
+      this.conversations.set(player, new Conversation());
+    return this.conversations.get(player)
+  }
 }

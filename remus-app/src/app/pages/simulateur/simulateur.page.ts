@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { IonSlides, AlertController, ModalController } from '@ionic/angular';
 import { DiceHistoryService } from 'src/app/providers/diceHistory/dice-history.service';
-import { DiceRoll } from 'src/app/models/dice-roll.model';
 import { Macro } from 'src/app/models/macro.model';
 import {MacroService} from '../../providers/macro/macro.service';
 import {Dice} from '../../models/dice.model';
