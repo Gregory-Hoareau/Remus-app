@@ -1,15 +1,15 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="new-background-color">
     <ion-buttons slot="end">
       <ion-menu-toggle menu="playerList">
-        <ion-button>
+        <ion-button  >
           <ion-icon name="person" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-menu-toggle>
     </ion-buttons>
     <div class="hcs">
-    <ion-img class="realSmall" *ngIf="isHost" src="/assets/Simple_crown_icon.svg"></ion-img>
-    <ion-title>
+      <fa-icon class="realSmall"  *ngIf="isHost" [icon]="crown" style="color: #ffc409"></fa-icon>
+    <ion-title style="font-family: 'Playfair display',serif">
       {{roomName}}
     </ion-title>
     {{roomid}}
@@ -55,7 +55,7 @@
 
 </ion-content>
 
-<ion-footer >
+<ion-footer class="new-background-color">
   <ion-toolbar  id="end">
     <ion-button  color= "medium" *ngIf="isHost" id="ButtonPerso" (click)="masterCharacterModal()">Mes Personnages</ion-button>
     <ion-button  color= "medium" *ngIf="!isHost" id="ButtonPerso" (click)="openModal('char')">Mon personnage</ion-button>

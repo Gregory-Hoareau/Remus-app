@@ -8,7 +8,7 @@ import Peer from 'peerjs';
 import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
 import { SimulateurPage } from '../simulateur/simulateur.page';
-import {faDiceD20, faTable, faTrophy, faPeopleArrows} from '@fortawesome/free-solid-svg-icons';
+import {faDiceD20, faTable, faTrophy, faPeopleArrows, faCrown} from '@fortawesome/free-solid-svg-icons';
 import {AchivementService} from '../../providers/achivement/achivement.service';
 import {NotesPage} from '../notes/notes.page';
 import {NotesService} from '../../providers/notes/notes.service';
@@ -46,6 +46,7 @@ export class SessionHomePage {
   diceIcon = faDiceD20;
   trophyIcon = faTrophy;
   crowdsourcing = faPeopleArrows;
+  crown=faCrown;
 
   constructor(public achivementService: AchivementService, public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
@@ -385,10 +386,16 @@ export class SessionHomePage {
       this.imgTemp = this.imgTemp + data.imgPart;
     }
     if (data.imgEnd) {
+      const p = this.playerServ.getPlayerById(conn.peer);
       this.imgTemp = this.imgTemp + data.imgEnd[1];
       this.file.createFile(this.file.dataDirectory, data.imgEnd[0], true).then();
       this.file.writeExistingFile(this.file.dataDirectory, data.imgEnd[0], this.imgTemp).then();
       this.imgTemp = '';
+      this.toastController.create({
+        position : 'top',
+        duration: 3000,
+        message: p.name + ' a partagé un nouveau document :\n' + data.imgEnd[0],
+      }).then(toast => {toast.present(); });
     }
     if (data.removed) {
       const node = document.createElement('ION-CARD');
@@ -423,7 +430,6 @@ export class SessionHomePage {
     }
     if (data.achivementPartage !== undefined) {
       this.achivementService.partage = data.achivementPartage;
-      console.log(data.achivementPartage.toString());
     }
     if (data.achivementValide) {
       this.achivementService.validAchivement(data.achivementValide);
