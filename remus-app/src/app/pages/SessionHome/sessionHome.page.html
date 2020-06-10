@@ -24,9 +24,9 @@
   <!-- Shows share image if on is selected; Should be generated in code for better persistence -->
   <div *ngIf="image" class="container">
     <img [src]="image" alt="">
-    <ion-buttons class="btn" slot="end" (click)="closeImage()">
-        <ion-icon class="ion-margin" name="close-outline"></ion-icon>
-    </ion-buttons>
+    <ion-fab-button color="light" size="small" class="btn" slot="end" (click)="closeImage()">
+        <ion-icon name="close-outline"></ion-icon>
+    </ion-fab-button>
     <ion-fab-button  color="light" size="small" class="brushbtn" slot="end" (click)="openCanvasModal()">
         <ion-icon name="brush"></ion-icon>
     </ion-fab-button>
