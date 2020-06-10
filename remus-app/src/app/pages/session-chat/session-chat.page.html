@@ -1,7 +1,14 @@
 <ion-header>
   <ion-toolbar>
+   <!-- <ion-item *ngIf="playerServ.isHost">
+      <ion-select interface="popover" placeholder="All Players"  (ionChange)="changePlayer($event)" [value]="player">
+        <ion-select-option [value]="this.playerServ.me()">Host</ion-select-option>
+        <ion-select-option  *ngFor="let player of playerServ.playersList"  [value]="player">{{player.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+     & -->
     <ion-item>
-      <ion-select interface="popover" placeholder="All Players"  (ionChange)="changePlayer($event)" [value]="player" [disabled]="!playerServ.isHost" >
+      <ion-select interface="popover" placeholder="All Players"  (ionChange)="changeTarget($event)" [value]="target">
         <ion-select-option  *ngFor="let player of playerServ.playersList"  [value]="player">{{player.name}}</ion-select-option>
       </ion-select>
     </ion-item>
@@ -12,13 +19,13 @@
 </ion-header>
 
 <ion-content scroll-y="true" class="ion-padding">
-  <app-message *ngFor="let message of getFilteredConv()" [m]='message' [show]='message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
+  <app-message *ngFor="let message of getFilteredConv()" [m]='message' [show]='message.target!=getFilteredConv().getPreviousMessage(message).target && message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
 </ion-content>
 
 <ion-footer>
   <form [formGroup]="myForm" (ngSubmit)="send()">
     <ion-item>
-      <ion-textarea required formControlName="message" placeholder="Envoyer un message à {{player.name}}"></ion-textarea>
+      <ion-textarea required formControlName="message" placeholder="Envoyer un message à {{target.name}}"></ion-textarea>
     </ion-item>
     <ion-button block color="primary" type="submit" [disabled]="myForm.invalid">
       send

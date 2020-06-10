@@ -92,6 +92,8 @@ export class PlayersService {
   }
 
   getConv(player:Player) {
+    if (!this.conversations.get(player))
+      this.conversations.set(player, new Conversation());
     return this.conversations.get(player)
   }
 }

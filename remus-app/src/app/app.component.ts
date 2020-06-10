@@ -100,7 +100,7 @@ export class AppComponent {
     return modal.present();
   }
 
-  openChat(player: Player = {name: 'all', conn:undefined}) {
+  openChat(target: Player = {name: 'all', conn:undefined}, player: Player = this.playersServ.me()) {
     console.log('CLICKED ON ', player);
     if (!this.playersServ.conversations.get(player)) {
       this.playersServ.conversations.set(player, new Conversation());
@@ -109,8 +109,8 @@ export class AppComponent {
       component: SessionChatPage,
       swipeToClose: true,
       componentProps: {
-        player:player,
-        conv: this.playersServ.getConv(player)
+        target:target,
+        player:player
       }
     }).then(modal => {
       modal.present();

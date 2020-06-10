@@ -15,16 +15,19 @@ export class SessionChatPage implements OnInit {
 
   myForm : FormGroup;
   @ViewChild(IonContent,null) content: IonContent;
+  @Input() target: Player;
   @Input() player: Player;
-  @Input() conv: Conversation;
 
   constructor(private formBuilder: FormBuilder, private playerServ: PlayersService,
     private modalController: ModalController) {
+    this.target = {
+      name: '',
+      conn: undefined
+    }
     this.player = {
       name: '',
       conn: undefined
     }
-    this.conv = new Conversation()
   }
 
   closeModal() {
@@ -42,11 +45,11 @@ export class SessionChatPage implements OnInit {
   async send() {
     const message = this.myForm.getRawValue().message
     this.myForm.reset()
-    console.log("sending ", message, "to player ", this.player)
-    this.player.conn.send({message:message});
+    console.log("sending ", message, "to player ", this.target)
+    this.target.conn.send({message:message});
     if(!this.playerServ.isHost)
-      this.playerServ.getPlayerByName("Host").conn.send({message:message,target:this.player.name})
-    this.conv.addMessage(new Message(new Date(),this.playerServ.me(),message, this.player));
+      this.playerServ.getPlayerByName("Host").conn.send({message:message,target:this.target.name})
+    this.playerServ.getConv(this.target).addMessage(new Message(new Date(),this.playerServ.me(),message, this.target));
     setTimeout(() => {  this.content.scrollToBottom(100) }, 100);
     this.getFilteredConv()
   }
@@ -54,21 +57,25 @@ export class SessionChatPage implements OnInit {
   getFilteredConv(): Conversation{
     let filteredConv:Conversation = new Conversation();
     this.playerServ.playersList.forEach(player => {
-      console.log("Conv avec ", player.name, this.playerServ.getConv(player));
+      //console.log("Conv avec ", player.name, this.playerServ.getConv(player));
       if(this.playerServ.getConv(player))
         filteredConv = filteredConv.concat(this.playerServ.getConv(player)) as Conversation;
     });
     filteredConv = filteredConv.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
-    console.log("Conversations : ", filteredConv);
-    console.log("Conv Filtré : ", filteredConv.filter(message => message.target==this.player || message.player==this.playerServ.me()))
+    //console.log("Conversations : ", filteredConv);
     return filteredConv.filter(message => 
-      (message.target==this.player &&  message.player==this.playerServ.me())
-      || (message.target==this.playerServ.me() && message.player==this.player)) as Conversation;
+      (message.target==this.target /*&&  message.player==this.player*/)
+      || (/*message.target==this.player &&*/ message.player==this.target)) as Conversation;
+  }
+
+  changeTarget(event)  {
+    console.log(event.target.value)
+    this.target=event.target.value;
   }
 
   changePlayer(event)  {
-    console.log(event)
-    this.player=event.target.value;
+    console.log(event.target.player)
+    this.player=event.target.player;
   }
 
 }
