@@ -33,7 +33,7 @@
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
+    <ion-fab-button  color= "medium" >
       <ion-icon name="arrow-up-circle"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
@@ -57,10 +57,10 @@
 
 <ion-footer >
   <ion-toolbar  id="end">
-    <ion-button *ngIf="isHost" id="ButtonPerso" (click)="masterCharacterModal()">Mes Personnages</ion-button>
-    <ion-button *ngIf="!isHost" id="ButtonPerso" (click)="openModal('char')">Mon personnage</ion-button>
+    <ion-button  color= "medium" *ngIf="isHost" id="ButtonPerso" (click)="masterCharacterModal()">Mes Personnages</ion-button>
+    <ion-button  color= "medium" *ngIf="!isHost" id="ButtonPerso" (click)="openModal('char')">Mon personnage</ion-button>
     <!--<ion-button id="ButtonDoc" (click)="presentAlertConfirm()" >Documents partagés</ion-button>-->
-    <ion-button id="ButtonDoc" (click)="openModal('doc')" >Documents partagés</ion-button>
+    <ion-button id="ButtonDoc"  color= "medium" (click)="openModal('doc')" >Documents partagés</ion-button>
   </ion-toolbar>
 </ion-footer>
 
