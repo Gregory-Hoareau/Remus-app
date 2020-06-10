@@ -2,6 +2,14 @@ import {Trait} from './trait.model';
 import { Skill } from './skill.model';
 import { PersonalData } from './personal-data.model';
 
+export const all_templates = {
+    'D&D': 'Donjons et Dragons',
+    'WtA': 'Loup-Garou : l\'apocalypse',
+    'SW': 'Star Wars',
+    'Aventure': 'Aventure',
+    'L5R': 'Légende des 5 anneaux'
+}
+
 export abstract class CharacterSheet {
     template: string = null;
     img: string = null;
@@ -39,18 +47,21 @@ export abstract class CharacterSheet {
 export class DnDCharacterSheet extends CharacterSheet {
     template = 'D&D';
     other_personal = [{
-        name: 'Race',
-        value: ''
-    },{
-        name: 'Classe',
-        value: ''
-    }]
+            name: 'Race',
+            value: ''
+        },{
+            name: 'Classe',
+            value: ''
+        }
+    ];
 
-    traits = [new Trait('Force'),
-    new Trait('Dextérité'),
-    new Trait('Endurance'),
-    new Trait('Intelligence'),
-    new Trait('Perception')];
+    traits = [
+        new Trait('Force'),
+        new Trait('Dextérité'),
+        new Trait('Endurance'),
+        new Trait('Intelligence'),
+        new Trait('Perception')
+    ];
 }
 
 // Character Sheet for Aventure (RPG of Mayhar)
@@ -62,38 +73,94 @@ export class AventureCharacterSheet extends CharacterSheet {
     },{
         name: 'Classe',
         value: ''
-    }]
+    }];
 
-    traits = [new Trait('Physique'),
-    new Trait('Social'),
-    new Trait('Mental')]
+    traits = [
+        new Trait('Physique'),
+        new Trait('Social'),
+        new Trait('Mental')
+    ];
 }
 
 // Character Sheets for Word of Darkness
 export abstract class WoDCharacterSheet extends CharacterSheet {
-    traits = [new Trait('Force'),
-    new Trait('Dextérité'),
-    new Trait('Vigueur'),
-    new Trait('Charisme'),
-    new Trait('Manipulation'),
-    new Trait('Apparence'),
-    new Trait('Perception'),
-    new Trait('Intelligence'),
-    new Trait('Astuce')]
+    traits = [
+        new Trait('Force'),
+        new Trait('Dextérité'),
+        new Trait('Vigueur'),
+        new Trait('Charisme'),
+        new Trait('Manipulation'),
+        new Trait('Apparence'),
+        new Trait('Perception'),
+        new Trait('Intelligence'),
+        new Trait('Astuce')
+    ];
 }
 
 export class WtACharacterSheet extends WoDCharacterSheet {
     template = 'WtA';
     other_personal = [{
-        name: 'Race',
-        value: ''
-    },{
-        name: 'Auspice',
-        value: ''
-    },{
-        name: 'Tribu',
-        value: ''
-    }]
+            name: 'Race',
+            value: ''
+        },{
+            name: 'Auspice',
+            value: ''
+        },{
+            name: 'Tribu',
+            value: ''
+        }
+    ];
 }
 
+export class StarWarsCharacterSheet extends CharacterSheet {
+    template = 'SW';
+    traits = [
+        new Trait('Vigueur'),
+        new Trait('Agilité'),
+        new Trait('Intelligence'),
+        new Trait('Ruse'),
+        new Trait('Volonté'),
+        new Trait('Présence'),
+        new Trait('Valeur de Force')
+    ];
+    other_personal = [{
+            name: 'Espèce',
+            value: ''
+        },{
+            name: 'Carrière',
+            value: ''
+        },{
+            name: 'Spécialités',
+            value: ''
+        }
+    ];
+}
+
+export class L5RCharacterSheet extends CharacterSheet {
+    template = 'L5R';
+    traits = [
+        new Trait('Terre'),
+        new Trait('Constitution'),
+        new Trait('Volonté'),
+        new Trait('Eau'),
+        new Trait('Force'),
+        new Trait('Perception'),
+        new Trait('Air'),
+        new Trait('Réflexes'),
+        new Trait('Intuition'),
+        new Trait('Feu'),
+        new Trait('Agilité'),
+        new Trait('Intelligence'),
+        new Trait('Vide')
+    ];
+    other_personal = [
+        {
+            name: 'Clan',
+            value: ''
+        },{
+            name: 'École',
+            value: ''
+        }
+    ]
+}
 

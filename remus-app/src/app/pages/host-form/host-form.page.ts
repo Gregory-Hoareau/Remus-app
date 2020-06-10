@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ModalController, NavParams  } from '@ionic/angular';
 import { CharacterService } from 'src/app/providers/character/character.service';
+import { all_templates } from '../../models/character-sheet.model';
 
 @Component({
   selector: 'app-host-form',
@@ -15,11 +16,14 @@ export class HostFormPage implements OnInit {
   @Input() description : string;
   template:string;
 
+  available_templates = all_templates;
+  template_nickname: string[];
 
   constructor(private formBuilder: FormBuilder,
      private modalController: ModalController, private characterService: CharacterService) {}
 
   ngOnInit() {
+    this.template_nickname = Object.keys(this.available_templates);
     this.template = this.characterService.default_template;
     this.myForm = this.formBuilder.group({
       name: [this.name],

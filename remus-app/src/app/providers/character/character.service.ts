@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CharacterSheet, DnDCharacterSheet, WoDCharacterSheet, AventureCharacterSheet, WtACharacterSheet } from 'src/app/models/character-sheet.model';
+import { CharacterSheet, DnDCharacterSheet, WoDCharacterSheet, AventureCharacterSheet, WtACharacterSheet, StarWarsCharacterSheet, L5RCharacterSheet } from 'src/app/models/character-sheet.model';
 import { all_characters } from 'src/mocks/character'
 import { PlayersService } from '../players/players.service';
 
@@ -37,6 +37,16 @@ export class CharacterService {
       case 'WtA':
         this.empty_characters = () => {
           return new WtACharacterSheet();
+        }
+        break;
+      case 'SW':
+        this.empty_characters = () => {
+          return new StarWarsCharacterSheet();
+        }
+        break;
+      case 'L5R':
+        this.empty_characters = () => {
+          return new L5RCharacterSheet();
         }
         break;
       case 'D&D':

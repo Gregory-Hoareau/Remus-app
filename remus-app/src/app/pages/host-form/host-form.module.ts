@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -16,6 +16,9 @@ import { HostFormPage } from './host-form.page';
     HostFormPageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [HostFormPage]
+  declarations: [HostFormPage],
+  schemas: [
+    NO_ERRORS_SCHEMA
+  ]
 })
 export class HostFormPageModule {}
