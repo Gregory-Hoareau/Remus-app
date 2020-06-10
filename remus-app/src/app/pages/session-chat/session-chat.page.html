@@ -1,6 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{player.name}}</ion-title>
+    <ion-item>
+      <ion-select interface="popover" placeholder="All Players" [value]="player" [disabled]="!playerServ.isHost" >
+        <ion-select-option  *ngFor="let player of playerServ.playersList"  [value]="player">{{player.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
     <ion-buttons slot="end" (click)="closeModal()">
       <ion-icon class="ion-margin" name="close-outline"></ion-icon>
     </ion-buttons>
@@ -8,7 +12,7 @@
 </ion-header>
 
 <ion-content scroll-y="true" class="ion-padding">
-  <app-message *ngFor="let message of conv" [m]=message></app-message>
+  <app-message *ngFor="let message of getFilteredConv()" [m]=message></app-message>
 </ion-content>
 
 <ion-footer>
