@@ -10,6 +10,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" [fullscreen]="true">
-  <ion-textarea [autoGrow]="true" (input)="noteChanged()" [(ngModel)]="note.content" placeholder="...Besoin de vous souvenir de quelque chose ? notez le ici !"></ion-textarea>
+<div style="background-image: url('../../../assets/notes-head.png');background-size: cover" class="head"><br><br>
+</div>
+<ion-content class="ion-padding" [fullscreen]="false">
+
+  <ion-textarea style="width: 100%" [autoGrow]="true" (input)="noteChanged()" [(ngModel)]="note.content" placeholder="...Besoin de vous souvenir de quelque chose ? notez le ici !"></ion-textarea>
 </ion-content>

@@ -7,10 +7,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
-  <ion-list>
-    <ion-item button detail *ngFor="let note of noteService.notes" (click)="detailModal(note)" routerDirection="forward">
+<ion-content [fullscreen]="true">
+<div style="background-image: url('../../../assets/notes-head.png');background-size: cover" class="head"><br><br>
+</div>
+  <ion-list style="background:  url('../../../assets/notes-fond.png')">
+    <ion-item  lines="none" button detail *ngFor="let note of noteService.notes" (click)="detailModal(note)" routerDirection="forward" >
       <ion-label>{{ note.title }}</ion-label>
     </ion-item>
   </ion-list>
