@@ -19,16 +19,19 @@
 </ion-header>
 
 <ion-content scroll-y="true" class="ion-padding">
-  <app-message *ngFor="let message of getFilteredConv()" [m]='message' [show]='message.target!=getFilteredConv().getPreviousMessage(message).target && message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
+  <div *ngFor="let message of getFilteredConv()" class="message-content">
+    <app-message class="me" *ngIf="message.player == playerServ.me()" [m]='message' [show]='message.target!=getFilteredConv().getPreviousMessage(message).target || message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
+    <app-message class="others" *ngIf="message.player != playerServ.me()" [m]='message' [show]='message.target!=getFilteredConv().getPreviousMessage(message).target || message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
+  </div>
 </ion-content>
 
 <ion-footer>
   <form [formGroup]="myForm" (ngSubmit)="send()">
     <ion-item>
       <ion-textarea required formControlName="message" placeholder="Envoyer un message à {{target.name}}"></ion-textarea>
+      <ion-button block shape="round" size="medium" color="medium" type="submit" [disabled]="myForm.invalid">
+        <ion-icon name="paper-plane-outline"></ion-icon>
+      </ion-button>
     </ion-item>
-    <ion-button block color="primary" type="submit" [disabled]="myForm.invalid">
-      send
-    </ion-button>
   </form>
 </ion-footer>

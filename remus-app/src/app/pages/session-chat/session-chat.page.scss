@@ -1,3 +1,24 @@
 ion-content {
     --overflow: visible;
 }
+
+.me{
+    align-self: flex-end;
+    text-align: right;
+    max-width: 70%;
+    margin: 2px 0;
+
+}
+
+.others{
+    align-self: flex-start;
+    max-width: 70%;
+    margin: 2px 0;
+
+}
+
+.message-content{
+    display: flex;
+    width: 100%;
+    flex-direction: column-reverse;
+}
