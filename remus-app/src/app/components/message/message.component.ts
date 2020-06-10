@@ -10,6 +10,7 @@ import { PlayersService } from 'src/app/providers/players/players.service';
 export class MessageComponent implements OnInit {
 
   @Input() m: Message;
+  @Input() show: boolean;
 
   constructor(public playerServ: PlayersService) { }
 

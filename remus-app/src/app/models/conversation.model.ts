@@ -5,11 +5,6 @@ export class Conversation extends Array<Message> {
 
     
     addMessage(m: Message) {
-        const prev = this[this.length-1]
-        console.log(m.target)
-        console.log(this.getMessageTarget(prev))
-        if(this.getMessageTarget(prev) == m.target)
-            m.target=undefined
         this.push(m);
     }
 
@@ -19,5 +14,12 @@ export class Conversation extends Array<Message> {
         if (m.target)
             return m.target
         return this.getMessageTarget(this[this.indexOf(m)-1])
+    }
+
+    getPreviousMessage(m: Message) {
+        const message = this[this.indexOf(m)-1]
+        if (message) return this[this.indexOf(m)-1]
+        else return new Message(null,null,null,null);
+
     }
 }

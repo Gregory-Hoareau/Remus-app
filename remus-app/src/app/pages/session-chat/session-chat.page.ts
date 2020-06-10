@@ -51,7 +51,7 @@ export class SessionChatPage implements OnInit {
     this.getFilteredConv()
   }
 
-  getFilteredConv(): Message[]{
+  getFilteredConv(): Conversation{
     let filteredConv:Conversation = new Conversation();
     this.playerServ.playersList.forEach(player => {
       console.log("Conv avec ", player.name, this.playerServ.getConv(player));
@@ -60,7 +60,10 @@ export class SessionChatPage implements OnInit {
     });
     filteredConv = filteredConv.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
     console.log("Conversations : ", filteredConv);
-    return filteredConv.filter(message => message.target==this.player || !message.target);
+    console.log("Conv Filtré : ", filteredConv.filter(message => message.target==this.player || message.player==this.playerServ.me()))
+    return filteredConv.filter(message => 
+      (message.target==this.player &&  message.player==this.playerServ.me())
+      || (message.target==this.playerServ.me() && message.player==this.player)) as Conversation;
   }
 
 }

@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content scroll-y="true" class="ion-padding">
-  <app-message *ngFor="let message of getFilteredConv()" [m]=message></app-message>
+  <app-message *ngFor="let message of getFilteredConv()" [m]='message' [show]='message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
 </ion-content>
 
 <ion-footer>

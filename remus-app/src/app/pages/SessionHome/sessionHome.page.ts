@@ -134,7 +134,7 @@ export class SessionHomePage {
       });
 
     }
-    this.playerServ.myName = this.pseudo;
+    this.playerServ.myPlayer.name = this.pseudo;
   }
 
   ionViewWillLeave() {

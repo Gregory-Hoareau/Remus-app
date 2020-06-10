@@ -10,15 +10,16 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 })
 export class PlayersService {
   // tslint:disable-next-line:ban-types
-  myName: String;
   playersList: Player[];
   conversations: Map<Player, Conversation>;
+  myPlayer: Player;
 
   isHost: boolean;
 
   constructor(private alertCtrl: AlertController) {
     this.playersList = [];
     this.conversations = new Map<Player, Conversation>();
+    this.myPlayer = {name: '', conn: undefined} as Player;
   }
 
   resetPlayer(){
@@ -87,7 +88,7 @@ export class PlayersService {
   }
   
   me() {
-    return {name: this.myName, conn: undefined} as Player;
+    return this.myPlayer;
   }
 
   getConv(player:Player) {
