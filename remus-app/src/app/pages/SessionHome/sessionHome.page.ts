@@ -415,16 +415,16 @@ export class SessionHomePage {
     if (data.message) {
       let p: Player;
       p = this.playerServ.getPlayerById(conn.peer);
-      if (!this.playerServ.conversations.get(p)) {
-        this.playerServ.conversations.set(p, {messages: []});
-      }
-      console.log('recieved message : ', data.message, ' from ', p);
+      console.log('recieved message : ', data.message, ' from ', p, ' directed to ', data.target);
         if(data.target)
-            this.playerServ.conversations.get(p).addMessage({timestamp: new Date(),player:p,message:data.message, target:this.playerServ.getPlayerByName(data.target)})
+            {if(data.target != 'Host')  this.playerServ.getConv(p).addMessage({timestamp: new Date(),player:p,message:data.message, target:this.playerServ.getPlayerByName(data.target)})}
         else
-            this.playerServ.conversations.get(p).addMessage({timestamp: new Date(),player:p,message:data.message, target:this.playerServ.me()})      this.toastController.create({
+            {this.playerServ.getConv(p).addMessage({timestamp: new Date(),player:p,message:data.message, target:this.playerServ.me()})
+            console.log("talkign me :", this.playerServ.me())
+          }
+        this.toastController.create({
         message: p.name + ' vous a envoyé une message :\n' + data.message,
-        duration: 3000,
+        duration: 2000,
         position : 'top'
        }).then(toast => {toast.present(); });
     }

@@ -101,7 +101,7 @@ export class AppComponent {
   }
 
   openChat(target: Player = {name: 'all', conn:undefined}, player: Player = this.playersServ.me()) {
-    console.log('CLICKED ON ', player);
+    console.log('CLICKED ON ', target);
     if (!this.playersServ.conversations.get(player)) {
       this.playersServ.conversations.set(player, new Conversation());
     }

@@ -62,6 +62,7 @@ export class PlayersService {
   getPlayerByName(name: string): Player {
     let player: Player;
     this.playersList.forEach(p => {
+      console.log(p.name, " is ? ", name)
       if(p.name === name)
         player=p;
     });
