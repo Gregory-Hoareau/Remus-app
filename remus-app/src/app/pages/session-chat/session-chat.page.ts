@@ -40,13 +40,15 @@ export class SessionChatPage implements OnInit {
 
 
   async send() {
-    
-    console.log(this.conv)
-    console.table(Array.from(this.conv.messages));
+    console.log(this.playerServ.playersList)
+    var host = this.playerServ.getPlayerByName("Host");
+    console.log(host)
     const message = this.myForm.getRawValue().message
     this.myForm.reset()
     console.log("sending ", message, "to player ", this.player)
     this.player.conn.send({message:message});
+    if(!this.playerServ.isHost)
+      this.playerServ.getPlayerByName("Host").conn.send({message:message,target:this.player.name})
     this.conv.addMessage(new Message(new Date(),this.playerServ.me(),message, this.player));
     setTimeout(() => {  this.content.scrollToBottom(100) }, 100);
     

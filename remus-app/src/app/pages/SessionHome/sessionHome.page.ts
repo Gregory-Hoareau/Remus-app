@@ -393,7 +393,8 @@ export class SessionHomePage {
         message: data.removed + ' a quité la partie',
       }).then(toast => {toast.present()});
 
-      const id = this.playerServ.getPlayerByName(data.removed);
+      const player = this.playerServ.getPlayerByName(data.removed);
+      const id = this.playerServ.playersList.indexOf(player)
       this.playerServ.playersList.splice(id, 1);
     }
     if (data.message) {
@@ -402,7 +403,10 @@ export class SessionHomePage {
       if (!this.playerServ.conversations.get(p))
         this.playerServ.conversations.set(p, new Conversation());
       console.log("recieved message : ", data.message, " from ", p)
-      this.playerServ.conversations.get(p).addMessage({timestamp: new Date(),player:p,message:data.message, target:this.playerServ.me()})
+      if(data.target)
+        this.playerServ.conversations.get(p).addMessage({timestamp: new Date(),player:p,message:data.message, target:this.playerServ.getPlayerByName(data.target)})
+      else
+        this.playerServ.conversations.get(p).addMessage({timestamp: new Date(),player:p,message:data.message, target:this.playerServ.me()})
     }
     if (data.achivement) {
       this.achivementService.achivements.push({titre: data.achivement, description: data.description, checked: false});

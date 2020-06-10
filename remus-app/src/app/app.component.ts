@@ -110,7 +110,7 @@ export class AppComponent {
       swipeToClose: true,
       componentProps: {
         player:player,
-        conv: this.playersServ.conversations.get(player)
+        conv: this.playersServ.getConv(player)
       }
     }).then(modal => {
       modal.present();

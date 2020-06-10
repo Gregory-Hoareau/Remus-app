@@ -58,12 +58,13 @@ export class PlayersService {
     
   }
 
-  getPlayerByName(name: string) {
+  getPlayerByName(name: string): Player {
+    let player: Player;
     this.playersList.forEach(p => {
       if(p.name === name)
-        return this.playersList.indexOf(p);
+        player=p;
     });
-    return 0;
+    return player;
   }
 
   getPlayerById(id: string): Player {
@@ -87,5 +88,9 @@ export class PlayersService {
   
   me() {
     return {name: this.myName, conn: undefined} as Player;
+  }
+
+  getConv(player:Player) {
+    return this.conversations.get(player)
   }
 }
