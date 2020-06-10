@@ -33,10 +33,10 @@ export class NotesPage implements OnInit {
       ],
       buttons: [
         {
-          text: 'Cancel'
+          text: 'Annuler'
         },
         {
-          text: 'Save',
+          text: 'Enregistrer',
           handler: (data) => {
             this.noteService.createNote(data.title);
           }

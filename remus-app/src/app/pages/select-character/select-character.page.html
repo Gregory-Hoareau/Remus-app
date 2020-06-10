@@ -22,13 +22,18 @@
   </ion-list>
   
 
-  <ion-button (click)="importCharacter()">
+  <ion-button color="medium" (click)="importCharacter()">
     <fa-icon class="icon" [icon]="importIcon"></fa-icon>
-    Importer un personnage
+    Importer depuis le téléphone
+  </ion-button>
+  
+  <ion-button color="medium" (click)="importCharacterFromServer()">
+    <fa-icon class="icon" [icon]="importIcon"></fa-icon>
+    Importer depuis le serveur
   </ion-button>
   
   <ion-fab vertical="top" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="characterModal()">
+    <ion-fab-button color="medium" (click)="characterModal()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

@@ -13,6 +13,8 @@ import { faFileImport, faFileExport } from '@fortawesome/free-solid-svg-icons'
 import { ThrowStmt } from '@angular/compiler';
 import { Skill } from 'src/app/models/skill.model';
 import { PersonalData } from 'src/app/models/personal-data.model';
+import { PlayersService } from 'src/app/providers/players/players.service';
+import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
 
 @Component({
   selector: 'app-character-sheet',
@@ -26,20 +28,22 @@ export class CharacterSheetPage implements OnInit {
   importing: boolean;
   importIcon = faFileImport;
   exportIcon = faFileExport;
+  isHost: boolean;
   private newly_created = false;
 
   constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File,
     private characterService:CharacterService, private modalCtrl:ModalController,
     private navParams: NavParams, private toastController: ToastController,
-    private crowdsourcing: CrowdsourcingService) {
+    private crowdsourcing: CrowdsourcingService, private playerService: PlayersService) {
       this.read_only = navParams.get('display');
-      this.importing = navParams.get('import')
+      this.importing = navParams.get('import');
       if (this.read_only) {
         this.character = navParams.get('character');
       } else {
         const index = navParams.get('charInd');
         this.character = this.characterService.getCharacter(index);
       }
+      this.isHost = this.playerService.isHost;
     }
 
   ngOnInit() {
@@ -344,6 +348,17 @@ export class CharacterSheetPage implements OnInit {
   async importCharacterForPlayer() {
     const modal = await this.modalCtrl.create({
       component: LoadCharacterPage
+    })
+    
+    await modal.present()
+  }
+
+  async importCharacterFromServerForPlayer() {
+    const modal = await this.modalCtrl.create({
+      component: CrowdsourcingPage,
+      componentProps: {
+        importing: true
+      }
     })
     
     await modal.present()

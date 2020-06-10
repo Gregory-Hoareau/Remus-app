@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { CharacterSheetPage } from '../character-sheet/character-sheet.page';
 import { faFileImport } from '@fortawesome/free-solid-svg-icons';
 import { LoadCharacterPage } from '../load-character/load-character.page';
+import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
 
 @Component({
   selector: 'app-select-character',
@@ -30,6 +31,17 @@ export class SelectCharacterPage implements OnInit {
   importCharacter() {
     this.modalCtrl.create({
       component: LoadCharacterPage,
+    }).then(modal => {
+      modal.present();
+    })
+  }
+
+  importCharacterFromServer() {
+    this.modalCtrl.create({
+      component: CrowdsourcingPage,
+      componentProps: {
+        importing: true
+      }
     }).then(modal => {
       modal.present();
     })

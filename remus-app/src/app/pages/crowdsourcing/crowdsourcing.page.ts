@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CrowdsourcingService } from 'src/app/providers/crowdsourcing/crowdsourcing.service';
 import { CharacterSheet } from 'src/app/models/character-sheet.model';
 import { ModalController, NavParams } from '@ionic/angular';
@@ -11,6 +11,8 @@ import { CharacterSheetPage } from '../character-sheet/character-sheet.page';
 })
 export class CrowdsourcingPage implements OnInit {
 
+  @Input()
+  importing: boolean;
   characters: CharacterSheet[];
   isModal: boolean;
 
@@ -31,7 +33,8 @@ export class CrowdsourcingPage implements OnInit {
       component: CharacterSheetPage,
       componentProps: {
         display: true,
-        character: this.characters[index]
+        character: this.characters[index],
+        import: this.importing
       }
     }).then(modal => {
       modal.present()
