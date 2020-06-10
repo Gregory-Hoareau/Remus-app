@@ -1,21 +1,16 @@
 import { Message } from './message.model';
 import { Player } from './player.models';
 
-export class Conversation {
+export class Conversation extends Array<Message> {
 
-    messages: Array<Message>;
-
-    constructor() {
-        this.messages = [];
-    }
-
+    
     addMessage(m: Message) {
-        const prev = this.messages[this.messages.length-1]
+        const prev = this[this.length-1]
         console.log(m.target)
         console.log(this.getMessageTarget(prev))
         if(this.getMessageTarget(prev) == m.target)
             m.target=undefined
-        this.messages.push(m);
+        this.push(m);
     }
 
     private getMessageTarget(m: Message): Player {
@@ -23,6 +18,6 @@ export class Conversation {
             return null;
         if (m.target)
             return m.target
-        return this.getMessageTarget(this.messages[this.messages.indexOf(m)-1])
+        return this.getMessageTarget(this[this.indexOf(m)-1])
     }
 }

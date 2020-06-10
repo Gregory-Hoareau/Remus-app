@@ -40,9 +40,6 @@ export class SessionChatPage implements OnInit {
 
 
   async send() {
-    console.log(this.playerServ.playersList)
-    var host = this.playerServ.getPlayerByName("Host");
-    console.log(host)
     const message = this.myForm.getRawValue().message
     this.myForm.reset()
     console.log("sending ", message, "to player ", this.player)
@@ -51,7 +48,18 @@ export class SessionChatPage implements OnInit {
       this.playerServ.getPlayerByName("Host").conn.send({message:message,target:this.player.name})
     this.conv.addMessage(new Message(new Date(),this.playerServ.me(),message, this.player));
     setTimeout(() => {  this.content.scrollToBottom(100) }, 100);
-    
+    this.getFilteredConv()
+  }
+
+  getFilteredConv(){
+    let filteredConv:Conversation = new Conversation();
+    this.playerServ.playersList.forEach(player => {
+      console.log("Conv avec ", player.name, this.playerServ.getConv(player));
+      filteredConv = filteredConv.concat(this.playerServ.getConv(player)) as Conversation;
+    });
+    filteredConv = filteredConv.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+    console.log("Conversations : ", filteredConv);
+    console.log(filteredConv.filter(message => message.target==this.player))
   }
 
 }
