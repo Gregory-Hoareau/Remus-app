@@ -24,8 +24,9 @@ describe('MacroService', () => {
       dices: diceSelected,
       stringDices: '2d4 + 1d12',
       modificator: 0,
+      isItNormalDices: true
     } as Macro;
-    service.createMacro('boule de feu', diceSelected, '2d4 + 1d12', 0);
+    service.createMacro('boule de feu', diceSelected, '2d4 + 1d12', 0, true);
     expect(service.macros.length).toBe(1);
     expect(service.macros[0]).toEqual(macroTest);
   });

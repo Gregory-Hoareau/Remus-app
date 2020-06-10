@@ -65,6 +65,7 @@ describe('SimulateurPage', () => {
       dices: component.diceSelected,
       stringDices: component.listOfDiceAsString,
       modificator: component.modificateur,
+      isItNormalDices: component.normalDices
     } as Macro
     component.macroLaunch(macro);
     expect(component.result).toBeGreaterThanOrEqual(5);
@@ -81,6 +82,7 @@ describe('SimulateurPage', () => {
       dices: component.diceSelected,
       stringDices: component.listOfDiceAsString,
       modificator: component.modificateur,
+      isItNormalDices: component.normalDices
     } as Macro
     component.macroLaunch(macro2);
     expect(component.result).toBeGreaterThanOrEqual(10);
