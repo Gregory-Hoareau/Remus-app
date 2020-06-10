@@ -66,4 +66,9 @@ export class SessionChatPage implements OnInit {
       || (message.target==this.playerServ.me() && message.player==this.player)) as Conversation;
   }
 
+  changePlayer(event)  {
+    console.log(event)
+    this.player=event.target.value;
+  }
+
 }

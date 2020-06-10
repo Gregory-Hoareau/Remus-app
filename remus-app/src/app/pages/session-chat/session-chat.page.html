@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-item>
-      <ion-select interface="popover" placeholder="All Players" [value]="player" [disabled]="!playerServ.isHost" >
+      <ion-select interface="popover" placeholder="All Players"  (ionChange)="changePlayer($event)" [value]="player" [disabled]="!playerServ.isHost" >
         <ion-select-option  *ngFor="let player of playerServ.playersList"  [value]="player">{{player.name}}</ion-select-option>
       </ion-select>
     </ion-item>
