@@ -20,35 +20,32 @@
           <div *ngIf="!normalDices" class="dices">
               <ion-img *ngFor="let dice of this.diceService.specialGame.get(specialDiceSet)" (click)="increaseDiceSum(dice)" class="small pastèque" src="{{dice.faces[2]}}"></ion-img>
           </div>
-          <ion-button (click)="specialDicesAlert()">Changer le set de dés</ion-button>
+          <ion-button color="medium" (click)="specialDicesAlert()">Changer le set de dés</ion-button>
           <div class="control">
-            <div class="buttons">
-              <ion-button  class="launch" color="medium" *ngIf="listOfDiceAsString !== ''" (click)="launchDice()">Lancer</ion-button>
-              <ion-button shape="round" color="medium" *ngIf="listOfDiceAsString !== ''" class="refresh" (click)="resetDices()">
-                <ion-icon  name="refresh-outline" ></ion-icon>
-              </ion-button>
-            </div>
-        
-            <ion-card-content class="selectDices" >{{listOfDiceAsString}}</ion-card-content>
+              <ion-card-content class="selectDices" >{{listOfDiceAsString}}</ion-card-content>
             
-            <br>
             <form *ngIf="normalDices">
               <label style="font-weight: bold" for="modif">Modificateur :</label><br>
               <input type="number" id="modif" value="" name="fname" [(ngModel)]="modificateur">
             </form>
+              <div class="buttons">
+                  <ion-button  class="launch" color="medium" *ngIf="listOfDiceAsString !== ''" (click)="launchDice()">Lancer</ion-button>
+                  <div>
+                      <ion-button shape="round" color= "medium" *ngIf="listOfDiceAsString !== ''" class="dice" (click)="newMacroAlert()">
+                          <ion-icon name="save-outline"></ion-icon>
+                      </ion-button>
+                      <ion-button shape="round" color="medium" *ngIf="listOfDiceAsString !== ''" class="refresh" (click)="resetDices()">
+                          <ion-icon  name="refresh-outline" ></ion-icon>
+                      </ion-button>
+                  </div>
+              </div>
           </div>
-          <br><br>
           <div class="settings">
-              <ion-toggle (ionChange)="gyroscopeSetting()"></ion-toggle>
-              <ion-label style="font-weight: bold">Activer le lancer par secousse</ion-label>
+              <div class="subSettings">
+                <ion-toggle (ionChange)="gyroscopeSetting()"></ion-toggle>
+                <ion-label style="font-weight: bold">Activer le lancer par secousse</ion-label>
+              </div>
           </div>
-
-
-        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-          <ion-fab-button color= "medium" *ngIf="listOfDiceAsString !== ''" class="dice" (click)="newMacroAlert()">
-            <ion-icon name="save-outline"></ion-icon>
-          </ion-fab-button>
-        </ion-fab>
       </ion-slide>
 
 

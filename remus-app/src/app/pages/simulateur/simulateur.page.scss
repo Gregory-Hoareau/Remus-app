@@ -1,8 +1,13 @@
 .settings {
-
-  float: left;
-  align-items: center;
+  align-items:flex-end;
   display: flex;
+  height: 100%;
+
+}
+
+.subSettings {
+  display: flex;
+  align-items: center;
 }
 
 ion-img {
@@ -23,6 +28,7 @@ ion-thumbnail {
   .dices {
     display: flex;
     flex-wrap: wrap;
+    margin: 4%;
   }
   
   .control {
@@ -33,10 +39,14 @@ ion-thumbnail {
   .buttons {
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    margin: 4% 0;
   }
-  
+
+  .launch {
+
+  }
   .refresh {
-    flex-basis: content;
   }
 
  .slides {
@@ -53,6 +63,7 @@ app-roll-history {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
+      width: 100%;
   }
 
   .historiquePage {
@@ -76,6 +87,7 @@ ion-content{
   --background: #faefe1;
 }
 .selectDices{
+  margin: 4% 0;
   font-size: large;
   font-weight: bold;
   color: black;
