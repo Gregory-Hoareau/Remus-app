@@ -2,17 +2,12 @@
   <ion-toolbar class="new-background-color">
     <ion-title style="font-family: 'Playfair display',serif">{{ note.title }}</ion-title>
     <ion-buttons slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
-    <ion-buttons slot="start">
-      <ion-button (click)="deleteNote()">
-        <ion-icon slot="icon-only" name="trash"></ion-icon>
-      </ion-button>
+    <ion-buttons slot="start" (click)="deleteNote()">
+      <ion-icon slot="icon-only" name="trash"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<div style="background-image: url('../../../assets/notes-head.png');background-size: cover" class="head"><br><br>
-</div>
-<ion-content class="ion-padding" [fullscreen]="false">
+<ion-content class="ion-padding" [fullscreen]="true">
   <ion-textarea style="width: 100%" [autoGrow]="true" (input)="noteChanged()" [(ngModel)]="note.content" placeholder="...Besoin de vous souvenir de quelque chose ? Notez le ici !"></ion-textarea>
-
 </ion-content>
