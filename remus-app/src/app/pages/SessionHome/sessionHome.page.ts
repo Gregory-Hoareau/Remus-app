@@ -9,12 +9,12 @@ import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
 import { SimulateurPage } from '../simulateur/simulateur.page';
 import {faDiceD20, faTable, faTrophy, faPeopleArrows} from '@fortawesome/free-solid-svg-icons';
-import {AchivementService} from "../../providers/achivement/achivement.service";
-import {NotesPage} from "../notes/notes.page";
-import {NotesService} from "../../providers/notes/notes.service";
+import {AchivementService} from '../../providers/achivement/achivement.service';
+import {NotesPage} from '../notes/notes.page';
+import {NotesService} from '../../providers/notes/notes.service';
 import { Player } from 'src/app/models/player.models';
 import { AchivementPage } from '../achivement/achivement.page';
-import {CanvasPage} from "../canvas/canvas.page";
+import {CanvasPage} from '../canvas/canvas.page';
 import { Location } from '@angular/common';
 import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
 import { CharacterService } from 'src/app/providers/character/character.service';
@@ -27,7 +27,7 @@ import { CharacterService } from 'src/app/providers/character/character.service'
 
 export class SessionHomePage {
 
-  //Personal info
+  // Personal info
   isHost: boolean;
   roomName: string;
   description: string;
@@ -35,11 +35,11 @@ export class SessionHomePage {
   myid: string;
   roomid: string;
   pseudo: string;
-  //Host peerServer info
+  // Host peerServer info
   host = '51.210.101.240';
   path = '/remus-app';
   port = 9000;
-  //Other variables
+  // Other variables
   imgTemp = '';
   image: string = null;
   loader: any;
@@ -47,13 +47,13 @@ export class SessionHomePage {
   trophyIcon = faTrophy;
   crowdsourcing = faPeopleArrows;
 
-  constructor(public achivementService:AchivementService,public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
+  constructor(public achivementService: AchivementService, public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
               private file: File, private playerServ: PlayersService,
               private toastController: ToastController, private menuController: MenuController,
               private noteService: NotesService, private location: Location,
               private characterService: CharacterService) {
-    if(this.route.queryParams){
+    if (this.route.queryParams) {
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
           this.roomName = this.router.getCurrentNavigation().extras.state.name;
@@ -64,15 +64,15 @@ export class SessionHomePage {
       });
     }
 
-    this.menuController.enable(true,'playerList');
-    this.menuController.enable(false,'mainMenu');
+    this.menuController.enable(true, 'playerList');
+    this.menuController.enable(false, 'mainMenu');
 
   }
 
 
   ngOnInit() {
-    //initialise Peer
-    this.myid = Math.random().toString(36).substr(2, 5); //Should be only for host
+    // initialise Peer
+    this.myid = Math.random().toString(36).substr(2, 5); // Should be only for host
     this.peer = new Peer(this.myid,
       {host: this.host,
       path: this.path,
@@ -80,18 +80,19 @@ export class SessionHomePage {
       debug: 2});
 
     if (!this.roomName) {
-      //Peers trying to join
-      this.roomName='Salle d\'attente';
-      if(!this.roomid)
+      // Peers trying to join
+      this.roomName = 'Salle d\'attente';
+      if (!this.roomid) {
         this.location.back();
-      
-      
+      }
+
+
       this.peer.on('open', id => {
         this.makeLoader();
-        //connect to host peer
-        let conn = this.peer.connect(this.roomid, {serialization: 'json'});
+        // connect to host peer
+        const conn = this.peer.connect(this.roomid, {serialization: 'json'});
         conn.on('open', () => {
-          //informe player name
+          // informe player name
           conn.send({newPlayer: this.pseudo});
         });
         conn.on('data', (data) => {
@@ -111,13 +112,13 @@ export class SessionHomePage {
       this.peer.on('error', err => {
         console.log(err.type);
         if (err.type === 'peer-unavailable') {
-          this.makeKickAlert('id ' + this.roomid +' ne correspond a aucune salle.');
+          this.makeKickAlert('id ' + this.roomid + ' ne correspond a aucune salle.');
         }
       });
 
     } else {
-      //Initialise hosting
-      this.pseudo="Host"
+      // Initialise hosting
+      this.pseudo = 'Host';
       this.isHost = true;
       this.roomid = this.myid;
       this.playerServ.isHost = true;
@@ -141,22 +142,23 @@ export class SessionHomePage {
   }
 
   ngOnDestroy() {
-    this.loader.dismiss()
+    this.loader.dismiss();
 
-    this.menuController.enable(false,'playerList');
-    this.menuController.enable(true,'mainMenu');
+    this.menuController.enable(false, 'playerList');
+    this.menuController.enable(true, 'mainMenu');
 
     this.noteService.reset();
 
     this.playerServ.getConns().forEach(c => {
-      if(!this.isHost)
-        c.send({removed:this.pseudo})
-      else
-        c.send({kick:'l\'hote à quité la partie'})
+      if (!this.isHost) {
+        c.send({removed: this.pseudo});
+      } else {
+        c.send({kick: 'l\'hote à quité la partie'});
+      }
       c.close();
     });
 
-    let len = this.playerServ.playersList.length;
+    const len = this.playerServ.playersList.length;
     for (let i = 0; i < len; i++) {
       this.playerServ.playersList.pop();
     }
@@ -165,8 +167,8 @@ export class SessionHomePage {
 
     this.peer.disconnect();
     this.peer.destroy();
-    //reset shared files
-    if(this.file.listDir(this.file.dataDirectory , ''))
+    // reset shared files
+    if (this.file.listDir(this.file.dataDirectory , '')) {
       this.file.listDir(this.file.dataDirectory , '').then((listing) => {
         for (const files of listing) {
           if (files.isFile === true) {
@@ -175,6 +177,7 @@ export class SessionHomePage {
           }
         }
       });
+    }
 
   }
 
@@ -182,7 +185,7 @@ export class SessionHomePage {
     this.modalCtr.create({
       component: SelectCharacterPage,
       swipeToClose: true,
-    }).then(modal => modal.present())
+    }).then(modal => modal.present());
   }
 
   async openModal(page) {
@@ -191,7 +194,7 @@ export class SessionHomePage {
       componentProps: {
          charInd: -1,
       },
-      //cssClass: 'custom-modal-css',
+      // cssClass: 'custom-modal-css',
       swipeToClose: true,
       id: 'Character'
     });
@@ -213,7 +216,7 @@ export class SessionHomePage {
       component: SimulateurPage,
       swipeToClose: true,
       componentProps: {
-        isModal: true //Adapt format for in-modal use
+        isModal: true // Adapt format for in-modal use
       },
     }).then(modal => {
       modal.present();
@@ -279,7 +282,7 @@ export class SessionHomePage {
       ]
     }).then(alert => {
       alert.present();
-    })
+    });
   }
 
   makeApprovalAlert(player, conn) {
@@ -288,29 +291,29 @@ export class SessionHomePage {
       message: player,
       buttons: [
         {text: 'approuver', role: 'join', handler: () => {
-            //Send old players info to new player
+            // Send old players info to new player
             this.playerServ.playersList.forEach( player => {
               conn.send({newPlayer: player.name, peer: player.conn.peer});
             });
-            //Send new player info to old players
+            // Send new player info to old players
             this.playerServ.getConns().forEach( con => {
               con.send({newPlayer: player, peer: conn.peer});
             });
             conn.send({roomName: this.roomName, roomDesc: this.description});
-            conn.send({template: this.characterService.getTemplate()})
-            //Add new player to peronnal player list
-            this.playerServ.playersList.push({name: player, conn: conn});
+            conn.send({template: this.characterService.getTemplate()});
+            // Add new player to peronnal player list
+            this.playerServ.playersList.push({name: player, conn});
         }},
         {text: 'refuser', role: 'kick', handler: () => {
         conn.send({kick: 'accès refusé'});
         }}]
     }).then(alert => {
       alert.present();
-    })
+    });
   }
 
   makeKickAlert(reason) {
-    this.loader.dismiss()
+    this.loader.dismiss();
     this.alerteController.create({
       header: 'Vous avez été viré de la partie',
       message: 'Raison : ' + reason,
@@ -321,7 +324,7 @@ export class SessionHomePage {
         }}]
     }).then(alert => {
       alert.present();
-    })
+    });
   }
 
   async makeLoader() {
@@ -337,37 +340,38 @@ export class SessionHomePage {
       componentProps: {
         modal: true
       }
-    }).then(modal=> {
+    }).then(modal => {
       modal.present();
-    })
+    });
   }
 
   // tslint:disable-next-line:no-unnecessary-initializer
   treatData(data, conn = undefined) {
-    //Treat given data
+    // Treat given data
     if (data.roomName) {
       this.roomName = data.roomName;
-      if(this.loader)
+      if (this.loader) {
         this.loader.dismiss();
-      this.playerServ.playersList.push({name:'Host', conn:conn})
+      }
+      this.playerServ.playersList.push({name: 'Host', conn});
     }
     if (data.roomDesc) {
       this.description = data.roomDesc;
     }
     if (data.newPlayer) {
 
-      var node = document.createElement("ION-CARD");
-      node.appendChild(document.createTextNode(data.newPlayer+' a rejoint la salle'));
-      document.getElementById("mainContent").appendChild(node);
+      const node = document.createElement('ION-CARD');
+      node.appendChild(document.createTextNode(data.newPlayer + ' a rejoint la salle'));
+      document.getElementById('mainContent').appendChild(node);
 
       if (this.isHost) {
         this.makeApprovalAlert(data.newPlayer, conn);
       } else {
-        var con = this.peer.connect(data.peer, {serialization: 'json'})
+        const con = this.peer.connect(data.peer, {serialization: 'json'});
         con.on('open', () => {
-          //informe player name
+          // informe player name
           this.playerServ.playersList.push({name: data.newPlayer, conn: con});
-          console.log("Openned connection with ", data.newPlayer)
+          console.log('Openned connection with ', data.newPlayer);
         });
         con.on('data', (data) => {
           this.treatData(data, con);
@@ -387,14 +391,14 @@ export class SessionHomePage {
       this.imgTemp = '';
     }
     if (data.removed) {
-      var node = document.createElement("ION-CARD");
-      node.appendChild(document.createTextNode(data.removed+' a quitté la salle'));
-      document.getElementById("mainContent").appendChild(node);
-      //Notify players
+      const node = document.createElement('ION-CARD');
+      node.appendChild(document.createTextNode(data.removed + ' a quitté la salle'));
+      document.getElementById('mainContent').appendChild(node);
+      // Notify players
       this.toastController.create({
         duration: 2000,
         message: data.removed + ' a quité la partie',
-      }).then(toast => {toast.present()});
+      }).then(toast => {toast.present(); });
 
       const id = this.playerServ.getPlayerByName(data.removed);
       this.playerServ.playersList.splice(id, 1);
@@ -402,10 +406,16 @@ export class SessionHomePage {
     if (data.message) {
       let p: Player;
       p = this.playerServ.getPlayerById(conn.peer);
-      if (!this.playerServ.conversations.get(p))
-        this.playerServ.conversations.set(p,{messages:[]})
-      console.log("recieved message : ", data.message, " from ", p)
-      this.playerServ.conversations.get(p).messages.push([p,data.message])
+      if (!this.playerServ.conversations.get(p)) {
+        this.playerServ.conversations.set(p, {messages: []});
+      }
+      console.log('recieved message : ', data.message, ' from ', p);
+      this.playerServ.conversations.get(p).messages.push([p, data.message]);
+      this.toastController.create({
+        message: p.name + ' vous a envoyé une message :\n' + data.message,
+        duration: 3000,
+        position : 'top'
+       }).then(toast => {toast.present(); });
     }
     if (data.achivement) {
       this.achivementService.achivements.push({titre: data.achivement, description: data.description, checked: false});
@@ -419,10 +429,10 @@ export class SessionHomePage {
       this.achivementService.validAchivement(data.achivementValide);
       this.achivementService.setUpAvancee();
     }
-    if(data.removeAchivement){
+    if (data.removeAchivement) {
       this.achivementService.remove(data.removeAchivement);
     }
-    if(data.template) {
+    if (data.template) {
       this.characterService.setTemplate(data.template);
     }
   }
