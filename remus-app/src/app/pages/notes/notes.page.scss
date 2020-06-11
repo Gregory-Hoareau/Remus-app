@@ -7,8 +7,13 @@ ion-item {
   --background: #00000000
 }
 
+ion-header {
+  height: 10%;
+}
+
 ion-toolbar {
   --opacity: 0;
+  color: black;
 }
 
 ion-list {
