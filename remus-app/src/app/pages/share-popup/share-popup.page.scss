@@ -31,10 +31,21 @@ ion-img {
 #label{
     margin-left: 10px;
     margin-top: 40px;
+    font-size: 15px;
 }
 #name{
     margin-left: 10px;
     width: 80%;
     height: 30px;
     margin-top: 10px;
+}
+
+.playerList {
+    display: flex;
+    align-items: center;
+}
+
+.playerName {
+    padding-left: 3px;
+    font-size: 17px;
 }

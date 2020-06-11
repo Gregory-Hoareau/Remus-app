@@ -14,16 +14,49 @@ import { PlayersService } from 'src/app/providers/players/players.service';
 export class SharePopupPage implements OnInit {
   private text = {name: '' };
   image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
+  connectedPlayers: any[];
+  isIndeterminate: boolean;
+    masterCheck: boolean;
  @Input() conns: DataConnection[];
  libraryImage;
   constructor(private file: File, private formBuilder: FormBuilder, private modalController: ModalController,
               private navParams: NavParams, private camera: Camera, private playersServ: PlayersService, private alertController: AlertController) {
-    this.conns = []
+    this.conns = [];
+    this.connectedPlayers = [];
+    this.isIndeterminate = false;
+    this.masterCheck = false;
   }
 
   ngOnInit() {
+      this.playersServ.playersList.forEach(player => {
+         this.connectedPlayers.push({val: player, isChecked: false});
+      });
   }
 
+    checkMaster() {
+        setTimeout(() => {
+            this.connectedPlayers.forEach(obj => {
+                obj.isChecked = this.masterCheck;
+            });
+        });
+    }
+    checkEvent() {
+        const totalItems = this.connectedPlayers.length;
+        let checked = 0;
+        this.connectedPlayers.map(obj => {
+            if (obj.isChecked) { checked++; }
+        });
+        if (checked > 0 && checked < totalItems) {
+            this.isIndeterminate = true;
+            this.masterCheck = false;
+        } else if (checked === totalItems) {
+            this.masterCheck = true;
+            this.isIndeterminate = false;
+        } else {
+            this.isIndeterminate = false;
+            this.masterCheck = false;
+        }
+    }
   async searchPhoto() {
     this.libraryImage = await this.openLibrary();
     this.image = 'data:image/jpg;base64,' + this.libraryImage;
@@ -45,6 +78,11 @@ export class SharePopupPage implements OnInit {
     await this.modalController.dismiss();
   }
   async validModal() {
+      this.connectedPlayers.forEach(player => {
+          if (player.isChecked) {
+              this.conns.push(player.val.conn);
+          }
+      })
       this.savePicture();
       this.conns.forEach((conn) => {
           let size = this.image.length;
@@ -69,45 +107,6 @@ export class SharePopupPage implements OnInit {
           }
       });
       await this.modalController.dismiss({filename: this.text.name, img: this.image});
-  }
-
-
-  async selectPlayers() {
-      const inputs = [];
-      this.playersServ.playersList.forEach(player => {
-        inputs.push({
-          name: player.name,
-          type: 'checkbox',
-          label: player.name,
-          checked: false,
-          value: player.conn
-        });
-      });
-
-      if(inputs.length!==0)
-        this.alertController.create({
-          header:'Selectionnez les joueurs avec qui partager',
-          inputs:inputs,
-          buttons:[{
-            text:'Partager',
-            role:'partager',
-            handler: data => {
-              data.forEach(conn => {
-                this.conns.push(conn);
-              });
-              this.validModal()
-            }
-          },{
-            text:'à tous',
-            role:'shareall',
-            handler: () =>{
-              this.conns = this.playersServ.getConns();
-              this.validModal()
-            }
-          }]
-        }).then(alert => {
-          alert.present();
-        });
   }
 
   private savePicture() {

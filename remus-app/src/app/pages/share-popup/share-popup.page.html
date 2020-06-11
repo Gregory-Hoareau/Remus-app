@@ -17,11 +17,25 @@
         <div>
             <img [src]="this.image" alt=""/>
         </div>
+            <ion-text id="label">Selectionnez les joueurs avec qui partager :</ion-text>
+            <ion-item>
+                <ion-label><strong>Select All</strong></ion-label>
+                <ion-checkbox slot="start"
+                          [(ngModel)]="masterCheck"
+                          [indeterminate]="isIndeterminate"
+                          (click)="checkMaster($event)"></ion-checkbox>
+            </ion-item>
+            <ion-list *ngIf="this.playersServ.playersList.length != 0">
+                <ion-item  class="playerList"  *ngFor="let player of this.connectedPlayers">
+                    <ion-checkbox slot="start" [(ngModel)]="player.isChecked" (ionChange)="checkEvent()"></ion-checkbox>
+                    <ion-label class="playerName">{{player.val.name}}</ion-label>
+                </ion-item>
+            </ion-list>
     </ion-card-content>
 </ion-content>
 
 <ion-footer>
-    <ion-button  color= "medium" (click)="selectPlayers()"> Valider</ion-button>
+    <ion-button  color= "medium" (click)="validModal()"> Valider</ion-button>
     <ion-button  color= "medium" (click)="closeModal()"> Annuler </ion-button>
 </ion-footer>
 
