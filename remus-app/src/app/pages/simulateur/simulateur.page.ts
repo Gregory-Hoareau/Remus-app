@@ -55,8 +55,8 @@ export class SimulateurPage implements OnInit {
 
 
 
-  constructor(public shakeDetector: Shake, public alertController: AlertController, private diceService: DiceService,
-    private diceHistoryService: DiceHistoryService, private modalCtrl: ModalController, private alertCtrl: AlertController, private macroService: MacroService)  { }
+  constructor(public shakeDetector: Shake, public alertController: AlertController, public diceService: DiceService,
+    public diceHistoryService: DiceHistoryService, private modalCtrl: ModalController, private alertCtrl: AlertController, public macroService: MacroService)  { }
 
   ngOnInit() {
     this.typeOfDiceHasBeenChanged = false;

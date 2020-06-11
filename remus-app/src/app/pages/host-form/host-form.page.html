@@ -13,7 +13,7 @@
     </ion-item>
     <ion-item>
       <ion-label position="floating">Description <ion-text color="danger">*</ion-text></ion-label>
-      <ion-input required formControlName="description" type="text"></ion-input>
+      <ion-textarea [autoGrow]="true" required formControlName="description" type="text"></ion-textarea>
     </ion-item>
     <ion-item class="select">
       <ion-label>Fiche personnage</ion-label>
