@@ -32,5 +32,5 @@ class CharacterSheet(models.Model):
     background = models.TextField()
     traits = models.ManyToManyField(Trait)
     skills = models.ManyToManyField(Skill)
-    other_personal = models.ManyToManyField(PersonalData, null=True)
+    other_personal = models.ManyToManyField(PersonalData)
 

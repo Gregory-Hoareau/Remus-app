@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CharacterSheet, Trait, Skill
+from .models import CharacterSheet, Trait, Skill, PersonalData
 
 class TraitSerializer(serializers.ModelSerializer):
 
@@ -13,9 +13,16 @@ class SkillSerializer(serializers.ModelSerializer):
          model = Skill
          fields = '__all__'
 
+class PersonalDataSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PersonalData
+        fields = '__all__'
+
 class CharacterSheetSerializer(serializers.ModelSerializer):
     traits = TraitSerializer(many=True)
     skills = SkillSerializer(many=True)
+    other_personal = PersonalDataSerializer(many=True)
 
     class Meta:
         model = CharacterSheet
@@ -24,6 +31,7 @@ class CharacterSheetSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         all_trait = validated_data.pop('traits')
         all_skill = validated_data.pop('skills')
+        others = validated_data.pop('other_personal')
         instance = CharacterSheet.objects.create(**validated_data)
         for trait in all_trait:
             t = Trait(name=trait['name'], value=trait['value'])
@@ -33,4 +41,8 @@ class CharacterSheetSerializer(serializers.ModelSerializer):
             s = Skill(name=skill['name'])
             s.save()
             instance.skills.add(s)
+        for data in others:
+            d = PersonalData(name=data['name'], value=data['value'])
+            d.save()
+            instance.other_personal.add(d)
         return instance

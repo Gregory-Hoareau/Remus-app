@@ -1,2 +1,4 @@
 .idea
 .DS_Store
+remus-backend/crowdsourcing/**/__pycache__/*
+remus-backend/crowdsourcing/api/migrations/*
