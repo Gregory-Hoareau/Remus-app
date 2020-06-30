@@ -57,7 +57,11 @@ export const routes: Routes = [
   {
     path: 'load-character',
     loadChildren: () => import('./pages/load-character/load-character.module').then( m => m.LoadCharacterPageModule)
+  },  {
+    path: 'custom-sheet',
+    loadChildren: () => import('./pages/custom-sheet/custom-sheet.module').then( m => m.CustomSheetPageModule)
   }
+
 
 
 ];

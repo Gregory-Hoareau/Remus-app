@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CharacterSheet, DnDCharacterSheet, WoDCharacterSheet, AventureCharacterSheet, WtACharacterSheet, StarWarsCharacterSheet, L5RCharacterSheet } from 'src/app/models/character-sheet.model';
+import { CharacterSheet, DnDCharacterSheet, WoDCharacterSheet, AventureCharacterSheet, WtACharacterSheet, StarWarsCharacterSheet, L5RCharacterSheet, CustomCharacterSheet } from 'src/app/models/character-sheet.model';
 import { all_characters } from 'src/mocks/character'
 import { PlayersService } from '../players/players.service';
 
@@ -10,6 +10,7 @@ export class CharacterService {
 
   readonly default_template = 'D&D';
   private template: string;
+  private customSheet: CharacterSheet;
   private empty_characters: () => CharacterSheet; // Fonction renvoyant une fiche de personnage vide
 
   characters: CharacterSheet[];
@@ -17,6 +18,10 @@ export class CharacterService {
   constructor(private playerService: PlayersService) {
     this.characters = playerService.isHost? all_characters: [];
     this.template = this.default_template;
+  }
+
+  setCustomSheet(sheet: CharacterSheet) {
+    this.customSheet = sheet;
   }
 
   getTemplate() {
@@ -47,6 +52,11 @@ export class CharacterService {
       case 'L5R':
         this.empty_characters = () => {
           return new L5RCharacterSheet();
+        }
+        break;
+      case 'Custom':
+        this.empty_characters = () => {
+          return new CustomCharacterSheet(this.customSheet);
         }
         break;
       case 'D&D':

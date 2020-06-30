@@ -7,7 +7,8 @@ export const all_templates = {
     'WtA': 'Loup-Garou : l\'apocalypse',
     'SW': 'Star Wars',
     'Aventure': 'Aventure',
-    'L5R': 'Légende des 5 anneaux'
+    'L5R': 'Légende des 5 anneaux',
+    'Custom': 'Personnalisable'
 }
 
 export abstract class CharacterSheet {
@@ -112,6 +113,7 @@ export class WtACharacterSheet extends WoDCharacterSheet {
     ];
 }
 
+// Character Sheets for Star Wars
 export class StarWarsCharacterSheet extends CharacterSheet {
     template = 'SW';
     traits = [
@@ -136,6 +138,7 @@ export class StarWarsCharacterSheet extends CharacterSheet {
     ];
 }
 
+// Character Sheets for Legend of the 5 rings
 export class L5RCharacterSheet extends CharacterSheet {
     template = 'L5R';
     traits = [
@@ -164,3 +167,16 @@ export class L5RCharacterSheet extends CharacterSheet {
     ]
 }
 
+// Customisable Character Sheets
+export class CustomCharacterSheet extends CharacterSheet {
+    template = 'Custom'
+    other_personal = [];
+
+    constructor(sheet: CharacterSheet) {
+        super();
+        if (sheet) {
+            this.traits = sheet.traits;
+            this.other_personal = sheet.other_personal;
+        }
+    }
+}

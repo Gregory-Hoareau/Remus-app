@@ -5,6 +5,7 @@ import { IonRouterOutlet } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
 import {JoinFormPage} from '../join-form/join-form.page';
 import { PlayersService } from 'src/app/providers/players/players.service';
+import { CustomSheetPage } from '../custom-sheet/custom-sheet.page';
 
 @Component({
   selector: 'app-home',
@@ -55,9 +56,24 @@ export class HomePage {
       swipeToClose: true
     });
 
-    modal.onWillDismiss().then((dataReturned) => {
+    modal.onWillDismiss().then(async (dataReturned) => {
       console.table(dataReturned);
-      if (dataReturned.data !== undefined) {
+      console.log("HERE")
+      console.log(dataReturned)
+      if (dataReturned.data.template === 'Custom') {
+        this.dataReturned = dataReturned;
+        const customisation = await this.modalCtr.create({
+          component: CustomSheetPage,
+          componentProps: {
+            dataReturned: dataReturned.data,
+            sheet: dataReturned.data.sheet
+          },
+          swipeToClose: true
+        });
+
+        await customisation.present();
+      }
+      else if (dataReturned.data !== undefined) {
         this.dataReturned = dataReturned.data;
         const navigationExtras: NavigationExtras = {
           state: this.dataReturned
