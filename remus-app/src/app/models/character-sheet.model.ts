@@ -13,6 +13,7 @@ export const all_templates = {
 
 export abstract class CharacterSheet {
     template: string = null;
+    tags: string = '';
     img: string = null;
     name: string = '';
     age: number = -1;
@@ -47,6 +48,7 @@ export abstract class CharacterSheet {
 // Character Sheet of Dongeons and dragons
 export class DnDCharacterSheet extends CharacterSheet {
     template = 'D&D';
+    tags = 'd&d,fantasy';
     other_personal = [{
             name: 'Race',
             value: ''
@@ -68,6 +70,7 @@ export class DnDCharacterSheet extends CharacterSheet {
 // Character Sheet for Aventure (RPG of Mayhar)
 export class AventureCharacterSheet extends CharacterSheet {
     template = 'Aventure'
+    tags = 'aventure,fantasy';
     other_personal = [{
         name: 'Race',
         value: ''
@@ -100,6 +103,7 @@ export abstract class WoDCharacterSheet extends CharacterSheet {
 
 export class WtACharacterSheet extends WoDCharacterSheet {
     template = 'WtA';
+    tags = 'wod,wta,werewolf,modern';
     other_personal = [{
             name: 'Race',
             value: ''
@@ -116,6 +120,7 @@ export class WtACharacterSheet extends WoDCharacterSheet {
 // Character Sheets for Star Wars
 export class StarWarsCharacterSheet extends CharacterSheet {
     template = 'SW';
+    tags = 'sw,sf,space';
     traits = [
         new Trait('Vigueur'),
         new Trait('Agilité'),
@@ -141,6 +146,7 @@ export class StarWarsCharacterSheet extends CharacterSheet {
 // Character Sheets for Legend of the 5 rings
 export class L5RCharacterSheet extends CharacterSheet {
     template = 'L5R';
+    tags = 'l5r';
     traits = [
         new Trait('Terre'),
         new Trait('Constitution'),
@@ -175,6 +181,7 @@ export class CustomCharacterSheet extends CharacterSheet {
     constructor(sheet: CharacterSheet) {
         super();
         if (sheet) {
+            this.tags = sheet.tags;
             this.traits = sheet.traits;
             this.other_personal = sheet.other_personal;
         }

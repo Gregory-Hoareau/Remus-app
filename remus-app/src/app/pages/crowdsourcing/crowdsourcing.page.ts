@@ -13,10 +13,13 @@ export class CrowdsourcingPage implements OnInit {
 
   @Input()
   importing: boolean;
-  characters: CharacterSheet[];
+  private characters: CharacterSheet[];
+  displayedCharacters: CharacterSheet[];
   isModal: boolean;
+  selectedFilter = [];
+  availableTags = this.crowdsourcing.availableTags;
 
-  constructor(private crowdsourcing: CrowdsourcingService, 
+  constructor(private crowdsourcing: CrowdsourcingService,
     public modalCtrl: ModalController, private navParams: NavParams) {
     this.characters = [];
     this.isModal = navParams.get('modal');
@@ -25,6 +28,7 @@ export class CrowdsourcingPage implements OnInit {
   ngOnInit() {
     this.crowdsourcing.getCharacterSheets().subscribe(value => {
       this.characters = value;
+      this.displayedCharacters = this.filterCharacters();
     });
   }
 
@@ -41,9 +45,39 @@ export class CrowdsourcingPage implements OnInit {
     })
   }
 
+  filterCharacters(): CharacterSheet[] {
+    let res = [];
+    if (this.selectedFilter.length !== 0) {
+      this.characters.forEach((sheet) => {
+        for (const tag of this.selectedFilter) {
+          if (sheet.tags.includes(tag)) {
+            res.push(sheet);
+            break;
+          }
+        }
+        
+      })
+    } else {
+      res = this.characters;
+    }
+    
+    return res;
+  }
+
+  selectFilter(event) {
+    console.log(this.selectedFilter)
+    this.displayedCharacters = this.filterCharacters();
+  }
+
+  resetFilter() {
+    this.selectedFilter = [];
+    this.displayedCharacters = this.filterCharacters();
+  }
+
   doRefresh(event) {
     this.crowdsourcing.getCharacterSheets().subscribe(sheets => {
       this.characters = sheets;
+      this.displayedCharacters = this.filterCharacters();
       event.detail.complete()
     })
   }

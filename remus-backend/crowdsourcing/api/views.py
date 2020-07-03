@@ -23,11 +23,6 @@ class CharacterSheetList(APIView):
         body = request.data
         serialized = CharacterSheetSerializer(data=body)
         if serialized.is_valid():
-            #all_sheet = CharacterSheet.objects.all()
-            #for sheet in all_sheet:
-            #    existing = CharacterSheetSerializer(sheet)
-            #    if CharacterSheet(existing.data) == CharacterSheet(serialized.validated_data):
-            #        return Response('Character sheet already exist', status=status.HTTP_406_NOT_ACCEPTABLE)
             serialized.save()
             return Response(serialized.data, status=status.HTTP_201_CREATED)
         print(serialized.errors)

@@ -7,7 +7,7 @@ class Trait(models.Model):
 
     def __eq__(self, other):
         if isinstance(other, Trait):
-            return self.name == other.name and self.value == other.name
+            return self.name == other.name and self.value == other.value
         return False
 
 class Skill(models.Model):
@@ -33,4 +33,4 @@ class CharacterSheet(models.Model):
     traits = models.ManyToManyField(Trait)
     skills = models.ManyToManyField(Skill)
     other_personal = models.ManyToManyField(PersonalData)
-
+    tags = models.TextField()

@@ -49,7 +49,22 @@
     </mat-expansion-panel>
   </mat-accordion>
 
-  <ion-button (click)="finishCustomisationAlert()">
-    Terminer la customisation
+  <ion-button color="medium" (click)="addTags()">
+    <ion-icon name="add"></ion-icon>
+     tag
   </ion-button>
+
+  <div class="tags">
+    <ion-chip *ngFor="let tag of selectedTags" color="dark" mode="ios">
+      <ion-icon name="close" (click)="removeTag(tag)"></ion-icon>
+      <ion-label>{{tag}}</ion-label>
+    </ion-chip>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="medium" (click)="finishCustomisationAlert()">
+      <ion-icon name="save"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
 </ion-content>
