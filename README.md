@@ -6,7 +6,7 @@ Remus est une application crossplatform qui à pour but de simplifier la vie des
 
 Icons fournis par : https://game-icons.net
 
-[Documentation du projet](https://github.com/PNS-PS7and8/pns-innov1920-pns-innov1920-g/wiki)
+
 
 ## Installation for the frontend
 
