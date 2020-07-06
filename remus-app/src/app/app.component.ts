@@ -4,7 +4,7 @@ import {Platform, NavController, ModalController} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {NavigationExtras, Router} from '@angular/router';
-import {faDiceD20, faHome, faPowerOff, faCommentAlt, faUserSlash, faPeopleArrows, faTrophy} from '@fortawesome/free-solid-svg-icons';
+import {faDiceD20, faHome, faPowerOff, faCommentAlt, faUserSlash, faPeopleArrows, faTrophy, faFeatherAlt} from '@fortawesome/free-solid-svg-icons';
 import {PlayersService} from './providers/players/players.service';
 import { Player } from './models/player.models';
 import { SessionChatPage } from './pages/session-chat/session-chat.page';
@@ -40,6 +40,11 @@ export class AppComponent {
       title: 'Communauté',
       url: '/crowdsourcing',
       icon: faPeopleArrows
+    }, 
+    {
+      title: 'Générateur de nom',
+      url: '/generator-choice',
+      icon: faFeatherAlt
     }
 
   ];

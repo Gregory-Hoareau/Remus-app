@@ -57,7 +57,15 @@ export const routes: Routes = [
   {
     path: 'load-character',
     loadChildren: () => import('./pages/load-character/load-character.module').then( m => m.LoadCharacterPageModule)
+  },  {
+    path: 'generator-choice',
+    loadChildren: () => import('./pages/name-generator/generator-choice/generator-choice.module').then( m => m.GeneratorChoicePageModule)
+  },
+  {
+    path: 'character-name-generator',
+    loadChildren: () => import('./pages/name-generator/character-name-generator/character-name-generator.module').then( m => m.CharacterNameGeneratorPageModule)
   }
+
 
 
 ];

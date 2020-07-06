@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Choix du générateur</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="selector">
+    <ion-button [routerLink]="['/character-name-generator']" expand="block" fill="outline" shape="round">
+      Nom de Personnage
+    </ion-button>
+    <ion-button disabled expand="block" fill="outline" shape="round">
+      Nom de ville
+    </ion-button>
+  </div>
+    
+  
+</ion-content>

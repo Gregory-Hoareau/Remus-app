@@ -21,6 +21,8 @@ import { SessionChatPageModule } from './pages/session-chat/session-chat.module'
 import {AchivementPage} from './pages/achivement/achivement.page';
 import {AchivementPageModule} from './pages/achivement/achivement.module';
 import {Base64ToGallery} from '@ionic-native/base64-to-gallery/ngx';
+import { CharacterNameGeneratorPageModule } from './pages/name-generator/character-name-generator/character-name-generator.module';
+import { NameGeneratorService } from './providers/name-generator/name-generator.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -47,6 +49,7 @@ import {Base64ToGallery} from '@ionic-native/base64-to-gallery/ngx';
     DiceHistoryService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CharacterService,
+    NameGeneratorService,
     NavParams,
     Base64ToGallery
   ],

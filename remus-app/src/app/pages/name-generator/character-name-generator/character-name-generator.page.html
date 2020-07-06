@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nom de Personnage</ion-title>
+  </ion-toolbar>
+
+  <ion-item>
+    <ion-label>Type de Nom</ion-label>
+    <ion-select [(ngModel)]="data">
+      <ion-select-option value="elf">Elfe</ion-select-option>
+    </ion-select>
+  </ion-item>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item *ngFor="let name of generatedNames">
+      <ion-label>{{name}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="generate()">
+      <ion-icon name="play-circle-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
