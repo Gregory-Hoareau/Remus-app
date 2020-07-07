@@ -10,10 +10,21 @@ export class CharacterNameGeneratorPage implements OnInit {
 
   data = 'elf';
   generatedNames = [];
+  all_data = [{
+    name: 'Elfe',
+    value: 'elf'
+  }, {
+    name: 'Humain',
+    value: 'human'
+  }]
 
   constructor(private nameGenerator: NameGeneratorService) {}
 
   ngOnInit() {
+  }
+
+  print(data) {
+    console.log(data);
   }
 
   generate() {

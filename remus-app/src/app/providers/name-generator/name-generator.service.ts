@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { elfName } from './data/character/elf';
+import { humanName } from './data/character/human';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ import { elfName } from './data/character/elf';
 export class NameGeneratorService {
 
   private learning: LearningList;
+  private previousData: string;
   private data: string;
   private final: string = '#';
 
@@ -19,7 +21,11 @@ export class NameGeneratorService {
   }
 
   generate(quantity: number, mini: number, maxi: number): string[] {
-    this.learning.learn(this.selectExampleList());
+    if(this.previousData !== this.data) {
+      this.learning.learn(this.selectExampleList());
+      this.previousData = this.data;
+    }
+
     const names = []
 
     while(names.length < quantity) {
@@ -46,6 +52,8 @@ export class NameGeneratorService {
 
   private selectExampleList(): string[] {
     switch (this.data) {
+      case 'human':
+        return humanName;
       case 'elf':
       default:
         return elfName;

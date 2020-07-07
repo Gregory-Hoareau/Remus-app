@@ -9,7 +9,7 @@
   <ion-item>
     <ion-label>Type de Nom</ion-label>
     <ion-select [(ngModel)]="data">
-      <ion-select-option value="elf">Elfe</ion-select-option>
+      <ion-select-option *ngFor="let data of all_data" [value]="data.value">{{data.name}}</ion-select-option>
     </ion-select>
   </ion-item>
 </ion-header>
