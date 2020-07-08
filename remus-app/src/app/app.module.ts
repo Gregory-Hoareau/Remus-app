@@ -21,6 +21,8 @@ import { SessionChatPageModule } from './pages/session-chat/session-chat.module'
 import {AchivementPage} from './pages/achivement/achivement.page';
 import {AchivementPageModule} from './pages/achivement/achivement.module';
 import {Base64ToGallery} from '@ionic-native/base64-to-gallery/ngx';
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
+import { JoinFormPageModule } from './pages/join-form/join-form.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,7 +36,8 @@ import {Base64ToGallery} from '@ionic-native/base64-to-gallery/ngx';
       HttpClientModule,
       IonicStorageModule.forRoot(),
       SessionChatPageModule,
-      AchivementPageModule
+      AchivementPageModule,
+      JoinFormPageModule
   ],
   providers: [
     StatusBar,
@@ -48,7 +51,8 @@ import {Base64ToGallery} from '@ionic-native/base64-to-gallery/ngx';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CharacterService,
     NavParams,
-    Base64ToGallery
+    Base64ToGallery,
+    Deeplinks
   ],
 
   bootstrap: [AppComponent]

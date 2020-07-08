@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 
 import {Platform, NavController, ModalController} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -11,6 +11,9 @@ import { SessionChatPage } from './pages/session-chat/session-chat.page';
 import {AchivementPage} from './pages/achivement/achivement.page';
 import { Location } from '@angular/common';
 import { Conversation } from './models/conversation.model';
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
+import { JoinFormPage } from './pages/join-form/join-form.page';
+import { VirtualTimeScheduler } from 'rxjs';
 
 
 @Component({
@@ -51,7 +54,9 @@ export class AppComponent {
       private router: Router,
       private playersServ: PlayersService,
       private modalCtrl: ModalController,
-      private location: Location
+      private location: Location,
+      private zone: NgZone,
+      private deeplinks: Deeplinks
   ) {
     this.initializeApp();
   }
@@ -67,7 +72,34 @@ export class AppComponent {
       });
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.setupDeeplinks();
     });
+  }
+
+  setupDeeplinks() {
+    this.deeplinks.route({
+      '/join/:roomId': 'join',
+    }).subscribe(match => {
+      switch(match.$route) {
+        case 'join':
+          this.zone.run(()=> {
+            this.handleJoinDeeplink(match.$args.roomId)
+          })
+          break;
+        default:
+          break;
+      }
+    })
+  }
+
+  private async handleJoinDeeplink(roomId) {
+    const modal = await this.modalCtrl.create({
+      component: JoinFormPage,
+      componentProps: {
+        id: roomId
+      }
+    })
+    modal.present();
   }
 
   kick(player: Player) {
