@@ -19,6 +19,7 @@ import { Location } from '@angular/common';
 import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
 import { CharacterService } from 'src/app/providers/character/character.service';
 import { Conversation } from 'src/app/models/conversation.model';
+import { InvitationSenderPage } from '../invitation-sender/invitation-sender.page';
 
 @Component({
   selector: 'app-home',
@@ -69,6 +70,15 @@ export class SessionHomePage {
     this.menuController.enable(true, 'playerList');
     this.menuController.enable(false, 'mainMenu');
 
+  }
+
+  sendInvitationModal() {
+    this.modalCtr.create({
+      component: InvitationSenderPage,
+      componentProps: {
+        roomId: this.roomid
+      }
+    }).then(m => m.present());
   }
 
 

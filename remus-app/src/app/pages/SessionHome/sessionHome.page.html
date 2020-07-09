@@ -9,10 +9,14 @@
     </ion-buttons>
     <div class="hcs">
       <fa-icon class="realSmall"  *ngIf="playerServ.isHost" [icon]="crown" style="color: #ffc409"></fa-icon>
-    <ion-title style="font-family: 'Playfair display',serif">
-      {{roomName}}
-    </ion-title>
-      {{roomid}}
+      <ion-title style="font-family: 'Playfair display',serif">
+        {{roomName}}
+      </ion-title>
+
+      <ion-button (click)="sendInvitationModal()">
+        {{roomid}}
+      </ion-button>
+      
     </div>
   </ion-toolbar>
 </ion-header>

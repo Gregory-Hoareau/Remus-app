@@ -4,7 +4,7 @@ import {Platform, NavController, ModalController} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {NavigationExtras, Router} from '@angular/router';
-import {faDiceD20, faHome, faPowerOff, faCommentAlt, faUserSlash, faPeopleArrows, faTrophy} from '@fortawesome/free-solid-svg-icons';
+import {faDiceD20, faHome, faPowerOff, faCommentAlt, faUserSlash, faPeopleArrows, faTrophy, faPaperPlane} from '@fortawesome/free-solid-svg-icons';
 import {PlayersService} from './providers/players/players.service';
 import { Player } from './models/player.models';
 import { SessionChatPage } from './pages/session-chat/session-chat.page';

@@ -57,7 +57,11 @@ export const routes: Routes = [
   {
     path: 'load-character',
     loadChildren: () => import('./pages/load-character/load-character.module').then( m => m.LoadCharacterPageModule)
+  },  {
+    path: 'invitation-sender',
+    loadChildren: () => import('./pages/invitation-sender/invitation-sender.module').then( m => m.InvitationSenderPageModule)
   }
+
 
 
 ];

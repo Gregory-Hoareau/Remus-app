@@ -23,6 +23,9 @@ import {AchivementPageModule} from './pages/achivement/achivement.module';
 import {Base64ToGallery} from '@ionic-native/base64-to-gallery/ngx';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { JoinFormPageModule } from './pages/join-form/join-form.module';
+import { SMS } from '@ionic-native/sms/ngx';
+import { Contacts } from '@ionic-native/contacts/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -52,7 +55,10 @@ import { JoinFormPageModule } from './pages/join-form/join-form.module';
     CharacterService,
     NavParams,
     Base64ToGallery,
-    Deeplinks
+    Deeplinks,
+    SMS,
+    Contacts,
+    AndroidPermissions
   ],
 
   bootstrap: [AppComponent]
