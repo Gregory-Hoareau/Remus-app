@@ -9,7 +9,7 @@
 
   <ion-list>
     <ion-list-header>
-      <ion-label>Destinataires</ion-label>
+      <ion-label class="list-header">Destinataires</ion-label>
       <ion-button (click)="addNumber()">
         <ion-icon name="add"></ion-icon>
       </ion-button>
@@ -36,7 +36,7 @@
   </ion-list>
 
   <ion-fab *ngIf="numbers.length > 0" vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="sendSms()">
+    <ion-fab-button color="medium" (click)="sendSms()">
       <ion-icon name="send"></ion-icon>
     </ion-fab-button>
   </ion-fab>
