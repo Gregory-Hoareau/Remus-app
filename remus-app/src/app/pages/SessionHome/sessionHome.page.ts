@@ -4,7 +4,7 @@ import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
 import {CharacterSheetPage} from '../character-sheet/character-sheet.page';
 import {File} from '@ionic-native/file/ngx';
-import Peer from 'peerjs';
+import Peer, { DataConnection } from 'peerjs';
 import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
 import { SimulateurPage } from '../simulateur/simulateur.page';
@@ -19,6 +19,7 @@ import { Location } from '@angular/common';
 import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
 import { CharacterService } from 'src/app/providers/character/character.service';
 import { Conversation } from 'src/app/models/conversation.model';
+import { Peer2peerService } from 'src/app/providers/peer2peer/peer2peer.service';
 
 @Component({
   selector: 'app-home',
@@ -54,7 +55,7 @@ export class SessionHomePage {
               private file: File, private playerServ: PlayersService,
               private toastController: ToastController, private menuController: MenuController,
               private noteService: NotesService, private location: Location,
-              private characterService: CharacterService) {
+              private characterService: CharacterService, private peerService: Peer2peerService) {
     if (this.route.queryParams) {
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
@@ -75,11 +76,7 @@ export class SessionHomePage {
   ngOnInit() {
     // initialise Peer
     this.myid = Math.random().toString(36).substr(2, 5); // Should be only for host
-    this.peer = new Peer(this.myid,
-      {host: this.host,
-      path: this.path,
-      port: this.port,
-      debug: 2});
+    this.peer = this.peerService.newpeer(this.myid);
 
     if (!this.roomName) {
       // Peers trying to join
@@ -89,18 +86,26 @@ export class SessionHomePage {
       }
 
 
-      this.peer.on('open', id => {
-        this.makeLoader();
-        // connect to host peer
-        const conn = this.peer.connect(this.roomid, {serialization: 'json'});
-        conn.on('open', () => {
-          // informe player name
-          conn.send({newPlayer: this.pseudo});
-        });
-        conn.on('data', (data) => {
-          this.treatData(data, conn);
-        });
-      });
+      //this.makeLoader();
+      this.peerService.openPeer(
+        function(params: SessionHomePage){
+          // connect to host peer
+          const conn = params.peerService.newConnection(params.roomid);
+          params.peerService.openConnection(conn, (params)=>{
+            conn.send({newPlayer: params.pseudo});
+          }, {pseudo: params.pseudo});
+          params.peerService.addConnectionAction(conn, (data, conn, params)=>{
+            params.treatData(data,conn,params);
+          }, params);
+          params.peerService.closeConnection(conn, (params)=>{
+            console.log(params.playerServ.getPlayerById(conn.peer), "has left");
+          }, params);
+          conn.on('close', () => {
+            console.log("I have closed");
+          });
+        },
+        this
+      );
 
       this.peer.on('connection', (conn) => {
         conn.on('data', (data) => {
@@ -108,6 +113,9 @@ export class SessionHomePage {
         });
         conn.on('open', () => {
           console.log('opened connection with ', conn);
+        });
+        conn.on('close', () => {
+          console.log("I have closed");
         });
       });
 
@@ -124,51 +132,37 @@ export class SessionHomePage {
       this.roomid = this.myid;
       this.playerServ.isHost = true;
 
-      this.peer.on('open', id => {
-        this.makeAnIdAlert(id);
-        console.log('locked and loaded id: ', id);
-      });
+      this.peerService.openPeer((params) => {
+        this.makeAnIdAlert(params);
+      }, this.myid);
 
-      this.peer.on('connection', (conn) => {
+      this.peerService.connectPeer((conn, params) => {
         conn.on('data', (data) => {
           this.treatData(data, conn);
         });
         conn.on('open', () => {
           console.log('opened connection with ', conn);
         });
-      });
+        params.peerService.closeConnection(conn, (params)=>{
+          console.table(params.playerServ)
+          console.log(params.playerServ.getPlayerById(conn.peer), "has left");
+        }, params);
+      }, this);
 
     }
     this.playerServ.myPlayer.name = this.pseudo;
   }
 
   ionViewWillLeave() {
+
     this.playerServ.isHost=false;
-    this.loader.dismiss()
 
     this.menuController.enable(false, 'playerList');
     this.menuController.enable(true, 'mainMenu');
 
     this.noteService.reset();
 
-    this.playerServ.getConns().forEach(c => {
-      if (!this.playerServ.isHost) {
-        c.send({removed: this.pseudo});
-      } else {
-        c.send({kick: 'l\'hote à quité la partie'});
-      }
-      c.close();
-    });
-
-    const len = this.playerServ.playersList.length;
-    for (let i = 0; i < len; i++) {
-      this.playerServ.playersList.pop();
-    }
-
-    this.playerServ.resetPlayer();
-
-    this.peer.disconnect();
-    this.peer.destroy();
+    this.peerService.shutDown();
     // reset shared files
     if (this.file.listDir(this.file.dataDirectory , '')) {
       this.file.listDir(this.file.dataDirectory , '').then((listing) => {
@@ -333,7 +327,6 @@ export class SessionHomePage {
     this.loader = await this.loadingController.create({
       message: 'En attente de la réponse de l\'hote'
     });
-    return this.loader.present();
   }
 
   openCrowdsouricngModal() {
@@ -347,14 +340,10 @@ export class SessionHomePage {
     });
   }
 
-  // tslint:disable-next-line:no-unnecessary-initializer
   treatData(data, conn = undefined) {
     // Treat given data
     if (data.roomName) {
       this.roomName = data.roomName;
-      if (this.loader) {
-        this.loader.dismiss();
-      }
       this.playerServ.playersList.push({name: 'Host', conn});
     }
     if (data.roomDesc) {

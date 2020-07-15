@@ -57,6 +57,10 @@ export const routes: Routes = [
   {
     path: 'load-character',
     loadChildren: () => import('./pages/load-character/load-character.module').then( m => m.LoadCharacterPageModule)
+  },
+  {
+    path: 'session-home',
+    loadChildren: () => import('./pages/session-home/session-home.module').then( m => m.SessionHomePageModule)
   }
 
 
