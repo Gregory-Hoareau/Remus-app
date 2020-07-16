@@ -34,7 +34,6 @@ export class SessionHomePage {
   roomName: string;
   description: string;
   peer: Peer;
-  myid: string;
   roomid: string;
   pseudo: string;
   // Host peerServer info
@@ -76,87 +75,74 @@ export class SessionHomePage {
         }
       });
     } 
+
     // initialise Peer
-    this.myid = Math.random().toString(36).substr(2, 5); // Should be only for host
-    this.peer = this.peerService.newpeer(this.myid);
+    this.peer = this.peerService.newpeer(Math.random().toString(36).substr(2, 5));
 
     if(this.roomid || this.roomName){
+      if (!this.roomName) {
+        this.playerServ.isHost = false;
+        // Peers trying to join
+        this.roomName = 'Salle d\'attente';
 
-    if (!this.roomName) {
-      // Peers trying to join
-      this.roomName = 'Salle d\'attente';
+        this.peerService.openPeer(
+          function(params: SessionHomePage){
+            // connect to host peer
+            const conn = params.peerService.newConnection(params.roomid);
+            params.peerService.openConnection(conn, (params)=>{
+              conn.send({newPlayer: params.pseudo});
+            }, {pseudo: params.pseudo});
+            params.peerService.addConnectionAction(conn, (data, conn, params)=>{
+              params.treatData(data,conn,params);
+            }, params);
+            params.peerService.closeConnection(conn, (params)=>{
+              params.playerServ.resetPlayer();
+            }, params);
+            conn.on('close', () => {
+              console.log("I have closed");
+            });
+            setTimeout(() => {
+              if (!conn.open) {
+                params.makeKickAlert("Connection échoué. Veuillez réessayer.");
+              }
+            }, 5000);
+          },
+          this
+        );
 
-      this.peerService.openPeer(
-        function(params: SessionHomePage){
-          // connect to host peer
-          const conn = params.peerService.newConnection(params.roomid);
-          params.peerService.openConnection(conn, (params)=>{
-            conn.send({newPlayer: params.pseudo});
-          }, {pseudo: params.pseudo});
-          params.peerService.addConnectionAction(conn, (data, conn, params)=>{
-            params.treatData(data,conn,params);
-          }, params);
-          params.peerService.closeConnection(conn, (params)=>{
-            params.playerServ.resetPlayer();
-          }, params);
-          conn.on('close', () => {
-            console.log("I have closed");
-          });
-          setTimeout(() => {
-            if (!conn.open) {
-                params.location.back();
-            }
-          }, 5000);
-        },
-        this
-      );
-
-      this.peer.on('connection', (conn) => {
-        conn.on('data', (data) => {
-          this.treatData(data, conn);
+        this.peer.on('error', err => {
+          console.log(err.type);
+          if (err.type === 'peer-unavailable') {
+            this.makeKickAlert('id ' + this.roomid + ' ne correspond a aucune salle.');
+          }
         });
-        conn.on('open', () => {
-          console.log('opened connection with ', conn);
-        });
-        conn.on('close', () => {
-          console.log("I have closed");
-        });
-      });
 
-      this.peer.on('error', err => {
-        console.log(err.type);
-        if (err.type === 'peer-unavailable') {
-          this.makeKickAlert('id ' + this.roomid + ' ne correspond a aucune salle.');
-        }
-      });
+      } else {
+        // Initialise hosting
+        this.pseudo = 'Host';
+        this.roomid = this.peerService.myId();
+        this.playerServ.isHost = true;
 
-    } else {
-      // Initialise hosting
-      this.pseudo = 'Host';
-      this.roomid = this.myid;
-      this.playerServ.isHost = true;
-
-      this.peerService.openPeer((params) => {
-        this.makeAnIdAlert(params);
-      }, this.myid);
+        this.peerService.openPeer((params) => {
+          this.makeAnIdAlert(params);
+        }, this.roomid);
+      }
 
       this.peerService.connectPeer((conn, params) => {
         params.peerService.addConnectionAction(conn, (data, conn, params)=>{
           params.treatData(data,conn,params);
         }, params);
-        conn.on('open', () => {
+        params.peerService.openConnection(conn, (params)=>{
           console.log('opened connection with ', conn);
         });
         params.peerService.closeConnection(conn, (params)=>{
           const p:Player = params.playerServ.getPlayerById(conn.peer);
 
-          const node = document.createElement('ION-CARD');
-          node.appendChild(document.createTextNode(p.name + ' a quitté la salle'));
-          document.getElementById('mainContent').appendChild(node);
+          params.createTicket(p.name + ' a quité la salle')
           // Notify players
-          this.toastController.create({
+          params.toastController.create({
             duration: 2000,
-            message: p.name + ' a quité la partie',
+            message: p.name + ' a quité la salle',
             position: "top"
           }).then(toast => {toast.present(); });
     
@@ -165,9 +151,8 @@ export class SessionHomePage {
         }, params);
       }, this);
 
+      this.playerServ.myPlayer.name = this.pseudo;
     }
-    this.playerServ.myPlayer.name = this.pseudo;
-  }
   }
 
   ionViewWillLeave() {
@@ -193,6 +178,13 @@ export class SessionHomePage {
     }
 
   }
+
+  createTicket(message:string) {
+    const node = document.createElement('ION-CARD');
+    node.appendChild(document.createTextNode(message));
+    document.getElementById('mainContent').appendChild(node);
+  }
+
 
   masterCharacterModal() {
     this.modalCtr.create({
@@ -305,6 +297,7 @@ export class SessionHomePage {
       message: player,
       buttons: [
         {text: 'approuver', role: 'join', handler: () => {
+            this.createTicket(player + ' a rejoint la salle');
             // Send old players info to new player
             this.playerServ.playersList.forEach( player => {
               conn.send({newPlayer: player.name, peer: player.conn.peer});
@@ -327,7 +320,6 @@ export class SessionHomePage {
   }
 
   makeKickAlert(reason) {
-    this.loader.dismiss();
     this.alerteController.create({
       header: 'Vous avez été viré de la partie',
       message: 'Raison : ' + reason,
@@ -368,23 +360,19 @@ export class SessionHomePage {
       this.description = data.roomDesc;
     }
     if (data.newPlayer) {
-
-      const node = document.createElement('ION-CARD');
-      node.appendChild(document.createTextNode(data.newPlayer + ' a rejoint la salle'));
-      document.getElementById('mainContent').appendChild(node);
-
       if (this.playerServ.isHost) {
         this.makeApprovalAlert(data.newPlayer, conn);
       } else {
-        const con = this.peer.connect(data.peer, {serialization: 'json'});
-        con.on('open', () => {
+        const con = this.peerService.newConnection(data.peer);
+        this.peerService.openConnection(con, (params) => {
           // informe player name
-          this.playerServ.playersList.push({name: data.newPlayer, conn: con});
-          console.log('Openned connection with ', data.newPlayer);
-        });
-        con.on('data', (data) => {
-          this.treatData(data, con);
-        });
+          this.playerServ.playersList.push({name: params.newPlayer, conn: con});
+          console.log('Openned connection with ', params.newPlayer);
+          this.createTicket(params.newPlayer + ' a rejoint la salle');
+        }, data);
+        this.peerService.addConnectionAction(conn, (data, conn, params)=>{
+          params.treatData(data,conn,params);
+        }, this);
       }
     }
     if (data.kick) {

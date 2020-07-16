@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import Peer, { DataConnection } from 'peerjs';
 import { PlayersService } from '../players/players.service';
+import { Player } from 'src/app/models/player.models';
+import { Message } from 'src/app/models/message.model';
 
 @Injectable({
   providedIn: 'root'
@@ -69,13 +71,28 @@ export class Peer2peerService {
     })
   }
 
-
   shutDown() {
     this.playerServ.getConns().forEach((con)=>{
       con.close()
     });
     this.peer.disconnect();
-    this.peer.destroy();
+    //this.peer.destroy();
+  }
+
+  rejoin() {
+    this.peer.reconnect();
+  }
+
+  myId() {
+    return this.peer.id;
+  }
+
+  async sendMessage(content: Message) {
+    console.log("sending ", content)
+    content.target.conn.send({message:content.message});
+    if(!this.playerServ.isHost)
+      this.playerServ.getPlayerByName("Host").conn.send({message:content.message,target:content.target.name})
+    this.playerServ.getConv(content.target).addMessage(content);
   }
 
 }
