@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import Peer, { DataConnection } from 'peerjs';
+import { PlayersService } from '../players/players.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class Peer2peerService {
   path = '/remus-app';
   port = 9000;
 
-  constructor() { 
+  constructor(public playerServ: PlayersService) { 
 
   }
 
@@ -52,6 +53,7 @@ export class Peer2peerService {
   }
 
   newConnection(id, options= {serialization: 'json'}): DataConnection {
+    console.log("trying to connect to ", id);
     return this.peer.connect(id, options);
   }
 
@@ -69,7 +71,11 @@ export class Peer2peerService {
 
 
   shutDown() {
+    this.playerServ.getConns().forEach((con)=>{
+      con.close()
+    });
     this.peer.disconnect();
+    this.peer.destroy();
   }
 
 }

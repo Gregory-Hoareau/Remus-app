@@ -56,37 +56,36 @@ export class SessionHomePage {
               private toastController: ToastController, private menuController: MenuController,
               private noteService: NotesService, private location: Location,
               private characterService: CharacterService, private peerService: Peer2peerService) {
+    this.menuController.enable(true, 'playerList');
+    this.menuController.enable(false, 'mainMenu');
+  }
+
+
+  ngOnInit() {
+    //initialise variables.
     if (this.route.queryParams) {
+      console.log(this.route.queryParams)
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
           this.roomName = this.router.getCurrentNavigation().extras.state.name;
           this.description = this.router.getCurrentNavigation().extras.state.description;
           this.pseudo = this.router.getCurrentNavigation().extras.state.pseudo;
           this.roomid = this.router.getCurrentNavigation().extras.state.id;
+        } else {
+          this.location.back();
         }
       });
-    }
-
-    this.menuController.enable(true, 'playerList');
-    this.menuController.enable(false, 'mainMenu');
-
-  }
-
-
-  ngOnInit() {
+    } 
     // initialise Peer
     this.myid = Math.random().toString(36).substr(2, 5); // Should be only for host
     this.peer = this.peerService.newpeer(this.myid);
 
+    if(this.roomid || this.roomName){
+
     if (!this.roomName) {
       // Peers trying to join
       this.roomName = 'Salle d\'attente';
-      if (!this.roomid) {
-        this.location.back();
-      }
 
-
-      //this.makeLoader();
       this.peerService.openPeer(
         function(params: SessionHomePage){
           // connect to host peer
@@ -98,11 +97,16 @@ export class SessionHomePage {
             params.treatData(data,conn,params);
           }, params);
           params.peerService.closeConnection(conn, (params)=>{
-            console.log(params.playerServ.getPlayerById(conn.peer), "has left");
+            params.playerServ.resetPlayer();
           }, params);
           conn.on('close', () => {
             console.log("I have closed");
           });
+          setTimeout(() => {
+            if (!conn.open) {
+                params.location.back();
+            }
+          }, 5000);
         },
         this
       );
@@ -137,20 +141,33 @@ export class SessionHomePage {
       }, this.myid);
 
       this.peerService.connectPeer((conn, params) => {
-        conn.on('data', (data) => {
-          this.treatData(data, conn);
-        });
+        params.peerService.addConnectionAction(conn, (data, conn, params)=>{
+          params.treatData(data,conn,params);
+        }, params);
         conn.on('open', () => {
           console.log('opened connection with ', conn);
         });
         params.peerService.closeConnection(conn, (params)=>{
-          console.table(params.playerServ)
-          console.log(params.playerServ.getPlayerById(conn.peer), "has left");
+          const p:Player = params.playerServ.getPlayerById(conn.peer);
+
+          const node = document.createElement('ION-CARD');
+          node.appendChild(document.createTextNode(p.name + ' a quitté la salle'));
+          document.getElementById('mainContent').appendChild(node);
+          // Notify players
+          this.toastController.create({
+            duration: 2000,
+            message: p.name + ' a quité la partie',
+            position: "top"
+          }).then(toast => {toast.present(); });
+    
+          params.playerServ.removePlayer(p);
+          console.log(p.name," has left.");
         }, params);
       }, this);
 
     }
     this.playerServ.myPlayer.name = this.pseudo;
+  }
   }
 
   ionViewWillLeave() {
@@ -262,6 +279,7 @@ export class SessionHomePage {
       });
     });
   }
+
   makeAnIdAlert(id) {
     this.alerteController.create({
       header: 'Nouvelle partie !',
@@ -386,20 +404,6 @@ export class SessionHomePage {
         duration: 3000,
         message: p.name + ' a partagé un nouveau document :\n' + data.imgEnd[0],
       }).then(toast => {toast.present(); });
-    }
-    if (data.removed) {
-      const node = document.createElement('ION-CARD');
-      node.appendChild(document.createTextNode(data.removed + ' a quitté la salle'));
-      document.getElementById('mainContent').appendChild(node);
-      // Notify players
-      this.toastController.create({
-        duration: 2000,
-        message: data.removed + ' a quité la partie',
-      }).then(toast => {toast.present(); });
-
-      const player = this.playerServ.getPlayerByName(data.removed);
-      const id = this.playerServ.playersList.indexOf(player)
-      this.playerServ.playersList.splice(id, 1);
     }
     if (data.message) {
       let p: Player;
