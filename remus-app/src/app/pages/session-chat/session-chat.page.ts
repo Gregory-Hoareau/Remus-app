@@ -18,6 +18,7 @@ export class SessionChatPage implements OnInit {
   @ViewChild(IonContent,null) content: IonContent;
   @Input() target: Player;
   @Input() player: Player;
+  //@Input() peerService: Peer2peerService;
 
   constructor(private formBuilder: FormBuilder, private playerServ: PlayersService,
     private modalController: ModalController) {

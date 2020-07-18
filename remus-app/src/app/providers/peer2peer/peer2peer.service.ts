@@ -47,6 +47,13 @@ export class Peer2peerService {
     });
   }
 
+  errorPeer(message: string, callback: Function, params = undefined) {
+    this.peer.on('error', (err) => {
+      if (err.type === message) 
+        callback(params, err);
+    });
+  }
+
   openConnection(conn:DataConnection, callback : Function, params = undefined) {
     conn.on('open', () => {
       console.log('connection', conn.peer, 'opened');
@@ -76,7 +83,7 @@ export class Peer2peerService {
       con.close()
     });
     this.peer.disconnect();
-    //this.peer.destroy();
+    this.peer.destroy();
   }
 
   rejoin() {

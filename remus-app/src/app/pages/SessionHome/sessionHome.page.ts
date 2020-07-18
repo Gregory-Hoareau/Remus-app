@@ -41,6 +41,7 @@ export class SessionHomePage {
   path = '/remus-app';
   port = 9000;
   // Other variables
+  currentTimeout;
   imgTemp = '';
   image: string = null;
   loader: any;
@@ -90,32 +91,26 @@ export class SessionHomePage {
             // connect to host peer
             const conn = params.peerService.newConnection(params.roomid);
             params.peerService.openConnection(conn, (params)=>{
+              params.breakTimeout();
               conn.send({newPlayer: params.pseudo});
-            }, {pseudo: params.pseudo});
+            }, params);
             params.peerService.addConnectionAction(conn, (data, conn, params)=>{
               params.treatData(data,conn,params);
             }, params);
             params.peerService.closeConnection(conn, (params)=>{
+              params.createDisconnectionTimeout("L'hôte à quité la partie.")
               params.playerServ.resetPlayer();
             }, params);
-            conn.on('close', () => {
-              console.log("I have closed");
-            });
-            setTimeout(() => {
-              if (!conn.open) {
-                params.makeKickAlert("Connection échoué. Veuillez réessayer.");
-              }
-            }, 5000);
+            params.createDisconnectionTimeout("Connection échoué. Veuillez réessayer.", 10000);
           },
           this
         );
 
-        this.peer.on('error', err => {
-          console.log(err.type);
-          if (err.type === 'peer-unavailable') {
-            this.makeKickAlert('id ' + this.roomid + ' ne correspond a aucune salle.');
-          }
-        });
+        this.peerService.errorPeer('peer-unavailable', (params, err)=>{
+          console.log("caught error", err);
+          params.breakTimeout();
+          params.makeKickAlert('id ' + params.roomid + ' ne correspond a aucune salle.');
+        }, this);
 
       } else {
         // Initialise hosting
@@ -177,6 +172,16 @@ export class SessionHomePage {
       });
     }
 
+  }
+
+  createDisconnectionTimeout(reason: string, time = 5000){
+    this.currentTimeout=setTimeout(() => {
+      this.makeKickAlert(reason);
+    }, time);
+  }
+
+  breakTimeout(){
+    clearTimeout(this.currentTimeout);
   }
 
   createTicket(message:string) {
