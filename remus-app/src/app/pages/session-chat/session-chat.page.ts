@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { PlayersService } from 'src/app/providers/players/players.service';
 import { ModalController, IonContent } from '@ionic/angular';
 import { Message } from 'src/app/models/message.model';
+import { Peer2peerService } from 'src/app/providers/peer2peer/peer2peer.service';
 
 @Component({
   selector: 'app-session-chat',
@@ -17,6 +18,7 @@ export class SessionChatPage implements OnInit {
   @ViewChild(IonContent,null) content: IonContent;
   @Input() target: Player;
   @Input() player: Player;
+  //@Input() peerService: Peer2peerService;
 
   constructor(private formBuilder: FormBuilder, private playerServ: PlayersService,
     private modalController: ModalController) {
@@ -51,7 +53,7 @@ export class SessionChatPage implements OnInit {
       this.playerServ.getPlayerByName("Host").conn.send({message:message,target:this.target.name})
     this.playerServ.getConv(this.target).addMessage(new Message(new Date(),this.playerServ.me(),message, this.target));
     setTimeout(() => {  this.content.scrollToBottom(100) }, 100);
-    this.getFilteredConv()
+    this.getFilteredConv();
   }
 
   getFilteredConv(): Conversation{
