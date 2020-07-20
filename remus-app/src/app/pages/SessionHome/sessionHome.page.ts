@@ -172,7 +172,7 @@ export class SessionHomePage {
         }
       });
     }
-
+    this.breakTimeout();
   }
 
   createDisconnectionTimeout(reason: string, time = 5000){
