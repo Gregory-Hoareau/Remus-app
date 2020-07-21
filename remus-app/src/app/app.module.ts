@@ -26,6 +26,8 @@ import { JoinFormPageModule } from './pages/join-form/join-form.module';
 import { SMS } from '@ionic-native/sms/ngx';
 import { Contacts } from '@ionic-native/contacts/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { MusicService } from './providers/music/music.service';
+import { MusicControls } from '@ionic-native/music-controls/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -58,7 +60,9 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
     Deeplinks,
     SMS,
     Contacts,
-    AndroidPermissions
+    AndroidPermissions,
+    MusicService,
+    MusicControls
   ],
 
   bootstrap: [AppComponent]

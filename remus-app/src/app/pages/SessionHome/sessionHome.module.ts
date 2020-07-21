@@ -18,6 +18,7 @@ import {NotesPageModule} from '../notes/notes.module';
 import {CanvasPageModule} from '../canvas/canvas.module';
 import { CrowdsourcingPageModule } from '../crowdsourcing/crowdsourcing.module';
 import { InvitationSenderPageModule } from '../invitation-sender/invitation-sender.module';
+import { MusicPlayerPageModule } from '../music-player/music-player.module';
 
 
 
@@ -36,7 +37,8 @@ import { InvitationSenderPageModule } from '../invitation-sender/invitation-send
     NotesPageModule,
     CanvasPageModule,
     CrowdsourcingPageModule,
-    InvitationSenderPageModule
+    InvitationSenderPageModule,
+    MusicPlayerPageModule
   ],
   declarations: [SessionHomePage],
   providers: [File]

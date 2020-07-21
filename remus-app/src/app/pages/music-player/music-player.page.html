@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Musique</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="start" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+    <ion-segment [(ngModel)]="slideNumber" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="0">
+        <ion-label>Background Music</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="1">
+        <ion-label>Soundbox</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  
+  <!-- SLIDES -->
+  <ion-slides #slides class="slides" (ionSlideDidChange)="slideChanged()" scrollbar="true">
+    <!-- Background Music -->
+    <ion-slide>
+
+      <!--<div class="media-player" *ngIf="getCurrentTrack()">
+        <ion-label class="track-name" color="success">{{ getCurrentTrack().name }}</ion-label>
+        <div class="buttons">
+          
+        </div>
+      </div>-->
+      
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Background musics</ion-label>
+        </ion-list-header>
+        <ion-item button *ngFor="let track of backgroundTracks" (click)="play(track)">
+          <ion-label>{{track.name}}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-slide>
+
+    <!-- Soundbox -->
+    <ion-slide>
+      Soundbox works
+    </ion-slide>
+  </ion-slides>
+</ion-content>
+
+<ion-footer *ngIf="getCurrentTrack()">
+  <ion-toolbar color="medium">
+    <ion-label class="track-name" color="success">{{ getCurrentTrack().name }}</ion-label>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="previous()" fill="clear">
+        <ion-icon color="light" name="play-skip-back"></ion-icon>
+      </ion-button>
+      <ion-button color="light" *ngIf="!isPlaying()" (click)="resume()" fill="clear">
+        <ion-icon name="play"></ion-icon>
+      </ion-button>
+      <ion-button color="light" *ngIf="isPlaying()" (click)="pause()" fill="clear">
+        <ion-icon name="pause"></ion-icon>
+      </ion-button>
+      <ion-button color="light" (click)="next()" fill="clear">
+        <ion-icon name="play-skip-forward"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

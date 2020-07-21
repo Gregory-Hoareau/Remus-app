@@ -60,6 +60,10 @@ export const routes: Routes = [
   },  {
     path: 'invitation-sender',
     loadChildren: () => import('./pages/invitation-sender/invitation-sender.module').then( m => m.InvitationSenderPageModule)
+  },
+  {
+    path: 'music-player',
+    loadChildren: () => import('./pages/music-player/music-player.module').then( m => m.MusicPlayerPageModule)
   }
 
 
