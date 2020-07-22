@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Howl } from 'howler';
 import { Track } from 'src/app/models/track.model';
-import { TRACKS } from 'src/mocks/Track';
+import { TRACKS, SOUNDS } from 'src/mocks/Track';
 import { MusicControls } from '@ionic-native/music-controls/ngx';
 
 @Injectable({
@@ -16,9 +16,15 @@ export class MusicService {
   private backgroundCurrentTrack: Track = null;
 
   // Attributes link to sound playing
-  private sounboxTracks: Track[] = [];
+  private sounboxTracks: Track[] = SOUNDS;
+  private soundPlayer: Howl = null;
 
-  constructor(private musicControls: MusicControls) { }
+  constructor(private musicControls: MusicControls) {
+  }
+
+  getSoundsTracks(): Track[] {
+    return this.sounboxTracks;
+  }
 
   getBackgroungTracks(): Track[] {
     return this.backgroundMusicTracks;
@@ -88,7 +94,6 @@ export class MusicService {
   }
 
   // Background music methods
-
   launchBackground(track: Track) {
     if (this.backgroundMusicPlayer) {
       this.backgroundMusicPlayer.stop();
@@ -144,6 +149,23 @@ export class MusicService {
     prevTrackIndex = prevTrackIndex < 0? this.backgroundMusicTracks.length -1 : prevTrackIndex;
     this.launchBackground(this.backgroundMusicTracks[prevTrackIndex]);
   }
-
   // End of Background music methods
+
+  //Soundbox methods
+  launchSound(sound: Track) {
+    this.soundPlayer = new Howl({
+      src: [sound.path],
+      onload: () => {
+        console.log('Sound is loaded');
+        this.soundPlayer.play();
+      },
+      onplay: () => {
+        console.log('Sound is playing');
+      },
+      onend: () => {
+        console.log('Sound has ended');
+      }
+    });
+  }
+  //End of Soundbox methods
 }

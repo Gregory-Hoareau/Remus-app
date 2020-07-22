@@ -17,11 +17,13 @@ export class MusicPlayerPage implements OnInit {
   slideNumber: number = 0;
 
   backgroundTracks: Track[] = [];
+  soundTracks: Track[] = [];
 
   constructor(private modalCtrl: ModalController, private musicService: MusicService) { }
 
   ngOnInit() {
     this.backgroundTracks = this.musicService.getBackgroungTracks();
+    this.soundTracks = this.musicService.getSoundsTracks();
   }
 
   slideChanged() {
@@ -37,7 +39,7 @@ export class MusicPlayerPage implements OnInit {
   }
 
   // Method of slide background music
-  play(track: Track) {
+  playBackground(track: Track) {
     this.musicService.launchBackground(track);
   }
 
@@ -63,6 +65,11 @@ export class MusicPlayerPage implements OnInit {
 
   isPlaying() {
     return this.musicService.isBackgroundMusicPlaying();
+  }
+
+  //Methods for soundbox slide
+  playSound(sound: Track) {
+    this.musicService.launchSound(sound);
   }
 
 }

@@ -24,19 +24,12 @@
   <ion-slides #slides class="slides" (ionSlideDidChange)="slideChanged()" scrollbar="true">
     <!-- Background Music -->
     <ion-slide>
-
-      <!--<div class="media-player" *ngIf="getCurrentTrack()">
-        <ion-label class="track-name" color="success">{{ getCurrentTrack().name }}</ion-label>
-        <div class="buttons">
-          
-        </div>
-      </div>-->
       
       <ion-list>
         <ion-list-header>
           <ion-label>Background musics</ion-label>
         </ion-list-header>
-        <ion-item button *ngFor="let track of backgroundTracks" (click)="play(track)">
+        <ion-item button *ngFor="let track of backgroundTracks" (click)="playBackground(track)">
           <ion-label>{{track.name}}</ion-label>
         </ion-item>
       </ion-list>
@@ -44,7 +37,14 @@
 
     <!-- Soundbox -->
     <ion-slide>
-      Soundbox works
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Soundbox</ion-label>
+        </ion-list-header>
+        <ion-item button *ngFor="let sound of soundTracks" (click)="playSound(sound)">
+          <ion-label>{{sound.name}}</ion-label>
+        </ion-item>
+      </ion-list>
     </ion-slide>
   </ion-slides>
 </ion-content>
