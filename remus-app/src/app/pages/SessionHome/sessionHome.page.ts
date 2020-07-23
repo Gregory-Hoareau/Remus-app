@@ -215,7 +215,7 @@ export class SessionHomePage {
     modal.onWillDismiss().then((dataReturned) => {
       if (dataReturned.data) {
         console.log(dataReturned.data);
-        this.entry.clear();
+        //this.entry.clear();
         const factory = this.resolver.resolveComponentFactory(SharedFileComponent);
         const componentRef = this.entry.createComponent(factory);
         componentRef.instance.image = dataReturned.data;
@@ -276,19 +276,6 @@ export class SessionHomePage {
         roomId: this.roomid
       }
     }).then(m => m.present());
-  }
-
-  openCanvasModal() {
-    this.modalCtr.create({
-      component: CanvasPage,
-      swipeToClose: true,
-      componentProps: {}
-    }).then(modal => {
-      modal.present();
-      modal.onDidDismiss().then((data) => {
-        //this.image = data.data;
-      });
-    });
   }
 
   makeAnIdAlert(id) {
