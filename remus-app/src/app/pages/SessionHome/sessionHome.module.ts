@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {IonicModule} from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +18,7 @@ import {NotesPageModule} from '../notes/notes.module';
 import {CanvasPageModule} from '../canvas/canvas.module';
 import { CrowdsourcingPageModule } from '../crowdsourcing/crowdsourcing.module';
 import { InvitationSenderPageModule } from '../invitation-sender/invitation-sender.module';
+import { SharedFileComponent } from 'src/app/components/shared-file/shared-file.component';
 
 
 
@@ -38,7 +39,12 @@ import { InvitationSenderPageModule } from '../invitation-sender/invitation-send
     CrowdsourcingPageModule,
     InvitationSenderPageModule
   ],
-  declarations: [SessionHomePage],
-  providers: [File]
+  entryComponents: [SharedFileComponent],
+  declarations: [SessionHomePage,
+  SharedFileComponent],
+  providers: [File],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ]
 })
 export class SessionHomePageModule {}

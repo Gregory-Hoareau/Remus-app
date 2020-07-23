@@ -26,16 +26,10 @@
   <ion-card>
     {{description}}
   </ion-card>
-  <!-- Shows share image if on is selected; Should be generated in code for better persistence -->
-  <div *ngIf="image" class="container">
-    <img [src]="image" alt="">
-    <ion-fab-button color="light" size="small" class="btn" slot="end" (click)="closeImage()">
-        <ion-icon name="close-outline"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button  color="light" size="small" class="brushbtn" slot="end" (click)="openCanvasModal()">
-        <ion-icon name="brush"></ion-icon>
-    </ion-fab-button>
-  </div>
+
+  <!--template to spawn in shared image-->
+  <template #sharedfilecontainer>
+  </template>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button  color= "medium" >

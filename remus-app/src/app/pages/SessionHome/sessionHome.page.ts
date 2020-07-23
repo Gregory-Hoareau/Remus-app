@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
-import {AlertController, ModalController, NavController, NavParams, LoadingController, ToastController, MenuController} from '@ionic/angular';
+import { Component, ComponentFactoryResolver, ComponentRef, ComponentFactory, ViewChild, ViewContainerRef } from '@angular/core';
+import {AlertController, ModalController, LoadingController, ToastController, MenuController} from '@ionic/angular';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
 import {CharacterSheetPage} from '../character-sheet/character-sheet.page';
 import {File} from '@ionic-native/file/ngx';
-import Peer, { DataConnection } from 'peerjs';
+import Peer from 'peerjs';
 import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
 import { SimulateurPage } from '../simulateur/simulateur.page';
-import {faDiceD20, faTable, faTrophy, faPeopleArrows, faCrown} from '@fortawesome/free-solid-svg-icons';
+import {faDiceD20, faTrophy, faPeopleArrows, faCrown} from '@fortawesome/free-solid-svg-icons';
 import {AchivementService} from '../../providers/achivement/achivement.service';
 import {NotesPage} from '../notes/notes.page';
 import {NotesService} from '../../providers/notes/notes.service';
@@ -18,9 +18,9 @@ import {CanvasPage} from '../canvas/canvas.page';
 import { Location } from '@angular/common';
 import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
 import { CharacterService } from 'src/app/providers/character/character.service';
-import { Conversation } from 'src/app/models/conversation.model';
 import { InvitationSenderPage } from '../invitation-sender/invitation-sender.page';
 import { Peer2peerService } from 'src/app/providers/peer2peer/peer2peer.service';
+import { SharedFileComponent } from 'src/app/components/shared-file/shared-file.component';
 
 @Component({
   selector: 'app-home',
@@ -44,14 +44,15 @@ export class SessionHomePage {
   // Other variables
   currentTimeout;
   imgTemp = '';
-  image: string = null;
   loader: any;
   diceIcon = faDiceD20;
   trophyIcon = faTrophy;
   crowdsourcing = faPeopleArrows;
   crown=faCrown;
 
-  constructor(public achivementService: AchivementService, public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
+
+  @ViewChild('sharedfilecontainer', { read: ViewContainerRef, static:true }) entry: ViewContainerRef;
+  constructor(private resolver: ComponentFactoryResolver,public achivementService: AchivementService, public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
               private file: File, private playerServ: PlayersService,
               private toastController: ToastController, private menuController: MenuController,
@@ -59,6 +60,7 @@ export class SessionHomePage {
               private characterService: CharacterService, private peerService: Peer2peerService) {
     this.menuController.enable(true, 'playerList');
     this.menuController.enable(false, 'mainMenu');
+
   }
 
 
@@ -212,7 +214,10 @@ export class SessionHomePage {
 
     modal.onWillDismiss().then((dataReturned) => {
       if (dataReturned !== null && dataReturned.data !== '') {
-        this.image = dataReturned.data;
+        this.entry.clear();
+        const factory = this.resolver.resolveComponentFactory(SharedFileComponent);
+        const componentRef = this.entry.createComponent(factory);
+        componentRef.instance.image = dataReturned.data;
         const navigationExtras: NavigationExtras = {
           state: dataReturned.data
         };
@@ -276,13 +281,11 @@ export class SessionHomePage {
     this.modalCtr.create({
       component: CanvasPage,
       swipeToClose: true,
-      componentProps: {
-        image: this.image,
-      }
+      componentProps: {}
     }).then(modal => {
       modal.present();
       modal.onDidDismiss().then((data) => {
-        this.image = data.data;
+        //this.image = data.data;
       });
     });
   }
@@ -445,9 +448,6 @@ export class SessionHomePage {
 
   navigateToChar() {
     this.router.navigate(['character-sheet']);
-  }
-  closeImage() {
-    this.image = null;
   }
 
 }
