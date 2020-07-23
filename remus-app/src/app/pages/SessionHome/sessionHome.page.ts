@@ -213,7 +213,8 @@ export class SessionHomePage {
     });
 
     modal.onWillDismiss().then((dataReturned) => {
-      if (dataReturned !== null && dataReturned.data !== '') {
+      if (dataReturned.data) {
+        console.log(dataReturned.data);
         this.entry.clear();
         const factory = this.resolver.resolveComponentFactory(SharedFileComponent);
         const componentRef = this.entry.createComponent(factory);
