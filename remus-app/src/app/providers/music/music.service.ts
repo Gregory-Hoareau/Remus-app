@@ -3,31 +3,57 @@ import { Howl } from 'howler';
 import { Track } from 'src/app/models/track.model';
 import { TRACKS, SOUNDS } from 'src/mocks/Track';
 import { MusicControls } from '@ionic-native/music-controls/ngx';
+import { MediaObject, Media } from '@ionic-native/media/ngx';
+import { Platform } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MusicService {
 
+  private prefix: string;
+
   // Attributes link to background music
   private backgroundMusicTracks: Track[] = TRACKS;
-  private backgroundMusicPlayer: Howl = null;
   private backgroundMusicIsPlaying: boolean = false;
   private backgroundCurrentTrack: Track = null;
+  private backgroundCurrentMediaFile: MediaObject = null;
+  private backgroundPhoneTracks: Track[] = [];
 
   // Attributes link to sound playing
-  private sounboxTracks: Track[] = SOUNDS;
-  private soundPlayer: Howl = null;
+  private soundboxTracks: Track[] = SOUNDS;
+  private soundPhoneTracks: Track[] = [];
 
-  constructor(private musicControls: MusicControls) {
+  constructor(private musicControls: MusicControls, private media: Media, private plt: Platform) {
+    this.plt.ready().then(res => {
+      if (this.plt.is('android')) {
+        this.prefix = 'file:///android_asset/www/assets/music';
+      }
+    })
   }
 
   getSoundsTracks(): Track[] {
-    return this.sounboxTracks;
+    return this.soundboxTracks;
   }
 
   getBackgroungTracks(): Track[] {
     return this.backgroundMusicTracks;
+  }
+
+  getBackgroundPhoneTracks(): Track[] {
+    return this.backgroundPhoneTracks;
+  }
+
+  getSoundPhoneTracks(): Track[] {
+    return this.soundPhoneTracks;
+  }
+
+  setBackgroundPhoneTracks(tracks: Track[]) {
+    this.backgroundPhoneTracks = tracks;
+  }
+
+  setSoundPhoneTracks(tracks: Track[]) {
+    this.soundPhoneTracks = tracks;
   }
 
   isBackgroundMusicPlaying() {
@@ -83,7 +109,7 @@ export class MusicService {
           break;
         case 'music-controls-destroy':
           console.log('Clicked on Destroy');
-          this.backgroundMusicPlayer.stop();
+          this.stop();
           break;
     
         default:
@@ -95,77 +121,64 @@ export class MusicService {
 
   // Background music methods
   launchBackground(track: Track) {
-    if (this.backgroundMusicPlayer) {
-      this.backgroundMusicPlayer.stop();
+    if(this.backgroundCurrentTrack) {
+      this.backgroundCurrentMediaFile.stop();
     }
-    this.backgroundMusicPlayer = new Howl({
-      src: [track.path],
-      onload: () => {
-        console.log('Background Track loaded');
-        this.backgroundCurrentTrack = track;
-        this.backgroundMusicPlayer.play();
-      },
-      onplay: () => {
-        console.log('Background Track is playing');
-        this.backgroundMusicIsPlaying = true;
-        this.musicControls.updateIsPlaying(true);
-      },
-      onpause: () => {
-        console.log('Background Track is on pause');
-        this.backgroundMusicIsPlaying = false;
-        this.musicControls.updateIsPlaying(false);
-      },
-      onstop: () => {
-        console.log('Background Tack is stopped');
-        this.backgroundMusicIsPlaying = false;
-        this.musicControls.destroy();
-        this.backgroundCurrentTrack = null;
-      },
-      onend: () => {
-        console.log('Background Track has ended');
-        this.backgroundMusicIsPlaying = false;
-        this.musicControls.destroy();
-        this.backgroundCurrentTrack = null;
-      }
-    });
+    const path = this.backgroundMusicTracks.includes(track)? this.prefix + track.path: track.path
+    this.backgroundCurrentMediaFile = this.media.create(path);
+
+    //To delete
+    console.log(this.backgroundCurrentMediaFile)
+    this.backgroundCurrentMediaFile.onStatusUpdate.subscribe(status => console.log(status));
+    this.backgroundCurrentMediaFile.onSuccess.subscribe(()=> console.log('Action is successful'));
+    this.backgroundCurrentMediaFile.onError.subscribe(error => console.log('Error!', error));
+
+    this.backgroundCurrentMediaFile.play();
+    this.backgroundCurrentTrack = track;
+    this.backgroundMusicIsPlaying = true;
+
     this.initMusicControlNotif(track);
+    this.musicControls.updateIsPlaying(true);
+   
   } // End launchBackground method
 
+  stop() {
+    this.backgroundCurrentMediaFile.stop();
+    this.backgroundCurrentTrack = null;
+    this.backgroundMusicIsPlaying = false;
+  }
+
   resume() {
-    this.backgroundMusicPlayer.play();
+    this.backgroundCurrentMediaFile.play();
+    this.backgroundMusicIsPlaying = true;
+    this.musicControls.updateIsPlaying(true);
   }
 
   pause() {
-    this.backgroundMusicPlayer.pause();
+    this.backgroundCurrentMediaFile.pause();
+    this.backgroundMusicIsPlaying = false;
+    this.musicControls.updateIsPlaying(false);
   }
 
   next() {
-    const nextTrackIndex = (this.backgroundMusicTracks.indexOf(this.backgroundCurrentTrack) + 1) % this.backgroundMusicTracks.length;
-    this.launchBackground(this.backgroundMusicTracks[nextTrackIndex]);
+    const tracks = this.backgroundMusicTracks.includes(this.backgroundCurrentTrack)? this.backgroundMusicTracks: this.backgroundPhoneTracks;
+    const nextTrackIndex = (tracks.indexOf(this.backgroundCurrentTrack) + 1) % tracks.length;
+    this.launchBackground(tracks[nextTrackIndex]);
   }
 
   previous() {
-    let prevTrackIndex = this.backgroundMusicTracks.indexOf(this.backgroundCurrentTrack) - 1;
-    prevTrackIndex = prevTrackIndex < 0? this.backgroundMusicTracks.length -1 : prevTrackIndex;
-    this.launchBackground(this.backgroundMusicTracks[prevTrackIndex]);
+    const tracks = this.backgroundMusicTracks.includes(this.backgroundCurrentTrack)? this.backgroundMusicTracks: this.backgroundPhoneTracks;
+    let prevTrackIndex = tracks.indexOf(this.backgroundCurrentTrack) - 1;
+    prevTrackIndex = prevTrackIndex < 0? tracks.length -1 : prevTrackIndex;
+    this.launchBackground(tracks[prevTrackIndex]);
   }
   // End of Background music methods
 
   //Soundbox methods
   launchSound(sound: Track) {
-    this.soundPlayer = new Howl({
-      src: [sound.path],
-      onload: () => {
-        console.log('Sound is loaded');
-        this.soundPlayer.play();
-      },
-      onplay: () => {
-        console.log('Sound is playing');
-      },
-      onend: () => {
-        console.log('Sound has ended');
-      }
-    });
+    const path = this.soundboxTracks.includes(sound)? this.prefix + sound.path: sound.path
+    const s = this.media.create(path);
+    s.play();
   }
   //End of Soundbox methods
 }

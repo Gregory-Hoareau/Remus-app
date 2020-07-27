@@ -40,7 +40,9 @@
     "@ionic-native/gyroscope": "^5.26.0",
     "@ionic-native/http": "^5.26.0",
     "@ionic-native/image-picker": "^5.26.0",
+    "@ionic-native/media": "^5.27.0",
     "@ionic-native/music-controls": "^5.27.0",
+    "@ionic-native/native-audio": "^5.27.0",
     "@ionic-native/screen-orientation": "^5.26.0",
     "@ionic-native/shake": "^5.26.0",
     "@ionic-native/sms": "^5.27.0",
@@ -51,6 +53,7 @@
     "@types/jest": "^25.2.3",
     "cordova-android": "^8.1.0",
     "cordova-base64-to-gallery": "^4.1.3",
+    "cordova-browser": "6.0.0",
     "cordova-ios": "5.1.1",
     "cordova-plugin-advanced-http": "^2.4.1",
     "cordova-plugin-android-permissions": "^1.0.2",
@@ -60,7 +63,10 @@
     "cordova-plugin-filechooser": "^1.2.0",
     "cordova-plugin-filepath": "^1.5.8",
     "cordova-plugin-gyroscope": "^0.1.4",
+    "cordova-plugin-iosaudiopicker": "git+https://github.com/an-rahulpandey/ios-audio-picker.git",
+    "cordova-plugin-media": "^5.0.3",
     "cordova-plugin-music-controls": "^2.2.0",
+    "cordova-plugin-nativeaudio": "^3.0.9",
     "cordova-plugin-screen-orientation": "^3.0.2",
     "cordova-plugin-shake": "^0.7.0",
     "cordova-plugin-telerik-imagepicker": "^2.3.3",
@@ -151,11 +157,17 @@
       },
       "cordova-sms-plugin": {},
       "cordova-plugin-contacts": {},
-      "cordova-plugin-music-controls": {}
+      "cordova-plugin-music-controls": {},
+      "cordova-plugin-nativeaudio": {},
+      "cordova-plugin-media": {
+        "KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE": "NO"
+      },
+      "cordova-plugin-iosaudiopicker": {}
     },
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "browser"
     ]
   }
 }

@@ -2,7 +2,7 @@ import {NgModule, ViewContainerRef} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { Camera } from '@ionic-native/camera/ngx';
-import {IonicModule, IonicRouteStrategy, IonRouterOutlet, NavParams} from '@ionic/angular';
+import {IonicModule, IonicRouteStrategy, IonRouterOutlet, NavParams, Platform} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
@@ -28,6 +28,7 @@ import { Contacts } from '@ionic-native/contacts/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { MusicService } from './providers/music/music.service';
 import { MusicControls } from '@ionic-native/music-controls/ngx';
+import { Media } from '@ionic-native/media/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -62,7 +63,9 @@ import { MusicControls } from '@ionic-native/music-controls/ngx';
     Contacts,
     AndroidPermissions,
     MusicService,
-    MusicControls
+    MusicControls,
+    Media,
+    Platform
   ],
 
   bootstrap: [AppComponent]

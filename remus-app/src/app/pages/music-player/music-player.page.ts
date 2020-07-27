@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlides, ModalController } from '@ionic/angular';
+import { IonSlides, ModalController, Platform } from '@ionic/angular';
 import { MusicService } from 'src/app/providers/music/music.service';
 import { Track } from 'src/app/models/track.model';
+import { File } from '@ionic-native/file/ngx';
 
 @Component({
   selector: 'app-music-player',
@@ -17,13 +18,31 @@ export class MusicPlayerPage implements OnInit {
   slideNumber: number = 0;
 
   backgroundTracks: Track[] = [];
+  phoneTracks: Track[] = [];
   soundTracks: Track[] = [];
+  onAndroid: boolean = false;
 
-  constructor(private modalCtrl: ModalController, private musicService: MusicService) { }
+  constructor(private modalCtrl: ModalController, private musicService: MusicService,
+              private file: File, private plt: Platform) {
+                
+    this.plt.ready().then(val => {
+      this.onAndroid = this.plt.is('android');
+    })
+  }
 
   ngOnInit() {
+    console.log('On init');
     this.backgroundTracks = this.musicService.getBackgroungTracks();
     this.soundTracks = this.musicService.getSoundsTracks();
+    this.file.listDir(this.file.externalRootDirectory, 'Music').then(files => {
+      files.forEach(f => {
+        this.phoneTracks.push({
+          name: f.name.split('.')[0],
+          path: f.fullPath
+        });
+      })
+      this.musicService.setBackgroundPhoneTracks(this.phoneTracks)
+    })
   }
 
   slideChanged() {

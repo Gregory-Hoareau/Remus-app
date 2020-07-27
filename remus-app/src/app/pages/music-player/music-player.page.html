@@ -33,6 +33,16 @@
           <ion-label>{{track.name}}</ion-label>
         </ion-item>
       </ion-list>
+
+      <ion-list *ngIf="onAndroid">
+        <ion-list-header>
+          <ion-label>From the Phone</ion-label>
+        </ion-list-header>
+        <ion-item button *ngFor="let track of phoneTracks" (click)="playBackground(track)">
+          <ion-label>{{track.name}}</ion-label>
+        </ion-item>
+      </ion-list>
+
     </ion-slide>
 
     <!-- Soundbox -->
