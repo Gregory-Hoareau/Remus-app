@@ -19,6 +19,7 @@ import {CanvasPageModule} from '../canvas/canvas.module';
 import { CrowdsourcingPageModule } from '../crowdsourcing/crowdsourcing.module';
 import { InvitationSenderPageModule } from '../invitation-sender/invitation-sender.module';
 import { SharedFileComponent } from 'src/app/components/shared-file/shared-file.component';
+import { GeneratorChoicePageModule } from '../name-generator/generator-choice/generator-choice.module';
 
 
 
@@ -37,7 +38,8 @@ import { SharedFileComponent } from 'src/app/components/shared-file/shared-file.
     NotesPageModule,
     CanvasPageModule,
     CrowdsourcingPageModule,
-    InvitationSenderPageModule
+    InvitationSenderPageModule,
+    GeneratorChoicePageModule
   ],
   entryComponents: [SharedFileComponent],
   declarations: [SessionHomePage,

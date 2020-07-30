@@ -8,7 +8,7 @@ import Peer from 'peerjs';
 import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
 import { SimulateurPage } from '../simulateur/simulateur.page';
-import {faDiceD20, faTrophy, faPeopleArrows, faCrown} from '@fortawesome/free-solid-svg-icons';
+import {faDiceD20, faTable, faTrophy, faPeopleArrows, faCrown, faFeather} from '@fortawesome/free-solid-svg-icons';
 import {AchivementService} from '../../providers/achivement/achivement.service';
 import {NotesPage} from '../notes/notes.page';
 import {NotesService} from '../../providers/notes/notes.service';
@@ -21,6 +21,8 @@ import { CharacterService } from 'src/app/providers/character/character.service'
 import { InvitationSenderPage } from '../invitation-sender/invitation-sender.page';
 import { Peer2peerService } from 'src/app/providers/peer2peer/peer2peer.service';
 import { SharedFileComponent } from 'src/app/components/shared-file/shared-file.component';
+import { Conversation } from 'src/app/models/conversation.model';
+import { GeneratorChoicePage } from '../name-generator/generator-choice/generator-choice.page';
 
 @Component({
   selector: 'app-home',
@@ -49,6 +51,7 @@ export class SessionHomePage {
   trophyIcon = faTrophy;
   crowdsourcing = faPeopleArrows;
   crown=faCrown;
+  generator= faFeather;
 
 
   @ViewChild('sharedfilecontainer', { read: ViewContainerRef, static:true }) entry: ViewContainerRef;
@@ -436,6 +439,12 @@ export class SessionHomePage {
 
   navigateToChar() {
     this.router.navigate(['character-sheet']);
+  }
+
+  openGeneratorChoiceModal() {
+    this.modalCtr.create({
+      component: GeneratorChoicePage
+    }).then(m => m.present());
   }
 
 }

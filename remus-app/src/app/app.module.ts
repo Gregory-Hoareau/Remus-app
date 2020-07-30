@@ -26,6 +26,8 @@ import { JoinFormPageModule } from './pages/join-form/join-form.module';
 import { SMS } from '@ionic-native/sms/ngx';
 import { Contacts } from '@ionic-native/contacts/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { CharacterNameGeneratorPageModule } from './pages/name-generator/character-name-generator/character-name-generator.module';
+import { NameGeneratorService } from './providers/name-generator/name-generator.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -53,6 +55,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
     DiceHistoryService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CharacterService,
+    NameGeneratorService,
     NavParams,
     Base64ToGallery,
     Deeplinks,
