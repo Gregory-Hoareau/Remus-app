@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { GeneratorChoicePageRoutingModule } from './generator-choice-routing.module';
 
 import { GeneratorChoicePage } from './generator-choice.page';
+import { CharacterNameGeneratorPageModule } from '../character-name-generator/character-name-generator.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    GeneratorChoicePageRoutingModule
+    GeneratorChoicePageRoutingModule,
+    CharacterNameGeneratorPageModule
   ],
   declarations: [GeneratorChoicePage]
 })

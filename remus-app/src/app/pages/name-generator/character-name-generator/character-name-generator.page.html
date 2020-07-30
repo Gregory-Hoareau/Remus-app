@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="home"></ion-back-button>
+    <ion-buttons (click)="closeModal()" slot="end">
+      <ion-icon class="ion-margin" name="close-outline"></ion-icon>
     </ion-buttons>
     <ion-title>Nom de Personnage</ion-title>
   </ion-toolbar>

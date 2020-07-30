@@ -40,11 +40,6 @@ export class AppComponent {
       title: 'Communauté',
       url: '/crowdsourcing',
       icon: faPeopleArrows
-    }, 
-    {
-      title: 'Générateur de nom',
-      url: '/generator-choice',
-      icon: faFeatherAlt
     }
 
   ];

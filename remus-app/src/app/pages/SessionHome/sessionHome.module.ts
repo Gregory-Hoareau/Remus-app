@@ -17,6 +17,7 @@ import {AchivementPageModule} from '../achivement/achivement.module';
 import {NotesPageModule} from '../notes/notes.module';
 import {CanvasPageModule} from '../canvas/canvas.module';
 import { CrowdsourcingPageModule } from '../crowdsourcing/crowdsourcing.module';
+import { GeneratorChoicePageModule } from '../name-generator/generator-choice/generator-choice.module';
 
 
 
@@ -35,6 +36,7 @@ import { CrowdsourcingPageModule } from '../crowdsourcing/crowdsourcing.module';
     NotesPageModule,
     CanvasPageModule,
     CrowdsourcingPageModule,
+    GeneratorChoicePageModule,
   ],
   declarations: [SessionHomePage],
   providers: [File]

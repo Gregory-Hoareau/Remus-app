@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NameGeneratorService } from 'src/app/providers/name-generator/name-generator.service';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-character-name-generator',
@@ -16,9 +17,16 @@ export class CharacterNameGeneratorPage implements OnInit {
   }, {
     name: 'Humain',
     value: 'human'
+  }, {
+    name: 'Nain',
+    value: 'dwarf'
+  }, {
+    name: '"Asiatique"',
+    value: 'asian'
   }]
 
-  constructor(private nameGenerator: NameGeneratorService) {}
+  constructor(private nameGenerator: NameGeneratorService,
+              private modalController: ModalController) {}
 
   ngOnInit() {
   }
@@ -30,6 +38,10 @@ export class CharacterNameGeneratorPage implements OnInit {
   generate() {
     this.nameGenerator.setData(this.data);
     this.generatedNames = this.nameGenerator.generate(10, 4, 9);
+  }
+
+  closeModal() {
+    this.modalController.dismiss();
   }
 
 }

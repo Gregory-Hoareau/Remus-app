@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { elfName } from './data/character/elf';
 import { humanName } from './data/character/human';
+import { dwarfNames } from './data/character/dwarf';
+import { asianNames } from './data/character/asian';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +54,10 @@ export class NameGeneratorService {
 
   private selectExampleList(): string[] {
     switch (this.data) {
+      case 'asian':
+        return asianNames;
+      case 'dwarf':
+        return dwarfNames;
       case 'human':
         return humanName;
       case 'elf':
