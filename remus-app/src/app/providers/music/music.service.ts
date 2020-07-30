@@ -144,6 +144,7 @@ export class MusicService {
 
   stop() {
     this.backgroundCurrentMediaFile.stop();
+    this.backgroundCurrentMediaFile.release();
     this.backgroundCurrentTrack = null;
     this.backgroundMusicIsPlaying = false;
   }

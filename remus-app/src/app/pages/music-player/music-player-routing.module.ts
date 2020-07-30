@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: MusicPlayerPage
+  },  {
+    path: 'music-importer',
+    loadChildren: () => import('./music-importer/music-importer.module').then( m => m.MusicImporterPageModule)
   }
+
 ];
 
 @NgModule({

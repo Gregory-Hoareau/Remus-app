@@ -34,14 +34,20 @@
         </ion-item>
       </ion-list>
 
-      <ion-list *ngIf="onAndroid">
+      <ion-list>
         <ion-list-header>
           <ion-label>From the Phone</ion-label>
         </ion-list-header>
-        <ion-item button *ngFor="let track of phoneTracks" (click)="playBackground(track)">
+        <ion-item button *ngFor="let track of phoneBackgroundTracks" (click)="playBackground(track)">
           <ion-label>{{track.name}}</ion-label>
         </ion-item>
       </ion-list>
+
+      <ion-fab *ngIf="onAndroid" vertical="center" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="openImportMusicModal(true)">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
 
     </ion-slide>
 
@@ -55,7 +61,24 @@
           <ion-label>{{sound.name}}</ion-label>
         </ion-item>
       </ion-list>
+
+      <ion-list>
+        <ion-list-header>
+          <ion-label>From the Phone</ion-label>
+        </ion-list-header>
+        <ion-item button *ngFor="let sound of phoneSoundTracks" (click)="playSound(sound)">
+          <ion-label>{{sound.name}}</ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-fab *ngIf="onAndroid" vertical="center" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="openImportMusicModal(false)">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
     </ion-slide>
+
   </ion-slides>
 </ion-content>
 
