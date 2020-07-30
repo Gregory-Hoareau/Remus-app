@@ -1,4 +1,4 @@
-# pns-innov1920-pns-innov1920-g
+# Remus : Assistant pour JdR
 
 ## Description de l'application
 
@@ -8,50 +8,50 @@ Icons fournis par : https://game-icons.net
 
 
 
-## Installation for the frontend
+## Installation du frontend
 
-To run this example in production or development mode you have to make sure, `ionic` and `cordova` are installed globally on your machine. After that you can install all necessary dependencies for running this example.
+Pour faire tourner cette application en mode development soyez sur que `ionic` et `cordova` sont installé globalement sur votre machine. Vous pouvez ensuite installer toute les dépendances nécessaires pour tourner cet example.
 
-0. Check if `npm` is installed. Otherwise please [install `node.js` and `npm`](https://nodejs.org/en/download/package-manager/). Then just navigate to the *remus-app* folder
+0. Verifier que `npm` est installé. Sinon, veuillez [installer `node.js` et `npm`](https://nodejs.org/en/download/package-manager/). Ensuite naviguez dans un terminal ver le dossier *remus-app* et lancer la ligne de commande :
 ```bash
 npm -v
 cd remus-app
 ```
 
-1. Install ionic and cordova command line interface globally.
+1. Installez globalement ionic et cordova avec la ligne de commande :
 ```bash
 npm install -g cordova ionic
 ```
 
-2. Install all dependencies listed in [`package.json`](/package.json).
+2. Installez toutes les dépendances indiquées dans le fichier [`package.json`](/package.json) :
 ```bash
 npm install
 ```
 
-### Running the example in your browser
+### Faire tourner l'exemple dans votre navigateur
 ```bash
 ionic serve
 ```
 
-### Running the example on your device
+### Faire tourner l'exemple sur votre appareil
 
-3. Add an iOS or Android to the project.
+3. Ajoutez une platforme IOS ou Android au projet :
 ```bash
 ionic cordova platform add ios 
 # or 
 ionic cordova platform add android
 ```
 
-4. Run the app on your device.
+4. Lancez l'application sur votre appareil :
 ```bash
 ionic cordova run ios
 # or
 ionic cordova run android
 ```
 
-## Installation for the backend
+## Installation du backend
 
-To run the backend you will need to have python 3.X.X install. To check the version of your python use the following command lines
+Pour lancer le backend il vous faudra python 3.X.X d'installé sur votre machine. Pour verifier la version de python installé utilisez la ligne de commande ci-contre :
 
 ```bash
 python -V
@@ -59,10 +59,10 @@ python -V
 python3 -V
 ```
 
-If python 3.X.X is install under the name `python3` for the first part you will need to replace `python` by `python3` in the command lines of the part 1
-If `python3 -m pip ...` doesn't work for you, run `sudo apt-get install python3-pip`
+Si python 3.X.X est installé sous le nom `python3` il vous faudra remplacer `python` par `python3` dans les lignes de commandes qui suivent.
+Si `python3 -m pip ...` ne marche pas pour vous, lancez `sudo apt-get install python3-pip`
 
-1. Create virtual enviroment folder
+1. Créez le dossier d'environement virtuel :
 
 ```bash
 python -m pip install virtualenv
@@ -71,7 +71,7 @@ cd remus-backend
 virtualenv venv
 ```
 
-To activate the virtual environment use the following command line.
+Pour activer l'environement vitruel lancer la ligne de commande suivante.
 
 ```bash
 source venv/bin/activate # if you are on Linux or Mac
@@ -80,43 +80,43 @@ source venv/bin/activate # if you are on Linux or Mac
 deactivate
 ```
 
-Once the virtual environment is activate, you will see `(venv)` in front of the lines in your terminal.
+Une fois l'environement virtuel activé, vous verrez `(venv)` en préfixe de vos lignes d'écritures sur le terminal.
 
-2. Install the used module of the backend in your virtual environment
+2. Istallez les modules du backend pour votre environement virtuel :
 
-For the following steps, you will need to activate the virtual environment
+Pour les etapes suivantes, il vous faudra activer l'environement virtuel
 
-### Install Django
+### Installer Django
 
 ```bash
 python -m pip install Django
 ```
 
-### Install Django Rest Framework
+### Installer Django Rest Framework
 
 ```bash
 pip install djangorestframework
 ```
 
-### Install Django cors headers
+### Installer Django cors headers
 
 ```bash
 python -m pip install django-cors-headers
 ```
 
 
-3. Run the backend
+3. Lancez le backend :
 
 ```bash
 cd crowdsourcing
 python manage.py runserver
 ```
 
-This will run the server on localhost:8000, if you want to launch it elsewhere use the following
+Ceci lancera le serveur sur localhost:8000, si vous voulez utiliser une autre adresse ou port utilisez la commande suivante.
 
 ```bash
 python manage.py runserver ip:port
 ```
 
-where `ip` and `port` are the IP address and the port you want.
-If you use this line, you will need to add `ip` in the `ALLOWED_HOST` variable that is in `remus-backend/crowdsorucing/crowdsourcing/settings.py`
+où `ip` et `port` sont l'addresse IP et le port que vous souhaitez.
+Si vous utilisez cette methode, il vous faudra ajouter `ip` dans la variable `ALLOWED_HOST` qui se trouve dans `remus-backend/crowdsorucing/crowdsourcing/settings.py`
