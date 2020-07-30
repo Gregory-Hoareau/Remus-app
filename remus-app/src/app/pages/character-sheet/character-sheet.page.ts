@@ -15,6 +15,7 @@ import { Skill } from 'src/app/models/skill.model';
 import { PersonalData } from 'src/app/models/personal-data.model';
 import { PlayersService } from 'src/app/providers/players/players.service';
 import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
+import { Camera } from '@ionic-native/camera/ngx';
 
 @Component({
   selector: 'app-character-sheet',
@@ -34,7 +35,8 @@ export class CharacterSheetPage implements OnInit {
   constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File,
     private characterService:CharacterService, private modalCtrl:ModalController,
     private navParams: NavParams, private toastController: ToastController,
-    private crowdsourcing: CrowdsourcingService, private playerService: PlayersService) {
+    private crowdsourcing: CrowdsourcingService, private playerService: PlayersService,
+    private camera: Camera) {
       this.read_only = navParams.get('display');
       this.importing = navParams.get('import');
       if (this.read_only) {
@@ -201,6 +203,20 @@ export class CharacterSheetPage implements OnInit {
     if (this.read_only) {
       return
     }
+
+    this.camera.getPicture({
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+    }).then(res => {
+      this.character.img = 'data:image/jpg;base64,' + res;
+      this.changeSavedToast();
+    })
+    /*
     this.imgPicker.hasReadPermission().then((result) => {
       if (!result) {
         this.imgPicker.requestReadPermission().then(res=> {
@@ -216,10 +232,10 @@ export class CharacterSheetPage implements OnInit {
               this.character.img = url
             })
           };
-          this.changeSavedToast()
+          
         })
       }
-    });
+    });*/
   }
 
   shareCharacter() {

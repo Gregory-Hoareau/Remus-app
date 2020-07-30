@@ -20,6 +20,7 @@ import { CrowdsourcingPageModule } from '../crowdsourcing/crowdsourcing.module';
 import { InvitationSenderPageModule } from '../invitation-sender/invitation-sender.module';
 import { SharedFileComponent } from 'src/app/components/shared-file/shared-file.component';
 import { GeneratorChoicePageModule } from '../name-generator/generator-choice/generator-choice.module';
+import { MusicPlayerPageModule } from '../music-player/music-player.module';
 
 
 
@@ -39,7 +40,8 @@ import { GeneratorChoicePageModule } from '../name-generator/generator-choice/ge
     CanvasPageModule,
     CrowdsourcingPageModule,
     InvitationSenderPageModule,
-    GeneratorChoicePageModule
+    GeneratorChoicePageModule,
+    MusicPlayerPageModule
   ],
   entryComponents: [SharedFileComponent],
   declarations: [SessionHomePage,

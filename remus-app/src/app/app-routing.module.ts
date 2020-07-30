@@ -81,6 +81,10 @@ export const routes: Routes = [
   {
     path: 'character-name-generator',
     loadChildren: () => import('./pages/name-generator/character-name-generator/character-name-generator.module').then( m => m.CharacterNameGeneratorPageModule)
+  },
+  {
+    path: 'music-player',
+    loadChildren: () => import('./pages/music-player/music-player.module').then( m => m.MusicPlayerPageModule)
   }
 
 

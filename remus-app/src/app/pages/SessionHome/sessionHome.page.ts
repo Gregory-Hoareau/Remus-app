@@ -8,7 +8,7 @@ import Peer from 'peerjs';
 import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
 import { SimulateurPage } from '../simulateur/simulateur.page';
-import {faDiceD20, faTable, faTrophy, faPeopleArrows, faCrown, faFeather} from '@fortawesome/free-solid-svg-icons';
+import {faDiceD20, faTable, faTrophy, faPeopleArrows, faCrown, faMusic, faFeather} from '@fortawesome/free-solid-svg-icons';
 import {AchivementService} from '../../providers/achivement/achivement.service';
 import {NotesPage} from '../notes/notes.page';
 import {NotesService} from '../../providers/notes/notes.service';
@@ -23,6 +23,7 @@ import { Peer2peerService } from 'src/app/providers/peer2peer/peer2peer.service'
 import { SharedFileComponent } from 'src/app/components/shared-file/shared-file.component';
 import { Conversation } from 'src/app/models/conversation.model';
 import { GeneratorChoicePage } from '../name-generator/generator-choice/generator-choice.page';
+import { MusicPlayerPage } from '../music-player/music-player.page';
 
 @Component({
   selector: 'app-home',
@@ -52,7 +53,7 @@ export class SessionHomePage {
   crowdsourcing = faPeopleArrows;
   crown=faCrown;
   generator= faFeather;
-
+  music = faMusic;
 
   @ViewChild('sharedfilecontainer', { read: ViewContainerRef, static:true }) entry: ViewContainerRef;
   constructor(private resolver: ComponentFactoryResolver,public achivementService: AchivementService, public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
@@ -444,6 +445,12 @@ export class SessionHomePage {
   openGeneratorChoiceModal() {
     this.modalCtr.create({
       component: GeneratorChoicePage
+    }).then(m => m.present());
+  }
+
+  openMusicPlayer() {
+    this.modalCtr.create({
+      component: MusicPlayerPage
     }).then(m => m.present());
   }
 

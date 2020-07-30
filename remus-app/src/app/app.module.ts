@@ -2,7 +2,7 @@ import {NgModule, ViewContainerRef} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { Camera } from '@ionic-native/camera/ngx';
-import {IonicModule, IonicRouteStrategy, IonRouterOutlet, NavParams} from '@ionic/angular';
+import {IonicModule, IonicRouteStrategy, IonRouterOutlet, NavParams, Platform} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
@@ -28,6 +28,9 @@ import { Contacts } from '@ionic-native/contacts/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { CharacterNameGeneratorPageModule } from './pages/name-generator/character-name-generator/character-name-generator.module';
 import { NameGeneratorService } from './providers/name-generator/name-generator.service';
+import { MusicService } from './providers/music/music.service';
+import { MusicControls } from '@ionic-native/music-controls/ngx';
+import { Media } from '@ionic-native/media/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -61,7 +64,11 @@ import { NameGeneratorService } from './providers/name-generator/name-generator.
     Deeplinks,
     SMS,
     Contacts,
-    AndroidPermissions
+    AndroidPermissions,
+    MusicService,
+    MusicControls,
+    Media,
+    Platform
   ],
 
   bootstrap: [AppComponent]
