@@ -24,6 +24,10 @@ export class CharacterService {
     this.customSheet = sheet;
   }
 
+  getCustomSheet() {
+    return this.customSheet
+  }
+
   getTemplate() {
     return this.template;
   }

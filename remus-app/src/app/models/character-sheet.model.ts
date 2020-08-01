@@ -29,6 +29,7 @@ export abstract class CharacterSheet {
         let empty_other = true;
 
         for (const t of this.traits) {
+            console.log(typeof(t))
             empty_trait = empty_trait && t.equals(new Trait(t.name));
         }
         for (const s of this.skills) {
@@ -182,8 +183,11 @@ export class CustomCharacterSheet extends CharacterSheet {
         super();
         if (sheet) {
             this.tags = sheet.tags;
-            this.traits = sheet.traits;
             this.other_personal = sheet.other_personal;
+            //this.traits = sheet.traits;
+            for(const t of sheet.traits) {
+                this.traits.push(new Trait(t.name))
+            }
         }
     }
 }
