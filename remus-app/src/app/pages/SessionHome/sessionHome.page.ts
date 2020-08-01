@@ -318,6 +318,7 @@ export class SessionHomePage {
             });
             conn.send({roomName: this.roomName, roomDesc: this.description});
             conn.send({template: this.characterService.getTemplate()});
+            conn.send({customSheet: this.characterService.getCustomSheet()})
             // Add new player to peronnal player list
             this.playerServ.playersList.push({name: player, conn});
         }},
@@ -435,6 +436,9 @@ export class SessionHomePage {
     }
     if (data.template) {
       this.characterService.setTemplate(data.template);
+    }
+    if (data.customSheet) {
+      this.characterService.setCustomSheet(data.customSheet)
     }
   }
 

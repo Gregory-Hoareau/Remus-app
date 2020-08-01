@@ -85,6 +85,10 @@ export const routes: Routes = [
   {
     path: 'music-player',
     loadChildren: () => import('./pages/music-player/music-player.module').then( m => m.MusicPlayerPageModule)
+  },
+  {
+    path: 'custom-sheet',
+    loadChildren: () => import('./pages/custom-sheet/custom-sheet.module').then( m => m.CustomSheetPageModule)
   }
 
 
