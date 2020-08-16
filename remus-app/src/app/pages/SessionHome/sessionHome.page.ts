@@ -41,6 +41,9 @@ export class SessionHomePage {
   SimulateurPage = SimulateurPage;
   AchivementPage = AchivementPage;
   InvitationSenderPage = InvitationSenderPage;
+  CrowdsourcingPage = CrowdsourcingPage;
+  GeneratorChoicePage = GeneratorChoicePage;
+  MusicPlayerPage = MusicPlayerPage;
   // Personal info
   isHost: boolean;
   roomName: string;
@@ -307,17 +310,6 @@ export class SessionHomePage {
     });
   }
 
-  openCrowdsouricngModal() {
-    this.modalCtr.create({
-      component: CrowdsourcingPage,
-      componentProps: {
-        modal: true
-      }
-    }).then(modal => {
-      modal.present();
-    });
-  }
-
   treatData(data, conn = undefined) {
     // Treat given data
     if (data.roomName) {
@@ -401,18 +393,6 @@ export class SessionHomePage {
 
   navigateToChar() {
     this.router.navigate(['character-sheet']);
-  }
-
-  openGeneratorChoiceModal() {
-    this.modalCtr.create({
-      component: GeneratorChoicePage
-    }).then(m => m.present());
-  }
-
-  openMusicPlayer() {
-    this.modalCtr.create({
-      component: MusicPlayerPage
-    }).then(m => m.present());
   }
 
 }

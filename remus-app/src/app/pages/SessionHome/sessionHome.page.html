@@ -42,16 +42,16 @@
       <ion-fab-button class="dice" (click)="openAnyModal(NotesPage)" data-desc="Notes">
         <ion-icon name="create-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button class="dice" (click)="openAnyModal(AchivementPage, {charInd: -1}, achievementModalDismiss)" data-desc="Succès">
+      <ion-fab-button class="dice" (click)="openAnyModal(AchivementPage, {} ,achievementModalDismiss)" data-desc="Succès">
         <fa-icon class="icon" [icon]="trophyIcon"></fa-icon>
       </ion-fab-button>
-      <ion-fab-button class="dice" (click)="openCrowdsouricngModal()" data-desc="Communauté">
+      <ion-fab-button class="dice" (click)="openAnyModal(CrowdsourcingPage, {modal:true})" data-desc="Communauté">
         <fa-icon class="icon" [icon]="crowdsourcing"></fa-icon>
       </ion-fab-button>
-      <ion-fab-button class="dice" (click)="openGeneratorChoiceModal()" data-desc="Générateur de nom">
+      <ion-fab-button class="dice" (click)="openAnyModal(GeneratorChoicePage)" data-desc="Générateur de nom">
         <fa-icon class="icon" [icon]="generator"></fa-icon>
       </ion-fab-button>
-      <ion-fab-button class="dice" (click)="openMusicPlayer()" data-desc="Musique">
+      <ion-fab-button class="dice" (click)="openAnyModal(MusicPlayerPage)" data-desc="Musique">
         <fa-icon class="icon" [icon]="music"></fa-icon>
       </ion-fab-button>
     </ion-fab-list>
