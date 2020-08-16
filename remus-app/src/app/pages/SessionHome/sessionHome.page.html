@@ -13,7 +13,7 @@
         {{roomName}}
       </ion-title>
 
-      <ion-button color="medium" (click)="sendInvitationModal()">
+      <ion-button color="medium" (click)="openAnyModal(InvitationSenderPage, {roomid : this.roomid})">
         <ion-icon name="person-add"></ion-icon>
         {{roomid}}
       </ion-button>
@@ -36,13 +36,13 @@
       <ion-icon name="arrow-up-circle"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button class="dice" (click)="openDiceRollerModal()" data-desc="Lanceur de dés">
+      <ion-fab-button class="dice" (click)="openAnyModal(SimulateurPage,{isModal : true})" data-desc="Lanceur de dés">
         <fa-icon class="icon" [icon]="diceIcon"></fa-icon>
       </ion-fab-button>
-      <ion-fab-button class="dice" (click)="openNotesModal()" data-desc="Notes">
+      <ion-fab-button class="dice" (click)="openAnyModal(NotesPage)" data-desc="Notes">
         <ion-icon name="create-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button class="dice" (click)="openAchivementModal()" data-desc="Succès">
+      <ion-fab-button class="dice" (click)="openAnyModal(AchivementPage, {charInd: -1}, achievementModalDismiss)" data-desc="Succès">
         <fa-icon class="icon" [icon]="trophyIcon"></fa-icon>
       </ion-fab-button>
       <ion-fab-button class="dice" (click)="openCrowdsouricngModal()" data-desc="Communauté">
@@ -62,10 +62,10 @@
 
 <ion-footer class="new-background-color">
   <ion-toolbar  id="end">
-    <ion-button  color= "medium" *ngIf="playerServ.isHost" id="ButtonPerso" (click)="masterCharacterModal()">Mes Personnages</ion-button>
-    <ion-button  color= "medium" *ngIf="!playerServ.isHost" id="ButtonPerso" (click)="openModal('char')">Mon personnage</ion-button>
+    <ion-button  color= "medium" *ngIf="playerServ.isHost" id="ButtonPerso" (click)="openAnyModal(SelectCharacterPage)">Mes Personnages</ion-button>
+    <ion-button  color= "medium" *ngIf="!playerServ.isHost" id="ButtonPerso" (click)="openAnyModal(CharacterSheetPage, {charInd: -1})">Mon personnage</ion-button>
     <!--<ion-button id="ButtonDoc" (click)="presentAlertConfirm()" >Documents partagés</ion-button>-->
-    <ion-button id="ButtonDoc"  color= "medium" (click)="openModal('doc')" >Documents partagés</ion-button>
+    <ion-button id="ButtonDoc"  color= "medium" (click)="openAnyModal(DocPopupPage, {}, docModalDismiss, this)" >Documents partagés</ion-button>
   </ion-toolbar>
 </ion-footer>
 

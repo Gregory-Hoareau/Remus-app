@@ -33,6 +33,14 @@ import { MusicPlayerPage } from '../music-player/music-player.page';
 
 export class SessionHomePage {
 
+  // Accessible pages
+  SelectCharacterPage = SelectCharacterPage;
+  DocPopupPage = DocPopupPage;
+  CharacterSheetPage = CharacterSheetPage;
+  NotesPage = NotesPage;
+  SimulateurPage = SimulateurPage;
+  AchivementPage = AchivementPage;
+  InvitationSenderPage = InvitationSenderPage;
   // Personal info
   isHost: boolean;
   roomName: string;
@@ -197,89 +205,38 @@ export class SessionHomePage {
     document.getElementById('mainContent').appendChild(node);
   }
 
-
-  masterCharacterModal() {
+  openAnyModal(component, componentProps = {}, dismiss : Function = () => {}, params = undefined){
     this.modalCtr.create({
-      component: SelectCharacterPage,
+      component: component,
       swipeToClose: true,
-    }).then(modal => modal.present());
-  }
-
-  async openModal(page) {
-    const modal = await this.modalCtr.create({
-      component: (page === 'doc') ? DocPopupPage : CharacterSheetPage,
-      componentProps: {
-         charInd: -1,
-      },
-      // cssClass: 'custom-modal-css',
-      swipeToClose: true,
-      id: 'Character'
-    });
-
-    modal.onWillDismiss().then((dataReturned) => {
-      if (dataReturned.data) {
-        console.log(dataReturned.data);
-        //this.entry.clear();
-        const factory = this.resolver.resolveComponentFactory(SharedFileComponent);
-        const componentRef = this.entry.createComponent(factory);
-        componentRef.instance.image = dataReturned.data;
-        const navigationExtras: NavigationExtras = {
-          state: dataReturned.data
-        };
-      }
-    });
-
-    return modal.present();
-  }
-
-  openDiceRollerModal() {
-    this.modalCtr.create({
-      component: SimulateurPage,
-      swipeToClose: true,
-      componentProps: {
-        isModal: true // Adapt format for in-modal use
-      },
+      componentProps: componentProps
     }).then(modal => {
-      modal.present();
+      modal.onWillDismiss().then((dataReturned) => {
+        dismiss(dataReturned, params);
+      })
+      modal.present()
     });
   }
 
-  openNotesModal() {
-    this.modalCtr.create({
-      component: NotesPage,
-      swipeToClose: true,
-    }).then(modal => {
-      modal.present();
-    });
+  docModalDismiss(dataReturned, params) {
+    if (dataReturned.data) {
+      console.log(dataReturned.data);
+      //this.entry.clear();
+      const factory = params.resolver.resolveComponentFactory(SharedFileComponent);
+      const componentRef = params.entry.createComponent(factory);
+      componentRef.instance.image = dataReturned.data;
+      const navigationExtras: NavigationExtras = {
+        state: dataReturned.data
+      };
+    }
   }
 
-  async openAchivementModal() {
-    const modal = await this.modalCtr.create({
-      component: AchivementPage,
-      componentProps: {
-        charInd: -1,
-      },
-      swipeToClose: true,
-    });
-
-    modal.onWillDismiss().then((dataReturned) => {
-      if (dataReturned !== null && dataReturned.data !== '') {
-        const navigationExtras: NavigationExtras = {
-          state: dataReturned.data
-        };
-      }
-    });
-
-    return await modal.present();
-  }
-
-  sendInvitationModal() {
-    this.modalCtr.create({
-      component: InvitationSenderPage,
-      componentProps: {
-        roomId: this.roomid
-      }
-    }).then(m => m.present());
+  achievementModalDismiss(dataReturned){
+    if (dataReturned !== null && dataReturned.data !== '') {
+      const navigationExtras: NavigationExtras = {
+        state: dataReturned.data
+      };
+    }
   }
 
   makeAnIdAlert(id) {
