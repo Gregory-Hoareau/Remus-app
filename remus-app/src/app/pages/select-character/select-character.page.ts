@@ -6,6 +6,8 @@ import { CharacterSheetPage } from '../character-sheet/character-sheet.page';
 import { faFileImport } from '@fortawesome/free-solid-svg-icons';
 import { LoadCharacterPage } from '../load-character/load-character.page';
 import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
+import { PlayersService } from 'src/app/providers/players/players.service';
+import { Player } from 'src/app/models/player.models';
 
 @Component({
   selector: 'app-select-character',
@@ -16,7 +18,7 @@ export class SelectCharacterPage implements OnInit {
 
   importIcon = faFileImport;
 
-  constructor(private characterService: CharacterService, private modalCtrl:ModalController) {
+  constructor(private characterService: CharacterService, private modalCtrl:ModalController, private playerService: PlayersService) {
   }
 
   ngOnInit() {
@@ -52,7 +54,18 @@ export class SelectCharacterPage implements OnInit {
     this.modalCtrl.create({
       component: CharacterSheetPage,
       componentProps: {
-        charInd: index,
+        character: this.characterService.getCharacter(index),
+      }
+    }).then(modal => {
+      modal.present();
+    })
+  }
+
+  playerCharacterModal(p: Player = null) {
+    this.modalCtrl.create({
+      component: CharacterSheetPage,
+      componentProps: {
+        character: p.character,
       }
     }).then(modal => {
       modal.present();

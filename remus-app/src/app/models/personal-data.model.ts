@@ -1,4 +1,4 @@
 export interface PersonalData {
-    name: string,
-    value: string
+    name: string;
+    value: string;
 }

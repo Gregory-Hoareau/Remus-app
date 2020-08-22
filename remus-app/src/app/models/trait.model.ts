@@ -1,15 +1,16 @@
 export class Trait {
     name: string;
-    value: number;
+    type: () => boolean;
+    value: string;
     
     constructor(name: string) {
         this.name = name;
-        this.value = -1
+        this.value = undefined;
     }
 
     equals(other: any) {
         if (other instanceof Trait) {
-            return other.name === this.name && other.value === this.value
+            return other.name === this.name && other.value === this.value;
         }
         return false;
     }

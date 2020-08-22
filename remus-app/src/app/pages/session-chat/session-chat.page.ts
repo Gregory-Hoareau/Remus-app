@@ -22,14 +22,8 @@ export class SessionChatPage implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private playerServ: PlayersService,
     private modalController: ModalController) {
-    this.target = {
-      name: '',
-      conn: undefined
-    }
-    this.player = {
-      name: '',
-      conn: undefined
-    }
+    this.target = new Player(undefined)
+    this.player = new Player(undefined)
   }
 
   closeModal() {

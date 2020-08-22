@@ -150,6 +150,8 @@ export class SessionHomePage {
         });
         params.peerService.closeConnection(conn, (params)=>{
           const p:Player = params.playerServ.getPlayerById(conn.peer);
+    
+          params.playerServ.removePlayer(p);
 
           params.createTicket(p.name + ' a quité la salle')
           // Notify players
@@ -158,8 +160,7 @@ export class SessionHomePage {
             message: p.name + ' a quité la salle',
             position: "top"
           }).then(toast => {toast.present(); });
-    
-          params.playerServ.removePlayer(p);
+          
           console.log(p.name," has left.");
         }, params);
       }, this);
@@ -280,7 +281,7 @@ export class SessionHomePage {
             conn.send({template: this.characterService.getTemplate()});
             conn.send({customSheet: this.characterService.getCustomSheet()})
             // Add new player to peronnal player list
-            this.playerServ.playersList.push({name: player, conn});
+            this.playerServ.playersList.push(new Player(conn, player));
         }},
         {text: 'refuser', role: 'kick', handler: () => {
         conn.send({kick: 'accès refusé'});
@@ -314,7 +315,7 @@ export class SessionHomePage {
     // Treat given data
     if (data.roomName) {
       this.roomName = data.roomName;
-      this.playerServ.playersList.push({name: 'Host', conn});
+      this.playerServ.playersList.push(new Player(conn));
     }
     if (data.roomDesc) {
       this.description = data.roomDesc;
@@ -326,7 +327,7 @@ export class SessionHomePage {
         const con = this.peerService.newConnection(data.peer);
         this.peerService.openConnection(con, (params) => {
           // informe player name
-          this.playerServ.playersList.push({name: params.newPlayer, conn: con});
+          this.playerServ.playersList.push(new Player(con, params.newPlayer));
           console.log('Openned connection with ', params.newPlayer);
           this.createTicket(params.newPlayer + ' a rejoint la salle');
         }, data);

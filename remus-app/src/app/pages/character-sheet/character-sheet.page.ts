@@ -1,4 +1,4 @@
-import { Component, OnInit, SecurityContext } from '@angular/core';
+import { Component, OnInit, SecurityContext, Input } from '@angular/core';
 import {CharacterSheet} from '../../models/character-sheet.model';
 import {AlertController, ModalController, NavParams, ToastController} from '@ionic/angular';
 import {FileChooser} from '@ionic-native/file-chooser/ngx';
@@ -24,35 +24,39 @@ import { Camera } from '@ionic-native/camera/ngx';
 })
 export class CharacterSheetPage implements OnInit {
 
+  @Input()
   character: CharacterSheet;
   read_only: boolean;
   importing: boolean;
+  private newly_created;
+
+
   importIcon = faFileImport;
   exportIcon = faFileExport;
   isHost: boolean;
-  private newly_created = false;
+
+
 
   constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File,
     private characterService:CharacterService, private modalCtrl:ModalController,
     private navParams: NavParams, private toastController: ToastController,
     private crowdsourcing: CrowdsourcingService, private playerService: PlayersService,
     private camera: Camera) {
-      this.read_only = navParams.get('display');
-      this.importing = navParams.get('import');
-      if (this.read_only) {
-        this.character = navParams.get('character');
-      } else {
-        const index = navParams.get('charInd');
-        this.character = this.characterService.getCharacter(index);
-      }
       this.isHost = this.playerService.isHost;
     }
 
   ngOnInit() {
-    if (!this.read_only) {
-      this.newly_created = this.character.isEmpty()
-    }
+    console.log(this.character);
+    this.newly_created = (this.character == undefined);
+    if (this.newly_created) this.character = this.characterService.getEmptyCharacter()
   }
+
+  async editValueAlert(vari){
+    this.alertCtrl.create({
+      header: vari.name.charAt(0).toUpperCase() + vari.name.slice(1),
+    })
+  }
+
 
   async editOptionalDataAlert(d: PersonalData, index: number) {
     const alert = await this.alertCtrl.create({
@@ -73,7 +77,7 @@ export class CharacterSheetPage implements OnInit {
         text: 'Valider',
         handler: data => {
           if (data[d.name] !== '') {
-            this.character.other_personal[index].value = data[d.name];
+            d.value = data[d.name];
           }
           this.changeSavedToast();
         }}],
@@ -128,9 +132,8 @@ export class CharacterSheetPage implements OnInit {
     this.character.traits[index].value = val;
   }
 
-  async editTraitAlert(index) {
+  async editTraitAlert(trait) {
     console.log(this.character.traits)
-    const trait = this.character.traits[index];
     const alert = await this.alertCtrl.create({
       header: trait.name.charAt(0).toUpperCase() + trait.name.slice(1),
       inputs: [{
@@ -150,7 +153,7 @@ export class CharacterSheetPage implements OnInit {
         text: 'Valider',
         handler: data => {
           if (data[trait.name] !== '') {
-            this.changeTraitValue(index, data[trait.name])
+            trait.value = data[trait.name];
           }
           this.changeSavedToast();
         },
@@ -163,15 +166,6 @@ export class CharacterSheetPage implements OnInit {
   deleteSkill(index) {
     this.character.skills.splice(index, 1);
     this.changeSavedToast();
-
-  }
-
-  async changeSavedToast() {
-    this.toastController.create({
-      duration: 1000,
-      message: 'Changement sauvegardé',
-      position: 'bottom',
-    }).then(toast => {toast.present()});
   }
 
   addSkill(skill: Skill) {
@@ -377,14 +371,22 @@ export class CharacterSheetPage implements OnInit {
       }
     })
     
-    await modal.present()
+    await modal.present();
+  }
+
+  async changeSavedToast() {
+    this.toastController.create({
+      duration: 1000,
+      message: 'Changement sauvegardé',
+      position: 'bottom',
+    }).then(toast => {toast.present()});
   }
 
   closeModal() {
     if(!this.read_only && this.newly_created && !this.character.isEmpty()) {
-      this.characterService.addCharacter(this.character)
+      this.characterService.addCharacter(this.character);
     }
-    this.modalCtrl.dismiss(undefined, 'cancel')
+    this.modalCtrl.dismiss(undefined, 'cancel');
   }
 
 }

@@ -31,7 +31,7 @@
           <div class="personnal">
             <p class="name">Nom: {{character.name}} <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('name')"></ion-icon></p>
             <p class="age">Age: <span *ngIf="character.age > -1">{{character.age}}</span> <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('age')"></ion-icon></p>
-            <p class="sex">Sexe: {{character.sex}} <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('sex')"></ion-icon></p>
+            <p class="sex">Sexe: {{character.sex}} <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('sexe')"></ion-icon></p>
           </div>
         </div>
 
@@ -43,7 +43,7 @@
         </div>
 
         <div class="private-info">
-          <p>Background: <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('background')"></ion-icon></p>
+          <p>Origines: <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('background')"></ion-icon></p>
           <div class="background-display">
             {{character.background}}
           </div>
@@ -58,9 +58,9 @@
 
       <div class="traits">
         <ion-list>
-          <ion-item *ngFor="let trait of character.traits; let i = index">
-              <span>{{trait.name}}: <span *ngIf="trait.value > -1">{{trait.value}}</span>
-              <ion-icon *ngIf="!read_only" name="create-outline" (click)="editTraitAlert(i)"></ion-icon>
+          <ion-item *ngFor="let trait of character.traits">
+              <span>{{trait.name}}: <span *ngIf="trait.type(trait.value)">{{trait.value}}</span>
+              <ion-icon *ngIf="!read_only" name="create-outline" (click)="editTraitAlert(trait)"></ion-icon>
             </span>
           </ion-item>
         </ion-list>
