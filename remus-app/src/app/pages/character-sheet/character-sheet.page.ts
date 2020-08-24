@@ -34,6 +34,7 @@ export class CharacterSheetPage implements OnInit {
   importIcon = faFileImport;
   exportIcon = faFileExport;
   isHost: boolean;
+  temp: any;
 
 
 
@@ -51,10 +52,27 @@ export class CharacterSheetPage implements OnInit {
     if (this.newly_created) this.character = this.characterService.getEmptyCharacter()
   }
 
-  async editValueAlert(vari){
-    this.alertCtrl.create({
-      header: vari.name.charAt(0).toUpperCase() + vari.name.slice(1),
-    })
+  setTemp(trait){
+    this.temp=trait.value;
+    console.log("temp set to ", this.temp);
+  }
+
+  forceTemp(trait){
+    trait.value=this.temp;
+  }
+
+  editValue(trait, event, cond: (param) => boolean = () => true){
+    console.log("value changed from ",this.temp,"to",trait.value)
+    if(!cond(event.target.value)){
+      event.target.value = this.temp;
+      console.log("wrong value", this.character.age);
+    } else {
+      this.temp = trait.value;
+    }
+  }
+
+  numberCheck(number){
+    return number>0;
   }
 
 
@@ -85,26 +103,14 @@ export class CharacterSheetPage implements OnInit {
     alert.present();
   }
 
-  async editPersonalAlert(title) {
-    let field;
-    switch (title) {
-      case 'background': field = 'textarea'; break;
-      case 'age': 
-        field = 'number'; 
-        break;
-      default: field = 'text'; break;
-    }
-    let val = this.character[title];
-    if(title === 'age') {
-      val = (val>-1)? val: '';
-    }
+  async editPersonalAlert(sexe) {
     const alert = await this.alertCtrl.create({
-      header: title.charAt(0).toUpperCase() + title.slice(1),
+      header: "sexe",
       inputs: [{
-        name: title,
-        type: field,
-        placeholder: title,
-        value: val
+        name: "sexe",
+        type: "text",
+        placeholder: "title",
+        value: sexe
       }],
       buttons: [{
           text: 'Annuler',
@@ -114,13 +120,10 @@ export class CharacterSheetPage implements OnInit {
         },
         {
         text: 'Valider',
-        handler: data => {
-          if (data[title] !== '') {
-            if (field === 'number') {
-              data[title] = data[title] as number;
-            }
-            this.character[title] = data[title];
-          }
+        handler: data => {  
+          console.log(data);
+          sexe = data.sexe;
+          console.log(sexe, this.character.sex)
           this.changeSavedToast();
         }}],
     });

@@ -10,14 +10,14 @@ export const all_templates = {
     'L5R': 'Légende des 5 anneaux',
     'Custom': 'Personnalisable'
 }
-
+ 
 export abstract class CharacterSheet {
     template: string = null;
     tags: string = '';
     img: string = null;
-    name: string = '';
-    age: number = -1;
-    sex: string = '';
+    name: string;
+    age: number;
+    sex: string;
     background: string = '';
     traits: Trait[] = [];
     skills: Skill[] = [];

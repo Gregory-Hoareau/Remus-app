@@ -29,13 +29,25 @@
             <img src="/assets/add-picture.png" (click)="addPicture()">
           </div>
           <div class="personnal">
-            <p class="name">Nom: {{character.name}} <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('name')"></ion-icon></p>
-            <p class="age">Age: <span *ngIf="character.age > -1">{{character.age}}</span> <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('age')"></ion-icon></p>
-            <p class="sex">Sexe: {{character.sex}} <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert('sexe')"></ion-icon></p>
+            <ion-item>
+              <ion-label position="floating"> {{read_only}} </ion-label>
+              <ion-input required maxLength="36" type="text" [(ngModel)]="character.name">  <ion-icon *ngIf="!read_only" slot="end" name="create-outline"></ion-icon> </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating"> Age </ion-label>
+              <ion-input required maxLength="36" type="text" [(ngModel)]="character.age"  (ionFocus)="setTemp(character.age)" (ionChange)="editValue(character.age, numberCheck)" (ionBlur)="forceTemp(character.age)"> <ion-icon *ngIf="!read_only" slot="end" name="create-outline"></ion-icon> </ion-input>
+            </ion-item>
+            <p class="sex">Sexe: {{character.sex}} <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editPersonalAlert(character.sex)"></ion-icon></p>
           </div>
         </div>
 
         <div class="optional_data" *ngIf="character.other_personal">
+          <ion-list>
+            <ion-item *ngFor="let d of character.other_personal">
+              <ion-label position="floating"> {{d.name}} </ion-label>
+              <ion-input maxLength="36" type="text" [(ngModel)]="d.value" (ionFocus)="setTemp(d)" (ionChange)="editValue(d, $event)" (ionBlur)="forceTemp(d)"> <ion-icon *ngIf="!read_only" slot="end" name="create-outline"></ion-icon> </ion-input>
+            </ion-item>
+          </ion-list>
           <p class="data" *ngFor="let d of character.other_personal; let i = index">
             {{d.name}}: {{d.value}}
             <ion-icon *ngIf="!read_only" slot="end" name="create-outline" (click)="editOptionalDataAlert(d, i)"></ion-icon>
@@ -58,10 +70,10 @@
 
       <div class="traits">
         <ion-list>
-          <ion-item *ngFor="let trait of character.traits">
-              <span>{{trait.name}}: <span *ngIf="trait.type(trait.value)">{{trait.value}}</span>
-              <ion-icon *ngIf="!read_only" name="create-outline" (click)="editTraitAlert(trait)"></ion-icon>
-            </span>
+          <ion-item *ngFor="let trait of character.traits" calss="item">
+            <ion-label position="floating" class="editIcon"> {{trait.name}} </ion-label>
+            <ion-input class="editIcon" maxLength="36" type="text" [(ngModel)]="trait.value" (ionFocus)="setTemp(trait)" (ionChange)="editValue(trait, $event, numberCheck)" (ionBlur)="forceTemp(trait)"> </ion-input>
+            <ion-icon position="relative" *ngIf="!read_only" slot="end" name="create-outline" class="editIcon"></ion-icon>
           </ion-item>
         </ion-list>
       </div>

@@ -1,7 +1,6 @@
 export class Trait {
     name: string;
-    type: () => boolean;
-    value: string;
+    value: number;
     
     constructor(name: string) {
         this.name = name;
