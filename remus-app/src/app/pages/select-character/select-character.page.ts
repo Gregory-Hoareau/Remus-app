@@ -66,6 +66,7 @@ export class SelectCharacterPage implements OnInit {
       component: CharacterSheetPage,
       componentProps: {
         character: p.character,
+        edited: p
       }
     }).then(modal => {
       modal.present();

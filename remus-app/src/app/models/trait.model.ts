@@ -1,9 +1,9 @@
 export class Trait {
     name: string;
     value: string;
-    type: RegExp;
+    type: string;
     
-    constructor(name: string, type:RegExp = /(.*)/) {
+    constructor(name: string, type:string = '(.*)') {
         this.name = name;
         this.value = undefined;
         this.type = type;

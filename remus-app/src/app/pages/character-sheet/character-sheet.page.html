@@ -112,11 +112,11 @@
       <ion-icon class="icon" name="cloud-upload"></ion-icon>
       Uploader le personnage
     </ion-button>
-    <ion-button color="medium" *ngIf="!isHost" (click)="importCharacterForPlayer()">
+    <ion-button color="medium" (click)="importCharacterForPlayer()">
       <fa-icon class="icon" [icon]="importIcon"></fa-icon>
       Importer depuis le téléphone
     </ion-button>
-    <ion-button color="medium" *ngIf="!isHost" (click)="importCharacterFromServerForPlayer()">
+    <ion-button color="medium" (click)="importCharacterFromServerForPlayer()">
       <fa-icon class="icon" [icon]="importIcon"></fa-icon>
       Importer depuis le serveurs
     </ion-button>

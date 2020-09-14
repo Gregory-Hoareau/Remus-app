@@ -243,6 +243,12 @@ export class SessionHomePage {
     }
   }
 
+  characterModalDismiss(dataReturned, params){
+    if (dataReturned !== null && dataReturned.data !== '') {
+      params.character = dataReturned.data;
+    }
+  }
+
   makeAnIdAlert(id) {
     this.alerteController.create({
       header: 'Nouvelle partie !',
@@ -312,6 +318,7 @@ export class SessionHomePage {
   }
 
   treatData(data, conn = undefined) {
+    console.log("recieved data:",data,"from",conn)
     // Treat given data
     if (data.roomName) {
       this.roomName = data.roomName;
@@ -389,6 +396,12 @@ export class SessionHomePage {
     }
     if (data.customSheet) {
       this.characterService.setCustomSheet(data.customSheet)
+    }
+    if (data.sheet) {
+      //if (this.isHost)
+        this.playerServ.getPlayerById(conn.peer).character=data.sheet;
+      //else
+        this.playerServ.myPlayer.character=data.sheet
     }
   }
 

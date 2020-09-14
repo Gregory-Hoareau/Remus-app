@@ -16,6 +16,8 @@ import { PersonalData } from 'src/app/models/personal-data.model';
 import { PlayersService } from 'src/app/providers/players/players.service';
 import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
 import { Camera } from '@ionic-native/camera/ngx';
+import { Player } from 'src/app/models/player.models';
+import { Trait } from 'src/app/models/trait.model';
 
 @Component({
   selector: 'app-character-sheet',
@@ -25,6 +27,7 @@ import { Camera } from '@ionic-native/camera/ngx';
 export class CharacterSheetPage implements OnInit {
 
   @Input()
+  edited: Player;
   character: CharacterSheet;
   read_only: boolean;
   importing: boolean;
@@ -33,7 +36,6 @@ export class CharacterSheetPage implements OnInit {
 
   importIcon = faFileImport;
   exportIcon = faFileExport;
-  isHost: boolean;
   temp: any;
 
 
@@ -41,29 +43,28 @@ export class CharacterSheetPage implements OnInit {
   constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File,
     private characterService:CharacterService, private modalCtrl:ModalController,
     private navParams: NavParams, private toastController: ToastController,
-    private crowdsourcing: CrowdsourcingService, private playerService: PlayersService,
+    private crowdsourcing: CrowdsourcingService,
     private camera: Camera) {
-      this.isHost = this.playerService.isHost;
     }
 
   ngOnInit() {
-    console.log(this.character);
-    this.newly_created = (this.character == undefined);
-    if (this.newly_created) this.character = this.characterService.getEmptyCharacter()
+    this.newly_created = (this.character == null);
+    if (this.newly_created) this.character = this.characterService.getEmptyCharacter();
   }
 
-  setTemp(trait){
+  setTemp(trait: Trait){
     this.temp=trait.value;
     console.log("temp set to ", this.temp);
   }
 
   forceTemp(trait){
     trait.value=this.temp;
+    this.changeSavedToast();
   }
 
-  editValue(trait, event, type: RegExp=/(.*)/){
+  editValue(trait, event, type: string='(.*)'){
     console.log("value changed from ",this.temp,"to",trait.value, "will test with ",type)
-    if(event.target.value.match(type)){
+    if(event.target.value.match(new RegExp(type))){
       this.temp = trait.value;
     } else {
       event.target.value = this.temp;
@@ -378,6 +379,8 @@ export class CharacterSheetPage implements OnInit {
   }
 
   async changeSavedToast() {
+    if (this.edited)
+      this.edited.conn.send({sheet:this.character})
     this.toastController.create({
       duration: 1000,
       message: 'Changement sauvegardé',
@@ -386,10 +389,10 @@ export class CharacterSheetPage implements OnInit {
   }
 
   closeModal() {
-    if(!this.read_only && this.newly_created && !this.character.isEmpty()) {
+    if(!this.read_only && this.newly_created && !this.character.isEmpty() && !this.edited) {
       this.characterService.addCharacter(this.character);
     }
-    this.modalCtrl.dismiss(undefined, 'cancel');
+    this.modalCtrl.dismiss(this.character, 'cancel');
   }
 
 }

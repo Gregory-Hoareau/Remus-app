@@ -16,7 +16,7 @@ export abstract class CharacterSheet {
     tags: string = '';
     img: string = null;
     name: Trait = new Trait('nom')
-    age: Trait = new Trait('age',/^[0-9][0-9]*$/)
+    age: Trait = new Trait('age','^[0-9][0-9]*$')
     sex: Trait = new Trait('sexe')
     background: Trait = new Trait('origines')
     traits: Trait[] = [];
@@ -56,11 +56,11 @@ export class DnDCharacterSheet extends CharacterSheet {
     ];
 
     traits = [
-        new Trait('Force',/^[0-9]*$/),
-        new Trait('Dextérité',/^[0-9]*$/),
-        new Trait('Endurance',/^[0-9]*$/),
-        new Trait('Intelligence',/^[0-9]*$/),
-        new Trait('Perception',/^[0-9]*$/)
+        new Trait('Force','^-?[0-9]*$'),
+        new Trait('Dextérité','^-?[0-9]*$'),
+        new Trait('Endurance','^-?[0-9]*$'),
+        new Trait('Intelligence','^-?[0-9]*$'),
+        new Trait('Perception','^-?[0-9]*$')
     ];
 }
 
