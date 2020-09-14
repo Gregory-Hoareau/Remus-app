@@ -15,13 +15,13 @@ export abstract class CharacterSheet {
     template: string = null;
     tags: string = '';
     img: string = null;
-    name: string;
-    age: number;
-    sex: string;
-    background: string = '';
+    name: Trait = new Trait('nom')
+    age: Trait = new Trait('age',/^[0-9][0-9]*$/)
+    sex: Trait = new Trait('sexe')
+    background: Trait = new Trait('origines')
     traits: Trait[] = [];
     skills: Skill[] = [];
-    other_personal?: PersonalData[] = null;
+    other_personal?: Trait[] = null;
 
     isEmpty() {
         let empty_skill = true;
@@ -41,8 +41,8 @@ export abstract class CharacterSheet {
             }
         }
 
-        return this.age === -1 && this.img === null && this.name === '' 
-                && this.background === '' && empty_skill && empty_trait && empty_other
+        return this.age.value === '' && this.img === null && this.name.value === '' 
+                && this.background.value === '' && empty_skill && empty_trait && empty_other
     }
 }
 
@@ -50,21 +50,17 @@ export abstract class CharacterSheet {
 export class DnDCharacterSheet extends CharacterSheet {
     template = 'D&D';
     tags = 'd&d,fantasy';
-    other_personal = [{
-            name: 'Race',
-            value: ''
-        },{
-            name: 'Classe',
-            value: ''
-        }
+    other_personal = [
+        new Trait('Race'),
+        new Trait('Classe')
     ];
 
     traits = [
-        new Trait('Force'),
-        new Trait('Dextérité'),
-        new Trait('Endurance'),
-        new Trait('Intelligence'),
-        new Trait('Perception')
+        new Trait('Force',/^[0-9]*$/),
+        new Trait('Dextérité',/^[0-9]*$/),
+        new Trait('Endurance',/^[0-9]*$/),
+        new Trait('Intelligence',/^[0-9]*$/),
+        new Trait('Perception',/^[0-9]*$/)
     ];
 }
 
@@ -72,13 +68,10 @@ export class DnDCharacterSheet extends CharacterSheet {
 export class AventureCharacterSheet extends CharacterSheet {
     template = 'Aventure'
     tags = 'aventure,fantasy';
-    other_personal = [{
-        name: 'Race',
-        value: ''
-    },{
-        name: 'Classe',
-        value: ''
-    }];
+    other_personal =  [
+        new Trait('Race'),
+        new Trait('Classe')
+    ];
 
     traits = [
         new Trait('Physique'),
@@ -105,16 +98,10 @@ export abstract class WoDCharacterSheet extends CharacterSheet {
 export class WtACharacterSheet extends WoDCharacterSheet {
     template = 'WtA';
     tags = 'wod,wta,werewolf,modern';
-    other_personal = [{
-            name: 'Race',
-            value: ''
-        },{
-            name: 'Auspice',
-            value: ''
-        },{
-            name: 'Tribu',
-            value: ''
-        }
+    other_personal =  [
+        new Trait('Race'),
+        new Trait('Auspice'),
+        new Trait('Tribue')
     ];
 }
 
@@ -131,16 +118,10 @@ export class StarWarsCharacterSheet extends CharacterSheet {
         new Trait('Présence'),
         new Trait('Valeur de Force')
     ];
-    other_personal = [{
-            name: 'Espèce',
-            value: ''
-        },{
-            name: 'Carrière',
-            value: ''
-        },{
-            name: 'Spécialités',
-            value: ''
-        }
+    other_personal = [
+        new Trait('Espèce'),
+        new Trait('Carrière'),
+        new Trait('Spécialité')
     ];
 }
 
@@ -164,13 +145,8 @@ export class L5RCharacterSheet extends CharacterSheet {
         new Trait('Vide')
     ];
     other_personal = [
-        {
-            name: 'Clan',
-            value: ''
-        },{
-            name: 'École',
-            value: ''
-        }
+        new Trait('Clan'),
+        new Trait('École')
     ]
 }
 

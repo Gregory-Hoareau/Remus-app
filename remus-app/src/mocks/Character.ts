@@ -1,12 +1,12 @@
 import { CharacterSheet } from 'src/app/models/character-sheet.model';
 
-export let all_characters: CharacterSheet[] = [
+export let all_characters: CharacterSheet[]/* = [
     {
         img: null,
-        name: 'Eude',
-        age: 23,
-        sex: 'Homme',
-        background: '',
+        name: {name: 'nom', value:'Eude'},
+        age: {name: 'age', value:'23'},
+        sex: {name: 'sexe', value:'Homme'},
+        background: {name: 'origines', value:''},
         traits: [{
           name: 'Force',
           value: -1,
@@ -40,10 +40,10 @@ export let all_characters: CharacterSheet[] = [
       } as CharacterSheet,
       {
         img: null,
-        name: 'Albus',
-        age: 1500,
-        sex: 'Homme',
-        background: 'Vieu sorcier',
+        name: {name: 'nom', value:'Albus'},
+        age: {name: 'age', value:'1500'},
+        sex: {name: 'sexe', value:'Homme'},
+        background: {name: 'origines', value:'Vieux Sorcier'},
         traits: [{
           name: 'Force',
           value: -1,
@@ -72,4 +72,4 @@ export let all_characters: CharacterSheet[] = [
           }
         ]
       } as CharacterSheet
-]
+] */

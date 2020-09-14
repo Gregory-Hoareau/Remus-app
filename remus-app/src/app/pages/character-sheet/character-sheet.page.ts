@@ -61,13 +61,13 @@ export class CharacterSheetPage implements OnInit {
     trait.value=this.temp;
   }
 
-  editValue(trait, event, cond: (param) => boolean = () => true){
-    console.log("value changed from ",this.temp,"to",trait.value)
-    if(!cond(event.target.value)){
+  editValue(trait, event, type: RegExp=/(.*)/){
+    console.log("value changed from ",this.temp,"to",trait.value, "will test with ",type)
+    if(event.target.value.match(type)){
+      this.temp = trait.value;
+    } else {
       event.target.value = this.temp;
       console.log("wrong value", this.character.age);
-    } else {
-      this.temp = trait.value;
     }
   }
 
@@ -317,8 +317,8 @@ export class CharacterSheetPage implements OnInit {
         {
           type: 'text',
           name: 'filename',
-          placeholder: this.character.name,
-          value: this.character.name
+          placeholder: this.character.name.value,
+          value: this.character.name.value
         }
       ],
       buttons: [

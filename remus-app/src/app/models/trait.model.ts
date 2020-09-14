@@ -1,10 +1,12 @@
 export class Trait {
     name: string;
-    value: number;
+    value: string;
+    type: RegExp;
     
-    constructor(name: string) {
+    constructor(name: string, type:RegExp = /(.*)/) {
         this.name = name;
         this.value = undefined;
+        this.type = type;
     }
 
     equals(other: any) {
