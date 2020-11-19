@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class CrowdsourcingService {
 
-  readonly base_url = 'http://51.210.101.240:8000/';
+  readonly base_url = 'http://localhost:8000/' //'http://51.210.101.240:8000/'; 
   readonly character_sheet_url = this.base_url + 'characterSheet/';
 
   private all_sheet: CharacterSheet[] = []
