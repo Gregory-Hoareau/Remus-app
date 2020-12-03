@@ -125,7 +125,7 @@ export class AppComponent {
     return modal.present();
   }
 
-  openChat(target: Player = {name: 'all', conn:undefined}, player: Player = this.playersServ.me()) {
+  openChat(target: Player = new Player(undefined, 'all'), player: Player = this.playersServ.me()) {
     console.log('CLICKED ON ', target);
     if (!this.playersServ.conversations.get(player)) {
       this.playersServ.conversations.set(player, new Conversation());

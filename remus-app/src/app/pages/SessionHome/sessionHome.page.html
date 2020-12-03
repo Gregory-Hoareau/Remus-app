@@ -63,7 +63,7 @@
 <ion-footer class="new-background-color">
   <ion-toolbar  id="end">
     <ion-button  color= "medium" *ngIf="playerServ.isHost" id="ButtonPerso" (click)="openAnyModal(SelectCharacterPage)">Mes Personnages</ion-button>
-    <ion-button  color= "medium" *ngIf="!playerServ.isHost" id="ButtonPerso" (click)="openAnyModal(CharacterSheetPage, {charInd: -1})">Mon personnage</ion-button>
+    <ion-button  color= "medium" *ngIf="!playerServ.isHost" id="ButtonPerso" (click)="openAnyModal(CharacterSheetPage, {character: playerServ.myPlayer.character, edited: playerServ.playersList[0]}, characterModalDismiss, playerServ.myPlayer)">Mon personnage</ion-button>
     <!--<ion-button id="ButtonDoc" (click)="presentAlertConfirm()" >Documents partagés</ion-button>-->
     <ion-button id="ButtonDoc"  color= "medium" (click)="openAnyModal(DocPopupPage, {}, docModalDismiss, this)" >Documents partagés</ion-button>
   </ion-toolbar>

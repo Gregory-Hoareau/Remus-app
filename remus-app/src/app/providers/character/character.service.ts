@@ -77,19 +77,9 @@ export class CharacterService {
     return this.empty_characters();
   }
 
-  getCharacter(index = -1) {
-    if (index === -1) { // Se la personne qui envoie la requête n'est pas le MJ
-      if (this.characters.length === 0) {
-        const newChar = this.getEmptyCharacter();
-        //this.characters.push(newChar);
-        return newChar;
-      } else {
-        return this.characters[0];
-      }
-    } else if (index === null) { // Si le MJ veut créer une nouveau PNJ
-      const newChar = this.getEmptyCharacter();
-      //this.characters.push(newChar);
-      return newChar;
+  getCharacter(index) {
+    if (index === null) { // Si le MJ veut créer une nouveau PNJ
+      return undefined;
     } else {
       return this.characters[index];
     }

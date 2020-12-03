@@ -48,10 +48,7 @@ export class CustomSheetPage implements OnInit {
         text: 'Ajouter',
         handler: (data) => {
           if(data.data) {
-            this.sheet.other_personal.push({
-              name: data.data,
-              value: ''
-            })
+            this.sheet.other_personal.push(new Trait(data.data))
           }
         }
       }]

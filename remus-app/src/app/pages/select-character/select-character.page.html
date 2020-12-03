@@ -9,9 +9,10 @@
 
 <ion-content>
   <ion-list class="character-list">
+    Personnage(s) Non-Joueur(s)
     <ion-item-sliding *ngFor="let c of characterService.characters; let i = index" >
       <ion-item (click)="characterModal(i)">
-        <ion-label>{{c.name}}</ion-label>
+        <ion-label>{{c.name.value}}</ion-label>
       </ion-item>
       <ion-item-options side="start">
         <ion-item-option color="danger" (click)="trash(c)">
@@ -21,6 +22,14 @@
     </ion-item-sliding>
   </ion-list>
   
+  <ion-list class="character-list">
+    Personnage(s) Joueur(s)
+    <ion-item-sliding *ngFor="let p of playerService.playersList; let i = index" >
+      <ion-item (click)="playerCharacterModal(p)">
+        <ion-label>{{p.name}}</ion-label>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
 
   <ion-button color="medium" (click)="importCharacter()">
     <fa-icon class="icon" [icon]="importIcon"></fa-icon>

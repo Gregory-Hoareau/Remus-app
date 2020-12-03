@@ -19,7 +19,7 @@ export class PlayersService {
   constructor(private alertCtrl: AlertController) {
     this.playersList = [];
     this.conversations = new Map<Player, Conversation>();
-    this.myPlayer = {name: '', conn: undefined} as Player;
+    this.myPlayer = new Player(undefined);
   }
 
   resetPlayer(){
