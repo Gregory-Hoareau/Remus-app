@@ -27,6 +27,7 @@
         </edit-config>
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/uses-permission" xmlns:android="http://schemas.android.com/apk/res/android">
             <uses-permission android:name="android.permission.SEND_SMS" />
+            <uses-permission android:name="android.permission.INTERNET" />
         </edit-config>
         <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
         <allow-intent href="market:*" />
