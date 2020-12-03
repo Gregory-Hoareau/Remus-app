@@ -237,6 +237,7 @@ export class CharacterSheetPage implements OnInit {
   }
 
   shareCharacter() {
+    console.log(this.character);
     this.crowdsourcing.postCharacterSheet(this.character).subscribe(sheet => {
       console.log(sheet);
       console.log('Character sheet upload on the server');

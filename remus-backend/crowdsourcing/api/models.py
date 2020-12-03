@@ -3,7 +3,7 @@ from django.db import models
 #Class util to the models
 class Trait(models.Model):
     name = models.CharField(max_length=20)
-    value = models.IntegerField()
+    value = models.TextField()
 
     def __eq__(self, other):
         if isinstance(other, Trait):
@@ -26,10 +26,10 @@ class PersonalData(models.Model):
 class CharacterSheet(models.Model):
     template = models.CharField(max_length=10, default='D&D')
     img = models.CharField(max_length=150, null=True)
-    name = models.CharField(max_length=10)
-    age = models.IntegerField()
-    sex = models.CharField(max_length=15)
-    background = models.TextField()
+    name = models.OneToOneField(Trait, related_name='char_name', on_delete=models.CASCADE, null=True)
+    age = models.OneToOneField(Trait, related_name='age', on_delete=models.CASCADE, null=True)
+    sex = models.OneToOneField(Trait, related_name='sex', on_delete=models.CASCADE, null=True)
+    background = models.OneToOneField(Trait, related_name='background', on_delete=models.CASCADE, null=True)
     traits = models.ManyToManyField(Trait)
     skills = models.ManyToManyField(Skill)
     other_personal = models.ManyToManyField(PersonalData)
