@@ -20,6 +20,9 @@ export const TRACKS: Track[] = [{
 }]
 
 export const SOUNDS: Track[] = [{
+    name: 'Dice Roll',
+    path: '/sound/shake-and-roll-dice.mp3'
+}, {
     name: 'Monster Growl',
     path: '/sound/scream-demon.mp3'
 }, {

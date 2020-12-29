@@ -7,7 +7,7 @@ import { CharacterSheet } from 'src/app/models/character-sheet.model';
 })
 export class CrowdsourcingService {
 
-  readonly base_url = 'http://localhost:8000/' //'http://51.210.101.240:8000/'; 
+  readonly base_url = 'http://51.210.101.240:8000/' //'http://localhost:8000/'; 
   readonly character_sheet_url = this.base_url + 'characterSheet/';
   readonly availableTags = ['fantasy', 'modern', 'post-apo', 'cyberpunk', 'steampunk']
 
