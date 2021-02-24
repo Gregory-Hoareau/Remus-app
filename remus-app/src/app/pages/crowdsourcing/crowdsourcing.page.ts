@@ -32,12 +32,12 @@ export class CrowdsourcingPage implements OnInit {
     });
   }
 
-  displayChar(index: number) {
+  displayChar(character: CharacterSheet) {
     this.modalCtrl.create({
       component: CharacterSheetPage,
       componentProps: {
         display: true,
-        character: this.characters[index],
+        character: character,
         import: this.importing
       }
     }).then(modal => {
