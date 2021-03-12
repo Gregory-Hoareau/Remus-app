@@ -23,7 +23,7 @@ cd remus-app
 npm install -g cordova ionic
 ```
 
-2. Installez toutes les dépendances indiquées dans le fichier [`package.json`](/package.json) :
+2. Installez toutes les dépendances indiquées dans le fichier [`package.json`](/remus-app/package.json) :
 ```bash
 npm install
 ```
@@ -56,7 +56,7 @@ ionic cordova run android
 cd remus-backend
 ```
 
-2. Installez toutes les dépendances indiquées dans le fichier [`package.json`](/package.json)
+2. Installez toutes les dépendances indiquées dans le fichier [`package.json`](/remus-backend/package.json)
 ```bash
 npm install
 ```
