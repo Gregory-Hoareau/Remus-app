@@ -54,7 +54,7 @@ export class CharacterSheetPage implements OnInit {
 
   setTemp(trait: Trait){
     this.temp=trait.value;
-    console.log("temp set to ", this.temp);
+    //console.log("temp set to ", this.temp);
   }
 
   forceTemp(trait){
@@ -63,12 +63,12 @@ export class CharacterSheetPage implements OnInit {
   }
 
   editValue(trait, event, type: string='(.*)'){
-    console.log("value changed from ",this.temp,"to",trait.value, "will test with ",type)
+    //console.log("value changed from ",this.temp,"to",trait.value, "will test with ",type)
     if(event.target.value.match(new RegExp(type))){
       this.temp = trait.value;
     } else {
       event.target.value = this.temp;
-      console.log("wrong value", this.character.age);
+      //console.log("wrong value", this.character.age);
     }
   }
 
@@ -122,9 +122,9 @@ export class CharacterSheetPage implements OnInit {
         {
         text: 'Valider',
         handler: data => {  
-          console.log(data);
+          //console.log(data);
           sexe = data.sexe;
-          console.log(sexe, this.character.sex)
+          //console.log(sexe, this.character.sex)
           this.changeSavedToast();
         }}],
     });
@@ -137,7 +137,7 @@ export class CharacterSheetPage implements OnInit {
   }
 
   async editTraitAlert(trait) {
-    console.log(this.character.traits)
+    //console.log(this.character.traits)
     const alert = await this.alertCtrl.create({
       header: trait.name.charAt(0).toUpperCase() + trait.name.slice(1),
       inputs: [{

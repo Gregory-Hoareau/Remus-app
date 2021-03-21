@@ -65,7 +65,7 @@ export class CrowdsourcingPage implements OnInit {
   }
 
   selectFilter(event) {
-    console.log(this.selectedFilter)
+    //console.log(this.selectedFilter)
     this.displayedCharacters = this.filterCharacters();
   }
 
