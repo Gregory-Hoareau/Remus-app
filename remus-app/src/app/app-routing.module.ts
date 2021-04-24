@@ -57,7 +57,40 @@ export const routes: Routes = [
   {
     path: 'load-character',
     loadChildren: () => import('./pages/load-character/load-character.module').then( m => m.LoadCharacterPageModule)
+  },
+  {
+    path: 'generator-choice',
+    loadChildren: () => import('./pages/name-generator/generator-choice/generator-choice.module').then( m => m.GeneratorChoicePageModule)
+  },
+  {
+    path: 'session-chat',
+    loadChildren: () => import('./pages/session-chat/session-chat.module').then( m => m.SessionChatPageModule)
+  },
+  {
+    path: 'achivement',
+    loadChildren: () => import('./pages/achivement/achivement.module').then(m=>m.AchivementPageModule)
+  },
+  {
+    path: 'load-character',
+    loadChildren: () => import('./pages/load-character/load-character.module').then( m => m.LoadCharacterPageModule)
+  },
+  {
+    path: 'invitation-sender',
+    loadChildren: () => import('./pages/invitation-sender/invitation-sender.module').then( m => m.InvitationSenderPageModule)
+  },
+  {
+    path: 'character-name-generator',
+    loadChildren: () => import('./pages/name-generator/character-name-generator/character-name-generator.module').then( m => m.CharacterNameGeneratorPageModule)
+  },
+  {
+    path: 'music-player',
+    loadChildren: () => import('./pages/music-player/music-player.module').then( m => m.MusicPlayerPageModule)
+  },
+  {
+    path: 'custom-sheet',
+    loadChildren: () => import('./pages/custom-sheet/custom-sheet.module').then( m => m.CustomSheetPageModule)
   }
+
 
 
 ];

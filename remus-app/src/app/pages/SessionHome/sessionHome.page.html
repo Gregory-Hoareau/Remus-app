@@ -9,10 +9,15 @@
     </ion-buttons>
     <div class="hcs">
       <fa-icon class="realSmall"  *ngIf="playerServ.isHost" [icon]="crown" style="color: #ffc409"></fa-icon>
-    <ion-title style="font-family: 'Playfair display',serif">
-      {{roomName}}
-    </ion-title>
-      {{roomid}}
+      <ion-title style="font-family: 'Playfair display',serif">
+        {{roomName}}
+      </ion-title>
+
+      <ion-button color="medium" (click)="openAnyModal(InvitationSenderPage, {roomid : this.roomid})">
+        <ion-icon name="person-add"></ion-icon>
+        {{roomid}}
+      </ion-button>
+      
     </div>
   </ion-toolbar>
 </ion-header>
@@ -21,33 +26,33 @@
   <ion-card>
     {{description}}
   </ion-card>
-  <!-- Shows share image if on is selected; Should be generated in code for better persistence -->
-  <div *ngIf="image" class="container">
-    <img [src]="image" alt="">
-    <ion-fab-button color="light" size="small" class="btn" slot="end" (click)="closeImage()">
-        <ion-icon name="close-outline"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button  color="light" size="small" class="brushbtn" slot="end" (click)="openCanvasModal()">
-        <ion-icon name="brush"></ion-icon>
-    </ion-fab-button>
-  </div>
+
+  <!--template to spawn in shared image-->
+  <template #sharedfilecontainer>
+  </template>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button  color= "medium" >
       <ion-icon name="arrow-up-circle"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button class="dice" (click)="openDiceRollerModal()" data-desc="Lanceur de dés">
+      <ion-fab-button class="dice" (click)="openAnyModal(SimulateurPage,{isModal : true})" data-desc="Lanceur de dés">
         <fa-icon class="icon" [icon]="diceIcon"></fa-icon>
       </ion-fab-button>
-      <ion-fab-button class="dice" (click)="openNotesModal()" data-desc="Notes">
+      <ion-fab-button class="dice" (click)="openAnyModal(NotesPage)" data-desc="Notes">
         <ion-icon name="create-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button class="dice" (click)="openAchivementModal()" data-desc="Succès">
+      <ion-fab-button class="dice" (click)="openAnyModal(AchivementPage, {} ,achievementModalDismiss)" data-desc="Succès">
         <fa-icon class="icon" [icon]="trophyIcon"></fa-icon>
       </ion-fab-button>
-      <ion-fab-button class="dice" (click)="openCrowdsouricngModal()" data-desc="Communauté">
+      <ion-fab-button class="dice" (click)="openAnyModal(CrowdsourcingPage, {modal:true})" data-desc="Communauté">
         <fa-icon class="icon" [icon]="crowdsourcing"></fa-icon>
+      </ion-fab-button>
+      <ion-fab-button class="dice" (click)="openAnyModal(GeneratorChoicePage)" data-desc="Générateur de nom">
+        <fa-icon class="icon" [icon]="generator"></fa-icon>
+      </ion-fab-button>
+      <ion-fab-button class="dice" (click)="openAnyModal(MusicPlayerPage)" data-desc="Musique">
+        <fa-icon class="icon" [icon]="music"></fa-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
@@ -57,10 +62,10 @@
 
 <ion-footer class="new-background-color">
   <ion-toolbar  id="end">
-    <ion-button  color= "medium" *ngIf="playerServ.isHost" id="ButtonPerso" (click)="masterCharacterModal()">Mes Personnages</ion-button>
-    <ion-button  color= "medium" *ngIf="!playerServ.isHost" id="ButtonPerso" (click)="openModal('char')">Mon personnage</ion-button>
+    <ion-button  color= "medium" *ngIf="playerServ.isHost" id="ButtonPerso" (click)="openAnyModal(SelectCharacterPage)">Mes Personnages</ion-button>
+    <ion-button  color= "medium" *ngIf="!playerServ.isHost" id="ButtonPerso" (click)="openAnyModal(CharacterSheetPage, {character: playerServ.myPlayer.character, edited: playerServ.playersList[0]}, characterModalDismiss, playerServ.myPlayer)">Mon personnage</ion-button>
     <!--<ion-button id="ButtonDoc" (click)="presentAlertConfirm()" >Documents partagés</ion-button>-->
-    <ion-button id="ButtonDoc"  color= "medium" (click)="openModal('doc')" >Documents partagés</ion-button>
+    <ion-button id="ButtonDoc"  color= "medium" (click)="openAnyModal(DocPopupPage, {}, docModalDismiss, this)" >Documents partagés</ion-button>
   </ion-toolbar>
 </ion-footer>
 

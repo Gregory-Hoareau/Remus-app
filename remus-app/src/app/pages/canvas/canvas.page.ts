@@ -156,7 +156,7 @@ export class CanvasPage implements AfterViewInit {
           },
           err => console.log('Erreur ', err)
       );
-    this.modalCtrl.dismiss(dataUrl, 'cancel');
+    this.modalCtrl.dismiss(dataUrl, 'save');
   }
 
 }

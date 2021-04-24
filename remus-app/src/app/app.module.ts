@@ -2,7 +2,7 @@ import {NgModule, ViewContainerRef} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { Camera } from '@ionic-native/camera/ngx';
-import {IonicModule, IonicRouteStrategy, IonRouterOutlet, NavParams} from '@ionic/angular';
+import {IonicModule, IonicRouteStrategy, IonRouterOutlet, NavParams, Platform} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
@@ -21,6 +21,16 @@ import { SessionChatPageModule } from './pages/session-chat/session-chat.module'
 import {AchivementPage} from './pages/achivement/achivement.page';
 import {AchivementPageModule} from './pages/achivement/achivement.module';
 import {Base64ToGallery} from '@ionic-native/base64-to-gallery/ngx';
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
+import { JoinFormPageModule } from './pages/join-form/join-form.module';
+import { SMS } from '@ionic-native/sms/ngx';
+import { Contacts } from '@ionic-native/contacts/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { CharacterNameGeneratorPageModule } from './pages/name-generator/character-name-generator/character-name-generator.module';
+import { NameGeneratorService } from './providers/name-generator/name-generator.service';
+import { MusicService } from './providers/music/music.service';
+import { MusicControls } from '@ionic-native/music-controls/ngx';
+import { Media } from '@ionic-native/media/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,7 +44,8 @@ import {Base64ToGallery} from '@ionic-native/base64-to-gallery/ngx';
       HttpClientModule,
       IonicStorageModule.forRoot(),
       SessionChatPageModule,
-      AchivementPageModule
+      AchivementPageModule,
+      JoinFormPageModule
   ],
   providers: [
     StatusBar,
@@ -47,8 +58,17 @@ import {Base64ToGallery} from '@ionic-native/base64-to-gallery/ngx';
     DiceHistoryService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CharacterService,
+    NameGeneratorService,
     NavParams,
-    Base64ToGallery
+    Base64ToGallery,
+    Deeplinks,
+    SMS,
+    Contacts,
+    AndroidPermissions,
+    MusicService,
+    MusicControls,
+    Media,
+    Platform
   ],
 
   bootstrap: [AppComponent]

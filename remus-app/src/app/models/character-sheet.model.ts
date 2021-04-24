@@ -7,19 +7,21 @@ export const all_templates = {
     'WtA': 'Loup-Garou : l\'apocalypse',
     'SW': 'Star Wars',
     'Aventure': 'Aventure',
-    'L5R': 'Légende des 5 anneaux'
+    'L5R': 'Légende des 5 anneaux',
+    'Custom': 'Personnalisable'
 }
-
+ 
 export abstract class CharacterSheet {
     template: string = null;
+    tags: string = '';
     img: string = null;
-    name: string = '';
-    age: number = -1;
-    sex: string = '';
-    background: string = '';
+    name: Trait = new Trait('nom')
+    age: Trait = new Trait('age','^[0-9][0-9]*$')
+    sex: Trait = new Trait('sexe')
+    background: Trait = new Trait('origines')
     traits: Trait[] = [];
     skills: Skill[] = [];
-    other_personal?: PersonalData[] = null;
+    other_personal?: Trait[] = null;
 
     isEmpty() {
         let empty_skill = true;
@@ -27,6 +29,7 @@ export abstract class CharacterSheet {
         let empty_other = true;
 
         for (const t of this.traits) {
+            console.log(typeof(t))
             empty_trait = empty_trait && t.equals(new Trait(t.name));
         }
         for (const s of this.skills) {
@@ -38,42 +41,37 @@ export abstract class CharacterSheet {
             }
         }
 
-        return this.age === -1 && this.img === null && this.name === '' 
-                && this.background === '' && empty_skill && empty_trait && empty_other
+        return this.age.value === '' && this.img === null && this.name.value === '' 
+                && this.background.value === '' && empty_skill && empty_trait && empty_other
     }
 }
 
 // Character Sheet of Dongeons and dragons
 export class DnDCharacterSheet extends CharacterSheet {
     template = 'D&D';
-    other_personal = [{
-            name: 'Race',
-            value: ''
-        },{
-            name: 'Classe',
-            value: ''
-        }
+    tags = 'd&d,fantasy';
+    other_personal = [
+        new Trait('Race'),
+        new Trait('Classe')
     ];
 
     traits = [
-        new Trait('Force'),
-        new Trait('Dextérité'),
-        new Trait('Endurance'),
-        new Trait('Intelligence'),
-        new Trait('Perception')
+        new Trait('Force','^-?[0-9]*$'),
+        new Trait('Dextérité','^-?[0-9]*$'),
+        new Trait('Endurance','^-?[0-9]*$'),
+        new Trait('Intelligence','^-?[0-9]*$'),
+        new Trait('Perception','^-?[0-9]*$')
     ];
 }
 
 // Character Sheet for Aventure (RPG of Mayhar)
 export class AventureCharacterSheet extends CharacterSheet {
     template = 'Aventure'
-    other_personal = [{
-        name: 'Race',
-        value: ''
-    },{
-        name: 'Classe',
-        value: ''
-    }];
+    tags = 'aventure,fantasy';
+    other_personal =  [
+        new Trait('Race'),
+        new Trait('Classe')
+    ];
 
     traits = [
         new Trait('Physique'),
@@ -99,21 +97,18 @@ export abstract class WoDCharacterSheet extends CharacterSheet {
 
 export class WtACharacterSheet extends WoDCharacterSheet {
     template = 'WtA';
-    other_personal = [{
-            name: 'Race',
-            value: ''
-        },{
-            name: 'Auspice',
-            value: ''
-        },{
-            name: 'Tribu',
-            value: ''
-        }
+    tags = 'wod,wta,werewolf,modern';
+    other_personal =  [
+        new Trait('Race'),
+        new Trait('Auspice'),
+        new Trait('Tribue')
     ];
 }
 
+// Character Sheets for Star Wars
 export class StarWarsCharacterSheet extends CharacterSheet {
     template = 'SW';
+    tags = 'sw,sf,space';
     traits = [
         new Trait('Vigueur'),
         new Trait('Agilité'),
@@ -123,21 +118,17 @@ export class StarWarsCharacterSheet extends CharacterSheet {
         new Trait('Présence'),
         new Trait('Valeur de Force')
     ];
-    other_personal = [{
-            name: 'Espèce',
-            value: ''
-        },{
-            name: 'Carrière',
-            value: ''
-        },{
-            name: 'Spécialités',
-            value: ''
-        }
+    other_personal = [
+        new Trait('Espèce'),
+        new Trait('Carrière'),
+        new Trait('Spécialité')
     ];
 }
 
+// Character Sheets for Legend of the 5 rings
 export class L5RCharacterSheet extends CharacterSheet {
     template = 'L5R';
+    tags = 'l5r';
     traits = [
         new Trait('Terre'),
         new Trait('Constitution'),
@@ -154,13 +145,25 @@ export class L5RCharacterSheet extends CharacterSheet {
         new Trait('Vide')
     ];
     other_personal = [
-        {
-            name: 'Clan',
-            value: ''
-        },{
-            name: 'École',
-            value: ''
-        }
+        new Trait('Clan'),
+        new Trait('École')
     ]
 }
 
+// Customisable Character Sheets
+export class CustomCharacterSheet extends CharacterSheet {
+    template = 'Custom'
+    other_personal = [];
+
+    constructor(sheet: CharacterSheet) {
+        super();
+        if (sheet) {
+            this.tags = sheet.tags;
+            this.other_personal = sheet.other_personal;
+            //this.traits = sheet.traits;
+            for(const t of sheet.traits) {
+                this.traits.push(new Trait(t.name))
+            }
+        }
+    }
+}

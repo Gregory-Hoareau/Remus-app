@@ -5,10 +5,11 @@ import { Macro } from 'src/app/models/macro.model';
 import {MacroService} from '../../providers/macro/macro.service';
 import {Dice} from '../../models/dice.model';
 import {DiceService} from '../../providers/dice/dice.service';
-import {Gyroscope, GyroscopeOptions, GyroscopeOrientation} from '@ionic-native/gyroscope/ngx';
-import {DeviceMotion, DeviceMotionAccelerationData} from "@ionic-native/device-motion/ngx";
 import {Shake} from "@ionic-native/shake/ngx";
 import {SpecialDice} from "../../models/special-dice.model";
+import { MusicService } from 'src/app/providers/music/music.service';
+import { SOUNDS, TRACKS } from 'src/mocks/Track';
+
 
 
 @Component({
@@ -26,6 +27,8 @@ export class SimulateurPage implements OnInit {
   @Input() isModal: boolean;
   public diceHistory: string[];
   segment = 0;
+  diceAlert;
+
 
 
   // Historique var
@@ -56,7 +59,8 @@ export class SimulateurPage implements OnInit {
 
 
   constructor(public shakeDetector: Shake, public alertController: AlertController, public diceService: DiceService,
-    public diceHistoryService: DiceHistoryService, private modalCtrl: ModalController, private alertCtrl: AlertController, public macroService: MacroService)  { }
+    public diceHistoryService: DiceHistoryService, private modalCtrl: ModalController, private alertCtrl: AlertController,
+    public macroService: MacroService, private musicService: MusicService)  { }
 
   ngOnInit() {
     this.typeOfDiceHasBeenChanged = false;
@@ -279,8 +283,7 @@ export class SimulateurPage implements OnInit {
       ]
     });
     await alert.present();
-    const result = await alert.onDidDismiss();
-    console.log(result);
+    return alert;
   }
 
   async presentAlertConfirmSpecial(data: string[]) {
@@ -315,8 +318,7 @@ export class SimulateurPage implements OnInit {
       ]
     });
     await alert.present();
-    const result = await alert.onDidDismiss();
-    console.log(result);
+    return alert;
   }
 
   async noDiceAlert() {
@@ -329,6 +331,10 @@ export class SimulateurPage implements OnInit {
   }
 
   launchDice(){
+    this.musicService.launchSound(SOUNDS[0]);
+    console.log(this.diceAlert);
+    if(this.diceAlert)
+      this.diceAlert.then(alert => alert.dismiss());
     if (this.launched) {
       this.launched = false;
       this.diceSum = 0;
@@ -360,7 +366,7 @@ export class SimulateurPage implements OnInit {
       }
       this.result = this.diceSum + this.modificateur;
       this.finalSeparatedValue = this.separetedValue;
-      this.presentAlertConfirm('<h1>' + this.result + '</h1>' + '<br>' + this.finalSeparatedValue)
+      this.diceAlert = this.presentAlertConfirm('<h1>' + this.result + '</h1>' + '<br>' + this.finalSeparatedValue);
       this.diceHistoryService.addDiceRoll({
         dices: this.diceSelected,
         modificator: (this.modificateur === 0? undefined: this.modificateur),

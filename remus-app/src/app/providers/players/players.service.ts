@@ -19,13 +19,18 @@ export class PlayersService {
   constructor(private alertCtrl: AlertController) {
     this.playersList = [];
     this.conversations = new Map<Player, Conversation>();
-    this.myPlayer = {name: '', conn: undefined} as Player;
+    this.myPlayer = new Player(undefined);
   }
 
   resetPlayer(){
     this.playersList.forEach(() => {
       this.playersList.pop();
     });
+  }
+
+  removePlayer(player: Player) {
+    const id = this.playersList.indexOf(player);
+    this.playersList.splice(id, 1);
   }
 
   kickAlert(player: Player) {
@@ -44,9 +49,7 @@ export class PlayersService {
         handler: data => {
           player.conn.send({kick: data.reason});
           player.conn.close()
-          const id = this.playersList.indexOf(player);
-          console.log(id)
-          this.playersList.splice(id, 1);
+          this.removePlayer(player)
           this.playersList.forEach(p => {
             p.conn.send({removed: player.name});
           });

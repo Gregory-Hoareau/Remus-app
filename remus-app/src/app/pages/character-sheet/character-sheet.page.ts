@@ -1,4 +1,4 @@
-import { Component, OnInit, SecurityContext } from '@angular/core';
+import { Component, OnInit, SecurityContext, Input } from '@angular/core';
 import {CharacterSheet} from '../../models/character-sheet.model';
 import {AlertController, ModalController, NavParams, ToastController} from '@ionic/angular';
 import {FileChooser} from '@ionic-native/file-chooser/ngx';
@@ -15,6 +15,9 @@ import { Skill } from 'src/app/models/skill.model';
 import { PersonalData } from 'src/app/models/personal-data.model';
 import { PlayersService } from 'src/app/providers/players/players.service';
 import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
+import { Camera } from '@ionic-native/camera/ngx';
+import { Player } from 'src/app/models/player.models';
+import { Trait } from 'src/app/models/trait.model';
 
 @Component({
   selector: 'app-character-sheet',
@@ -23,34 +26,56 @@ import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
 })
 export class CharacterSheetPage implements OnInit {
 
+  @Input()
+  edited: Player;
   character: CharacterSheet;
   read_only: boolean;
   importing: boolean;
+  private newly_created;
+
+
   importIcon = faFileImport;
   exportIcon = faFileExport;
-  isHost: boolean;
-  private newly_created = false;
+  temp: any;
+
+
 
   constructor(private alertCtrl: AlertController, private imgPicker: ImagePicker, private file: File,
     private characterService:CharacterService, private modalCtrl:ModalController,
     private navParams: NavParams, private toastController: ToastController,
-    private crowdsourcing: CrowdsourcingService, private playerService: PlayersService) {
-      this.read_only = navParams.get('display');
-      this.importing = navParams.get('import');
-      if (this.read_only) {
-        this.character = navParams.get('character');
-      } else {
-        const index = navParams.get('charInd');
-        this.character = this.characterService.getCharacter(index);
-      }
-      this.isHost = this.playerService.isHost;
+    private crowdsourcing: CrowdsourcingService,
+    private camera: Camera) {
     }
 
   ngOnInit() {
-    if (!this.read_only) {
-      this.newly_created = this.character.isEmpty()
+    this.newly_created = (this.character == null);
+    if (this.newly_created) this.character = this.characterService.getEmptyCharacter();
+  }
+
+  setTemp(trait: Trait){
+    this.temp=trait.value;
+    //console.log("temp set to ", this.temp);
+  }
+
+  forceTemp(trait){
+    trait.value=this.temp;
+    this.changeSavedToast();
+  }
+
+  editValue(trait, event, type: string='(.*)'){
+    //console.log("value changed from ",this.temp,"to",trait.value, "will test with ",type)
+    if(event.target.value.match(new RegExp(type))){
+      this.temp = trait.value;
+    } else {
+      event.target.value = this.temp;
+      //console.log("wrong value", this.character.age);
     }
   }
+
+  numberCheck(number){
+    return number>0;
+  }
+
 
   async editOptionalDataAlert(d: PersonalData, index: number) {
     const alert = await this.alertCtrl.create({
@@ -71,7 +96,7 @@ export class CharacterSheetPage implements OnInit {
         text: 'Valider',
         handler: data => {
           if (data[d.name] !== '') {
-            this.character.other_personal[index].value = data[d.name];
+            d.value = data[d.name];
           }
           this.changeSavedToast();
         }}],
@@ -79,26 +104,14 @@ export class CharacterSheetPage implements OnInit {
     alert.present();
   }
 
-  async editPersonalAlert(title) {
-    let field;
-    switch (title) {
-      case 'background': field = 'textarea'; break;
-      case 'age': 
-        field = 'number'; 
-        break;
-      default: field = 'text'; break;
-    }
-    let val = this.character[title];
-    if(title === 'age') {
-      val = (val>-1)? val: '';
-    }
+  async editPersonalAlert(sexe) {
     const alert = await this.alertCtrl.create({
-      header: title.charAt(0).toUpperCase() + title.slice(1),
+      header: "sexe",
       inputs: [{
-        name: title,
-        type: field,
-        placeholder: title,
-        value: val
+        name: "sexe",
+        type: "text",
+        placeholder: "title",
+        value: sexe
       }],
       buttons: [{
           text: 'Annuler',
@@ -108,13 +121,10 @@ export class CharacterSheetPage implements OnInit {
         },
         {
         text: 'Valider',
-        handler: data => {
-          if (data[title] !== '') {
-            if (field === 'number') {
-              data[title] = data[title] as number;
-            }
-            this.character[title] = data[title];
-          }
+        handler: data => {  
+          //console.log(data);
+          sexe = data.sexe;
+          //console.log(sexe, this.character.sex)
           this.changeSavedToast();
         }}],
     });
@@ -126,9 +136,8 @@ export class CharacterSheetPage implements OnInit {
     this.character.traits[index].value = val;
   }
 
-  async editTraitAlert(index) {
-    console.log(this.character.traits)
-    const trait = this.character.traits[index];
+  async editTraitAlert(trait) {
+    //console.log(this.character.traits)
     const alert = await this.alertCtrl.create({
       header: trait.name.charAt(0).toUpperCase() + trait.name.slice(1),
       inputs: [{
@@ -148,7 +157,7 @@ export class CharacterSheetPage implements OnInit {
         text: 'Valider',
         handler: data => {
           if (data[trait.name] !== '') {
-            this.changeTraitValue(index, data[trait.name])
+            trait.value = data[trait.name];
           }
           this.changeSavedToast();
         },
@@ -161,15 +170,6 @@ export class CharacterSheetPage implements OnInit {
   deleteSkill(index) {
     this.character.skills.splice(index, 1);
     this.changeSavedToast();
-
-  }
-
-  async changeSavedToast() {
-    this.toastController.create({
-      duration: 1000,
-      message: 'Changement sauvegardé',
-      position: 'bottom',
-    }).then(toast => {toast.present()});
   }
 
   addSkill(skill: Skill) {
@@ -201,6 +201,20 @@ export class CharacterSheetPage implements OnInit {
     if (this.read_only) {
       return
     }
+
+    this.camera.getPicture({
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+    }).then(res => {
+      this.character.img = 'data:image/jpg;base64,' + res;
+      this.changeSavedToast();
+    })
+    /*
     this.imgPicker.hasReadPermission().then((result) => {
       if (!result) {
         this.imgPicker.requestReadPermission().then(res=> {
@@ -216,13 +230,14 @@ export class CharacterSheetPage implements OnInit {
               this.character.img = url
             })
           };
-          this.changeSavedToast()
+          
         })
       }
-    });
+    });*/
   }
 
   shareCharacter() {
+    console.log(this.character);
     this.crowdsourcing.postCharacterSheet(this.character).subscribe(sheet => {
       console.log(sheet);
       console.log('Character sheet upload on the server');
@@ -304,8 +319,8 @@ export class CharacterSheetPage implements OnInit {
         {
           type: 'text',
           name: 'filename',
-          placeholder: this.character.name,
-          value: this.character.name
+          placeholder: this.character.name.value,
+          value: this.character.name.value
         }
       ],
       buttons: [
@@ -361,14 +376,24 @@ export class CharacterSheetPage implements OnInit {
       }
     })
     
-    await modal.present()
+    await modal.present();
+  }
+
+  async changeSavedToast() {
+    if (this.edited)
+      this.edited.conn.send({sheet:this.character})
+    this.toastController.create({
+      duration: 1000,
+      message: 'Changement sauvegardé',
+      position: 'bottom',
+    }).then(toast => {toast.present()});
   }
 
   closeModal() {
-    if(!this.read_only && this.newly_created && !this.character.isEmpty()) {
-      this.characterService.addCharacter(this.character)
+    if(!this.read_only && this.newly_created && !this.character.isEmpty() && !this.edited) {
+      this.characterService.addCharacter(this.character);
     }
-    this.modalCtrl.dismiss(undefined, 'cancel')
+    this.modalCtrl.dismiss(this.character, 'cancel');
   }
 
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CharacterSheet, DnDCharacterSheet, WoDCharacterSheet, AventureCharacterSheet, WtACharacterSheet, StarWarsCharacterSheet, L5RCharacterSheet } from 'src/app/models/character-sheet.model';
+import { CharacterSheet, DnDCharacterSheet, WoDCharacterSheet, AventureCharacterSheet, WtACharacterSheet, StarWarsCharacterSheet, L5RCharacterSheet, CustomCharacterSheet } from 'src/app/models/character-sheet.model';
 import { all_characters } from 'src/mocks/character'
 import { PlayersService } from '../players/players.service';
 
@@ -10,6 +10,7 @@ export class CharacterService {
 
   readonly default_template = 'D&D';
   private template: string;
+  private customSheet: CharacterSheet;
   private empty_characters: () => CharacterSheet; // Fonction renvoyant une fiche de personnage vide
 
   characters: CharacterSheet[];
@@ -17,6 +18,14 @@ export class CharacterService {
   constructor(private playerService: PlayersService) {
     this.characters = playerService.isHost? all_characters: [];
     this.template = this.default_template;
+  }
+
+  setCustomSheet(sheet: CharacterSheet) {
+    this.customSheet = sheet;
+  }
+
+  getCustomSheet() {
+    return this.customSheet
   }
 
   getTemplate() {
@@ -49,6 +58,11 @@ export class CharacterService {
           return new L5RCharacterSheet();
         }
         break;
+      case 'Custom':
+        this.empty_characters = () => {
+          return new CustomCharacterSheet(this.customSheet);
+        }
+        break;
       case 'D&D':
       default:
         this.empty_characters = () => {
@@ -63,19 +77,9 @@ export class CharacterService {
     return this.empty_characters();
   }
 
-  getCharacter(index = -1) {
-    if (index === -1) { // Se la personne qui envoie la requête n'est pas le MJ
-      if (this.characters.length === 0) {
-        const newChar = this.getEmptyCharacter();
-        //this.characters.push(newChar);
-        return newChar;
-      } else {
-        return this.characters[0];
-      }
-    } else if (index === null) { // Si le MJ veut créer une nouveau PNJ
-      const newChar = this.getEmptyCharacter();
-      //this.characters.push(newChar);
-      return newChar;
+  getCharacter(index) {
+    if (index === null) { // Si le MJ veut créer une nouveau PNJ
+      return undefined;
     } else {
       return this.characters[index];
     }

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {AlertController, ModalController, NavController, NavParams, LoadingController, ToastController, MenuController} from '@ionic/angular';
+import { Component, ComponentFactoryResolver, ComponentRef, ComponentFactory, ViewChild, ViewContainerRef } from '@angular/core';
+import {AlertController, ModalController, LoadingController, ToastController, MenuController} from '@ionic/angular';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {DocPopupPage} from '../doc-popup/doc-popup.page';
 import {CharacterSheetPage} from '../character-sheet/character-sheet.page';
@@ -8,7 +8,7 @@ import Peer from 'peerjs';
 import { PlayersService } from '../../providers/players/players.service';
 import { SelectCharacterPage } from '../select-character/select-character.page';
 import { SimulateurPage } from '../simulateur/simulateur.page';
-import {faDiceD20, faTable, faTrophy, faPeopleArrows, faCrown} from '@fortawesome/free-solid-svg-icons';
+import {faDiceD20, faTable, faTrophy, faPeopleArrows, faCrown, faMusic, faFeather} from '@fortawesome/free-solid-svg-icons';
 import {AchivementService} from '../../providers/achivement/achivement.service';
 import {NotesPage} from '../notes/notes.page';
 import {NotesService} from '../../providers/notes/notes.service';
@@ -18,7 +18,12 @@ import {CanvasPage} from '../canvas/canvas.page';
 import { Location } from '@angular/common';
 import { CrowdsourcingPage } from '../crowdsourcing/crowdsourcing.page';
 import { CharacterService } from 'src/app/providers/character/character.service';
+import { InvitationSenderPage } from '../invitation-sender/invitation-sender.page';
+import { Peer2peerService } from 'src/app/providers/peer2peer/peer2peer.service';
+import { SharedFileComponent } from 'src/app/components/shared-file/shared-file.component';
 import { Conversation } from 'src/app/models/conversation.model';
+import { GeneratorChoicePage } from '../name-generator/generator-choice/generator-choice.page';
+import { MusicPlayerPage } from '../music-player/music-player.page';
 
 @Component({
   selector: 'app-home',
@@ -28,12 +33,22 @@ import { Conversation } from 'src/app/models/conversation.model';
 
 export class SessionHomePage {
 
+  // Accessible pages
+  SelectCharacterPage = SelectCharacterPage;
+  DocPopupPage = DocPopupPage;
+  CharacterSheetPage = CharacterSheetPage;
+  NotesPage = NotesPage;
+  SimulateurPage = SimulateurPage;
+  AchivementPage = AchivementPage;
+  InvitationSenderPage = InvitationSenderPage;
+  CrowdsourcingPage = CrowdsourcingPage;
+  GeneratorChoicePage = GeneratorChoicePage;
+  MusicPlayerPage = MusicPlayerPage;
   // Personal info
   isHost: boolean;
   roomName: string;
   description: string;
   peer: Peer;
-  myid: string;
   roomid: string;
   pseudo: string;
   // Host peerServer info
@@ -41,31 +56,23 @@ export class SessionHomePage {
   path = '/remus-app';
   port = 9000;
   // Other variables
+  currentTimeout;
   imgTemp = '';
-  image: string = null;
   loader: any;
   diceIcon = faDiceD20;
   trophyIcon = faTrophy;
   crowdsourcing = faPeopleArrows;
   crown=faCrown;
+  generator= faFeather;
+  music = faMusic;
 
-  constructor(public achivementService: AchivementService, public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
+  @ViewChild('sharedfilecontainer', { read: ViewContainerRef, static:true }) entry: ViewContainerRef;
+  constructor(private resolver: ComponentFactoryResolver,public achivementService: AchivementService, public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
               private file: File, private playerServ: PlayersService,
               private toastController: ToastController, private menuController: MenuController,
               private noteService: NotesService, private location: Location,
-              private characterService: CharacterService) {
-    if (this.route.queryParams) {
-      this.route.queryParams.subscribe(params => {
-        if (this.router.getCurrentNavigation().extras.state) {
-          this.roomName = this.router.getCurrentNavigation().extras.state.name;
-          this.description = this.router.getCurrentNavigation().extras.state.description;
-          this.pseudo = this.router.getCurrentNavigation().extras.state.pseudo;
-          this.roomid = this.router.getCurrentNavigation().extras.state.id;
-        }
-      });
-    }
-
+              private characterService: CharacterService, private peerService: Peer2peerService) {
     this.menuController.enable(true, 'playerList');
     this.menuController.enable(false, 'mainMenu');
 
@@ -73,102 +80,105 @@ export class SessionHomePage {
 
 
   ngOnInit() {
-    // initialise Peer
-    this.myid = Math.random().toString(36).substr(2, 5); // Should be only for host
-    this.peer = new Peer(this.myid,
-      {host: this.host,
-      path: this.path,
-      port: this.port,
-      debug: 2});
-
-    if (!this.roomName) {
-      // Peers trying to join
-      this.roomName = 'Salle d\'attente';
-      if (!this.roomid) {
-        this.location.back();
-      }
-
-
-      this.peer.on('open', id => {
-        this.makeLoader();
-        // connect to host peer
-        const conn = this.peer.connect(this.roomid, {serialization: 'json'});
-        conn.on('open', () => {
-          // informe player name
-          conn.send({newPlayer: this.pseudo});
-        });
-        conn.on('data', (data) => {
-          this.treatData(data, conn);
-        });
-      });
-
-      this.peer.on('connection', (conn) => {
-        conn.on('data', (data) => {
-          this.treatData(data, conn);
-        });
-        conn.on('open', () => {
-          console.log('opened connection with ', conn);
-        });
-      });
-
-      this.peer.on('error', err => {
-        console.log(err.type);
-        if (err.type === 'peer-unavailable') {
-          this.makeKickAlert('id ' + this.roomid + ' ne correspond a aucune salle.');
+    //initialise variables.
+    if (this.route.queryParams) {
+      console.log(this.route.queryParams)
+      this.route.queryParams.subscribe(params => {
+        if (this.router.getCurrentNavigation().extras.state) {
+          this.roomName = this.router.getCurrentNavigation().extras.state.name;
+          this.description = this.router.getCurrentNavigation().extras.state.description;
+          this.pseudo = this.router.getCurrentNavigation().extras.state.pseudo;
+          this.roomid = this.router.getCurrentNavigation().extras.state.id;
+        } else {
+          this.location.back();
         }
       });
+    } 
 
-    } else {
-      // Initialise hosting
-      this.pseudo = 'Host';
-      this.roomid = this.myid;
-      this.playerServ.isHost = true;
+    // initialise Peer
+    this.peer = this.peerService.newpeer(Math.random().toString(36).substr(2, 5));
 
-      this.peer.on('open', id => {
-        this.makeAnIdAlert(id);
-        console.log('locked and loaded id: ', id);
-      });
+    if(this.roomid || this.roomName){
+      if (!this.roomName) {
+        this.playerServ.isHost = false;
+        // Peers trying to join
+        this.roomName = 'Salle d\'attente';
 
-      this.peer.on('connection', (conn) => {
-        conn.on('data', (data) => {
-          this.treatData(data, conn);
-        });
-        conn.on('open', () => {
+        this.peerService.openPeer(
+          function(params: SessionHomePage){
+            // connect to host peer
+            const conn = params.peerService.newConnection(params.roomid);
+            params.peerService.openConnection(conn, (params)=>{
+              params.breakTimeout();
+              conn.send({newPlayer: params.pseudo});
+            }, params);
+            params.peerService.addConnectionAction(conn, (data, conn, params)=>{
+              params.treatData(data,conn,params);
+            }, params);
+            params.peerService.closeConnection(conn, (params)=>{
+              params.createDisconnectionTimeout("L'hôte à quité la partie.")
+              params.playerServ.resetPlayer();
+            }, params);
+            params.createDisconnectionTimeout("Connection échoué. Veuillez réessayer.", 10000);
+          },
+          this
+        );
+
+        this.peerService.errorPeer('peer-unavailable', (params, err)=>{
+          console.log("caught error", err);
+          params.breakTimeout();
+          params.makeKickAlert('id ' + params.roomid + ' ne correspond a aucune salle.');
+        }, this);
+
+      } else {
+        // Initialise hosting
+        this.pseudo = 'Host';
+        this.roomid = this.peerService.myId();
+        this.playerServ.isHost = true;
+
+        this.peerService.openPeer((params) => {
+          this.makeAnIdAlert(params);
+        }, this.roomid);
+      }
+
+      this.peerService.connectPeer((conn, params) => {
+        params.peerService.addConnectionAction(conn, (data, conn, params)=>{
+          params.treatData(data,conn,params);
+        }, params);
+        params.peerService.openConnection(conn, (params)=>{
           console.log('opened connection with ', conn);
         });
-      });
+        params.peerService.closeConnection(conn, (params)=>{
+          const p:Player = params.playerServ.getPlayerById(conn.peer);
+    
+          params.playerServ.removePlayer(p);
 
+          params.createTicket(p.name + ' a quité la salle')
+          // Notify players
+          params.toastController.create({
+            duration: 2000,
+            message: p.name + ' a quité la salle',
+            position: "top"
+          }).then(toast => {toast.present(); });
+          
+          console.log(p.name," has left.");
+        }, params);
+      }, this);
+
+      this.playerServ.myPlayer.name = this.pseudo;
     }
-    this.playerServ.myPlayer.name = this.pseudo;
   }
 
   ionViewWillLeave() {
+
     this.playerServ.isHost=false;
-    this.loader.dismiss()
 
     this.menuController.enable(false, 'playerList');
     this.menuController.enable(true, 'mainMenu');
 
     this.noteService.reset();
 
-    this.playerServ.getConns().forEach(c => {
-      if (!this.playerServ.isHost) {
-        c.send({removed: this.pseudo});
-      } else {
-        c.send({kick: 'l\'hote à quité la partie'});
-      }
-      c.close();
-    });
-
-    const len = this.playerServ.playersList.length;
-    for (let i = 0; i < len; i++) {
-      this.playerServ.playersList.pop();
-    }
-
-    this.playerServ.resetPlayer();
-
-    this.peer.disconnect();
-    this.peer.destroy();
+    this.peerService.shutDown();
     // reset shared files
     if (this.file.listDir(this.file.dataDirectory , '')) {
       this.file.listDir(this.file.dataDirectory , '').then((listing) => {
@@ -180,94 +190,65 @@ export class SessionHomePage {
         }
       });
     }
-
+    this.breakTimeout();
   }
 
-  masterCharacterModal() {
+  createDisconnectionTimeout(reason: string, time = 5000){
+    this.currentTimeout=setTimeout(() => {
+      this.makeKickAlert(reason);
+    }, time);
+  }
+
+  breakTimeout(){
+    clearTimeout(this.currentTimeout);
+  }
+
+  createTicket(message:string) {
+    const node = document.createElement('ION-CARD');
+    node.appendChild(document.createTextNode(message));
+    document.getElementById('mainContent').appendChild(node);
+  }
+
+  openAnyModal(component, componentProps = {}, dismiss : Function = () => {}, params = undefined){
     this.modalCtr.create({
-      component: SelectCharacterPage,
+      component: component,
       swipeToClose: true,
-    }).then(modal => modal.present());
-  }
-
-  async openModal(page) {
-    const modal = await this.modalCtr.create({
-      component: (page === 'doc') ? DocPopupPage : CharacterSheetPage,
-      componentProps: {
-         charInd: -1,
-      },
-      // cssClass: 'custom-modal-css',
-      swipeToClose: true,
-      id: 'Character'
-    });
-
-    modal.onWillDismiss().then((dataReturned) => {
-      if (dataReturned !== null && dataReturned.data !== '') {
-        this.image = dataReturned.data;
-        const navigationExtras: NavigationExtras = {
-          state: dataReturned.data
-        };
-      }
-    });
-
-    return modal.present();
-  }
-
-  openDiceRollerModal() {
-    this.modalCtr.create({
-      component: SimulateurPage,
-      swipeToClose: true,
-      componentProps: {
-        isModal: true // Adapt format for in-modal use
-      },
+      componentProps: componentProps
     }).then(modal => {
-      modal.present();
+      modal.onWillDismiss().then((dataReturned) => {
+        dismiss(dataReturned, params);
+      })
+      modal.present()
     });
   }
 
-  openNotesModal() {
-    this.modalCtr.create({
-      component: NotesPage,
-      swipeToClose: true,
-    }).then(modal => {
-      modal.present();
-    });
+  docModalDismiss(dataReturned, params) {
+    if (dataReturned.data) {
+      console.log(dataReturned.data);
+      //this.entry.clear();
+      const factory = params.resolver.resolveComponentFactory(SharedFileComponent);
+      const componentRef = params.entry.createComponent(factory);
+      componentRef.instance.image = dataReturned.data;
+      const navigationExtras: NavigationExtras = {
+        state: dataReturned.data
+      };
+    }
   }
 
-  async openAchivementModal() {
-    const modal = await this.modalCtr.create({
-      component: AchivementPage,
-      componentProps: {
-        charInd: -1,
-      },
-      swipeToClose: true,
-    });
-
-    modal.onWillDismiss().then((dataReturned) => {
-      if (dataReturned !== null && dataReturned.data !== '') {
-        const navigationExtras: NavigationExtras = {
-          state: dataReturned.data
-        };
-      }
-    });
-
-    return await modal.present();
+  achievementModalDismiss(dataReturned){
+    if (dataReturned !== null && dataReturned.data !== '') {
+      const navigationExtras: NavigationExtras = {
+        state: dataReturned.data
+      };
+    }
   }
 
-  openCanvasModal() {
-    this.modalCtr.create({
-      component: CanvasPage,
-      swipeToClose: true,
-      componentProps: {
-        image: this.image,
-      }
-    }).then(modal => {
-      modal.present();
-      modal.onDidDismiss().then((data) => {
-        this.image = data.data;
-      });
-    });
+  characterModalDismiss(dataReturned, params){
+    if (dataReturned !== null && dataReturned.data !== '') {
+      params.character = dataReturned.data;
+    }
   }
+
   makeAnIdAlert(id) {
     this.alerteController.create({
       header: 'Nouvelle partie !',
@@ -293,6 +274,7 @@ export class SessionHomePage {
       message: player,
       buttons: [
         {text: 'approuver', role: 'join', handler: () => {
+            this.createTicket(player + ' a rejoint la salle');
             // Send old players info to new player
             this.playerServ.playersList.forEach( player => {
               conn.send({newPlayer: player.name, peer: player.conn.peer});
@@ -303,8 +285,9 @@ export class SessionHomePage {
             });
             conn.send({roomName: this.roomName, roomDesc: this.description});
             conn.send({template: this.characterService.getTemplate()});
+            conn.send({customSheet: this.characterService.getCustomSheet()})
             // Add new player to peronnal player list
-            this.playerServ.playersList.push({name: player, conn});
+            this.playerServ.playersList.push(new Player(conn, player));
         }},
         {text: 'refuser', role: 'kick', handler: () => {
         conn.send({kick: 'accès refusé'});
@@ -315,7 +298,6 @@ export class SessionHomePage {
   }
 
   makeKickAlert(reason) {
-    this.loader.dismiss();
     this.alerteController.create({
       header: 'Vous avez été viré de la partie',
       message: 'Raison : ' + reason,
@@ -333,51 +315,32 @@ export class SessionHomePage {
     this.loader = await this.loadingController.create({
       message: 'En attente de la réponse de l\'hote'
     });
-    return this.loader.present();
   }
 
-  openCrowdsouricngModal() {
-    this.modalCtr.create({
-      component: CrowdsourcingPage,
-      componentProps: {
-        modal: true
-      }
-    }).then(modal => {
-      modal.present();
-    });
-  }
-
-  // tslint:disable-next-line:no-unnecessary-initializer
   treatData(data, conn = undefined) {
+    console.log("recieved data:",data,"from",conn)
     // Treat given data
     if (data.roomName) {
       this.roomName = data.roomName;
-      if (this.loader) {
-        this.loader.dismiss();
-      }
-      this.playerServ.playersList.push({name: 'Host', conn});
+      this.playerServ.playersList.push(new Player(conn));
     }
     if (data.roomDesc) {
       this.description = data.roomDesc;
     }
     if (data.newPlayer) {
-
-      const node = document.createElement('ION-CARD');
-      node.appendChild(document.createTextNode(data.newPlayer + ' a rejoint la salle'));
-      document.getElementById('mainContent').appendChild(node);
-
       if (this.playerServ.isHost) {
         this.makeApprovalAlert(data.newPlayer, conn);
       } else {
-        const con = this.peer.connect(data.peer, {serialization: 'json'});
-        con.on('open', () => {
+        const con = this.peerService.newConnection(data.peer);
+        this.peerService.openConnection(con, (params) => {
           // informe player name
-          this.playerServ.playersList.push({name: data.newPlayer, conn: con});
-          console.log('Openned connection with ', data.newPlayer);
-        });
-        con.on('data', (data) => {
-          this.treatData(data, con);
-        });
+          this.playerServ.playersList.push(new Player(con, params.newPlayer));
+          console.log('Openned connection with ', params.newPlayer);
+          this.createTicket(params.newPlayer + ' a rejoint la salle');
+        }, data);
+        this.peerService.addConnectionAction(conn, (data, conn, params)=>{
+          params.treatData(data,conn,params);
+        }, this);
       }
     }
     if (data.kick) {
@@ -397,20 +360,6 @@ export class SessionHomePage {
         duration: 3000,
         message: p.name + ' a partagé un nouveau document :\n' + data.imgEnd[0],
       }).then(toast => {toast.present(); });
-    }
-    if (data.removed) {
-      const node = document.createElement('ION-CARD');
-      node.appendChild(document.createTextNode(data.removed + ' a quitté la salle'));
-      document.getElementById('mainContent').appendChild(node);
-      // Notify players
-      this.toastController.create({
-        duration: 2000,
-        message: data.removed + ' a quité la partie',
-      }).then(toast => {toast.present(); });
-
-      const player = this.playerServ.getPlayerByName(data.removed);
-      const id = this.playerServ.playersList.indexOf(player)
-      this.playerServ.playersList.splice(id, 1);
     }
     if (data.message) {
       let p: Player;
@@ -445,13 +394,19 @@ export class SessionHomePage {
     if (data.template) {
       this.characterService.setTemplate(data.template);
     }
+    if (data.customSheet) {
+      this.characterService.setCustomSheet(data.customSheet)
+    }
+    if (data.sheet) {
+      //if (this.isHost)
+        this.playerServ.getPlayerById(conn.peer).character=data.sheet;
+      //else
+        this.playerServ.myPlayer.character=data.sheet
+    }
   }
 
   navigateToChar() {
     this.router.navigate(['character-sheet']);
-  }
-  closeImage() {
-    this.image = null;
   }
 
 }

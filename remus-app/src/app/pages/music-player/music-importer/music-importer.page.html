@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>music-importer</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let track of phoneTracks">
+      <ion-button *ngIf="track !== currentTrack" (click)="play(track)" fill="clear" shape="round">
+        <ion-icon slot="start" name="play"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="track === currentTrack" (click)="stop()" fill="clear" shape="round">
+        <ion-icon slot="start" name="stop"></ion-icon>
+      </ion-button>
+      <ion-label>{{track.name}}</ion-label>
+      <ion-button *ngIf="!isSelected(track)" (click)="select(track)" fill="clear" shape="round">
+        <ion-icon slot="end" name="add-circle"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="isSelected(track)" (click)="unselect(track)" fill="clear" shape="round">
+        <ion-icon slot="end" name="remove-circle"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="import()">
+      <ion-icon name="download"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

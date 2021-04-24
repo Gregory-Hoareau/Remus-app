@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ModalController, NavParams  } from '@ionic/angular';
 import { CharacterService } from 'src/app/providers/character/character.service';
-import { all_templates } from '../../models/character-sheet.model';
+import { all_templates, CustomCharacterSheet } from '../../models/character-sheet.model';
 
 @Component({
   selector: 'app-host-form',
@@ -36,7 +36,11 @@ export class HostFormPage implements OnInit {
 
   async closeModal(onClosedData: any) {
     console.table(onClosedData);
-    this.characterService.setTemplate(onClosedData.template);
+    const template = onClosedData.template;
+    this.characterService.setTemplate(template);
+    if (template === 'Custom') {
+      onClosedData['sheet'] = new CustomCharacterSheet(undefined);
+    }
     await this.modalController.dismiss(onClosedData);
   }
 

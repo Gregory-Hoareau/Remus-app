@@ -1,0 +1,70 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="end" (click)="closeModal()">
+      <ion-icon class="ion-margin" name="close-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>custom-sheet</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <mat-accordion multi="true">
+    <mat-expansion-panel class="section">
+      <mat-expansion-panel-header class="section-title">
+        Identité
+      </mat-expansion-panel-header>
+
+      <div class="mes">
+        Par défaut, la fiche contient les champs suivant : nom, sexe, âge et background
+      </div>
+
+      <ion-button (click)="addPersonalData()" shape="round">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+
+      <ion-list class="personal">
+        <ion-item *ngFor="let data of sheet.other_personal">
+          <ion-label>{{data.name}}</ion-label>
+        </ion-item>
+      </ion-list>
+        
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="section">
+      <mat-expansion-panel-header class="section-title">
+        Caractéristiques
+      </mat-expansion-panel-header>
+
+      <ion-button (click)="addTrait()" shape="round">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+
+      <ion-list class="trait">
+        <ion-item *ngFor="let trait of sheet.traits">
+          <ion-label>{{trait.name}}</ion-label>
+        </ion-item>
+      </ion-list>
+
+
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <ion-button color="medium" (click)="addTags()">
+    <ion-icon name="add"></ion-icon>
+     tag
+  </ion-button>
+
+  <div class="tags">
+    <ion-chip *ngFor="let tag of selectedTags" color="dark" mode="ios">
+      <ion-icon name="close" (click)="removeTag(tag)"></ion-icon>
+      <ion-label>{{tag}}</ion-label>
+    </ion-chip>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="medium" (click)="finishCustomisationAlert()">
+      <ion-icon name="save"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+</ion-content>
