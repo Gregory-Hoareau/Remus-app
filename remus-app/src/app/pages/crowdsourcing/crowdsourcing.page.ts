@@ -38,7 +38,8 @@ export class CrowdsourcingPage implements OnInit {
       componentProps: {
         display: true,
         character: this.characters[index],
-        import: this.importing
+        importing: true,
+        read_only: true,
       }
     }).then(modal => {
       modal.present()

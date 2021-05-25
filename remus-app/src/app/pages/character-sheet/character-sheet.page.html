@@ -60,7 +60,7 @@
         <div class="private-info">
           <ion-item>
             <ion-label position="floating" class="editIcon"> {{character.background.name}} </ion-label>
-            <ion-input class="editIcon" maxLength="36" type="text" [(ngModel)]="character.background.value" (ionFocus)="setTemp(character.background)" (ionChange)="editValue(character.background, $event)" (ionBlur)="forceTemp(character.background)"> </ion-input>
+            <ion-input class="editIcon" maxLength="250" type="text" [(ngModel)]="character.background.value" (ionFocus)="setTemp(character.background)" (ionChange)="editValue(character.background, $event)" (ionBlur)="forceTemp(character.background)"> </ion-input>
             <ion-icon position="relative" *ngIf="!read_only" slot="end" name="create-outline" class="editIcon"></ion-icon>
           </ion-item>
         </div>

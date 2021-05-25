@@ -44,7 +44,7 @@ export class SessionChatPage implements OnInit {
     console.log("sending ", message, "to player ", this.target)
     this.target.conn.send({message:message});
     if(!this.playerServ.isHost)
-      this.playerServ.getPlayerByName("Host").conn.send({message:message,target:this.target.name})
+      this.playerServ.getPlayerByName("host").conn.send({message:message,target:this.target.name})
     this.playerServ.getConv(this.target).addMessage(new Message(new Date(),this.playerServ.me(),message, this.target));
     setTimeout(() => {  this.content.scrollToBottom(100) }, 100);
     this.getFilteredConv();

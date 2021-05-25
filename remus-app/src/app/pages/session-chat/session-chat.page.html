@@ -21,8 +21,8 @@
 
 <ion-content scroll-y="true" class="ion-padding">
   <div *ngFor="let message of getFilteredConv()" class="message-content">
-    <app-message class="me" *ngIf="message.player == playerServ.me()" [m]='message' [show]='message.target!=getFilteredConv().getPreviousMessage(message).target || message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
-    <app-message class="others" *ngIf="message.player != playerServ.me()" [m]='message' [show]='message.target!=getFilteredConv().getPreviousMessage(message).target || message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
+    <app-message class="me" *ngIf="message.player == player" [m]='message' [show]='message.target!=getFilteredConv().getPreviousMessage(message).target || message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
+    <app-message class="others" *ngIf="message.player == target" [m]='message' [show]='message.target!=getFilteredConv().getPreviousMessage(message).target || message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
   </div>
 </ion-content>
 
