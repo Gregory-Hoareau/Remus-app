@@ -1,5 +1,5 @@
 <ion-header translucent="true">
-  <ion-toolbar>
+  <ion-toolbar color="header">
     <ion-buttons slot="end" (click)="closeModal()">
       <ion-icon class="ion-margin" name="close-outline"></ion-icon>
     </ion-buttons>
@@ -26,7 +26,7 @@
                           (click)="checkMaster($event)"></ion-checkbox>
             </ion-item>
             <ion-list *ngIf="this.playersServ.playersList.length != 0">
-                <ion-item  class="playerList"  *ngFor="let player of this.connectedPlayers">
+                <ion-item class="playerList" *ngFor="let player of this.connectedPlayers">
                     <ion-checkbox slot="start" [(ngModel)]="player.isChecked" (ionChange)="checkEvent()"></ion-checkbox>
                     <ion-label class="playerName">{{player.val.name}}</ion-label>
                 </ion-item>
@@ -35,8 +35,8 @@
 </ion-content>
 
 <ion-footer>
-    <ion-button  color= "medium" (click)="validModal()"> Valider</ion-button>
-    <ion-button  color= "medium" (click)="closeModal()"> Annuler </ion-button>
+    <ion-button color="btn-purple" (click)="validModal()"> Valider</ion-button>
+    <ion-button color="btn-purple" (click)="closeModal()"> Annuler </ion-button>
 </ion-footer>
 
 

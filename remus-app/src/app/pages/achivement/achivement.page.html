@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-    <ion-toolbar class="new-background-color">
+    <ion-toolbar color="header">
     <ion-title style="font-family: 'Playfair display',serif" class="ion-text-center"  size="large">
       Succès
     </ion-title>
@@ -9,7 +9,7 @@
 
 <ion-content [fullscreen]="true">
 
-    <div class="bar"  >
+    <div class="bar">
         <ion-progress-bar class="percentage has-tip " [value]="this.achivementService.avancee">
         </ion-progress-bar>
     </div>
@@ -49,7 +49,7 @@
 
 
   <ion-fab *ngIf="playersService.isHost" vertical="bottom" horizontal="begin" slot="fixed">
-    <ion-fab-button  *ngIf="achivementService.partage" (click)="desactivatePartage()">
+    <ion-fab-button color="btn-purple" *ngIf="achivementService.partage" (click)="desactivatePartage()">
         <ion-img class="customImg" src="/assets/eye-regular.svg"></ion-img>
         </ion-fab-button>
      <ion-fab-button *ngIf="!achivementService.partage" color="white" (click)="activatePartage()">
@@ -58,7 +58,7 @@
   </ion-fab>
 
     <ion-fab *ngIf="playersService.isHost" vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button (click)="newAchivement()">
+        <ion-fab-button color="btn-purple" (click)="newAchivement()">
             <ion-icon name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>

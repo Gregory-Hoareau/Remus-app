@@ -1,5 +1,5 @@
 <ion-header translucent="true">
-  <ion-toolbar class="new-background-color">
+  <ion-toolbar color="header">
     <ion-buttons slot="end" (click)="closeModal()">
       <ion-icon class="ion-margin" name="close-outline"></ion-icon>
     </ion-buttons>
@@ -9,15 +9,15 @@
 
 <ion-content>
     <ion-list>
-        <ion-item id="buttons" *ngFor="let item of items"  button (click)="itemSelected(item)">
+        <ion-item id="buttons" *ngFor="let item of items" button (click)="itemSelected(item)">
             <h3>{{item}}</h3>
         </ion-item>
     </ion-list>
 </ion-content>
 
 <ion-footer>
-    <ion-button  color= "medium" (click)="shareDoc()"> Partager</ion-button>
-    <ion-button  color= "medium" (click)="closeModal()"> Annuler </ion-button>
+    <ion-button color="btn-purple" (click)="shareDoc()">Partager</ion-button>
+    <ion-button color="btn-purple" (click)="closeModal()">Annuler</ion-button>
 </ion-footer>
 
 

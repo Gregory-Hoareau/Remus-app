@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar class="new-background-color">
+  <ion-toolbar color="header">
     <ion-buttons *ngIf="!isModal" slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
@@ -26,7 +26,7 @@
       <ion-select-option *ngFor="let tag of availableTags" value="{{tag}}">{{tag}}</ion-select-option>
     </ion-select>
 
-    <ion-button class="reset" (click)="resetFilter()" shape="round">
+    <ion-button color="btn-purple" class="reset" (click)="resetFilter()" shape="round">
       <ion-icon name="refresh"></ion-icon>
     </ion-button>
   </div>

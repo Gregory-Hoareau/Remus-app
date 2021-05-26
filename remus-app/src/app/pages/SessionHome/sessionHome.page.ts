@@ -205,6 +205,7 @@ export class SessionHomePage {
 
   createTicket(message:string) {
     const node = document.createElement('ION-CARD');
+    node.setAttribute('color', 'old-paper')
     node.appendChild(document.createTextNode(message));
     document.getElementById('mainContent').appendChild(node);
   }

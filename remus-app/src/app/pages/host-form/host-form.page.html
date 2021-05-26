@@ -1,5 +1,5 @@
 <ion-header translucent="true">
-  <ion-toolbar style="font-family: 'Playfair display',serif" class="new-background-color">
+  <ion-toolbar style="font-family: 'Playfair display',serif" color="header">
     <ion-title>Héberger votre partie</ion-title>
     <ion-buttons slot="end" (click)="this.modalController.dismiss(undefined, 'cancel')"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
   </ion-toolbar>
@@ -23,7 +23,7 @@
         </ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-button (click)="closeModal(myForm.getRawValue())" type="button" block expand="block" color="medium" [disabled]="myForm.invalid">
+    <ion-button (click)="closeModal(myForm.getRawValue())" type="button" block expand="block" color="btn-purple" [disabled]="myForm.invalid">
       Héberger
     </ion-button>
   </form>
