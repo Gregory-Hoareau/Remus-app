@@ -58,8 +58,6 @@ export class HomePage {
 
     modal.onWillDismiss().then(async (dataReturned) => {
       console.table(dataReturned);
-      console.log("HERE")
-      console.log(dataReturned)
       if (dataReturned.data.template === 'Custom') {
         this.dataReturned = dataReturned;
         const customisation = await this.modalCtr.create({

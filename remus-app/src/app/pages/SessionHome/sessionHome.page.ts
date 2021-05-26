@@ -132,7 +132,7 @@ export class SessionHomePage {
 
       } else {
         // Initialise hosting
-        this.pseudo = 'Host';
+        this.pseudo = 'host';
         this.roomid = this.peerService.myId();
         this.playerServ.isHost = true;
 
@@ -276,6 +276,9 @@ export class SessionHomePage {
       buttons: [
         {text: 'approuver', role: 'join', handler: () => {
             this.createTicket(player + ' a rejoint la salle');
+            conn.send({roomName: this.roomName, roomDesc: this.description});
+            conn.send({template: this.characterService.getTemplate()});
+            conn.send({customSheet: this.characterService.getCustomSheet()})
             // Send old players info to new player
             this.playerServ.playersList.forEach( player => {
               conn.send({newPlayer: player.name, peer: player.conn.peer});
@@ -284,9 +287,6 @@ export class SessionHomePage {
             this.playerServ.getConns().forEach( con => {
               con.send({newPlayer: player, peer: conn.peer});
             });
-            conn.send({roomName: this.roomName, roomDesc: this.description});
-            conn.send({template: this.characterService.getTemplate()});
-            conn.send({customSheet: this.characterService.getCustomSheet()})
             // Add new player to peronnal player list
             this.playerServ.playersList.push(new Player(conn, player));
         }},
@@ -319,7 +319,7 @@ export class SessionHomePage {
   }
 
   treatData(data, conn = undefined) {
-    console.log("recieved data:",data,"from",conn)
+    console.log("recieved data:",data,"from",conn.peer)
     // Treat given data
     if (data.roomName) {
       this.roomName = data.roomName;
