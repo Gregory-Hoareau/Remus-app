@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar class="new-background-color">
+  <ion-toolbar color="header">
     <ion-buttons slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')">
       <ion-icon class="ion-margin" name="close-outline"></ion-icon>
     </ion-buttons>
@@ -31,18 +31,18 @@
     </ion-item-sliding>
   </ion-list>
 
-  <ion-button color="medium" (click)="importCharacter()">
+  <ion-button color="btn-purple" (click)="importCharacter()">
     <fa-icon class="icon" [icon]="importIcon"></fa-icon>
     Importer depuis le téléphone
   </ion-button>
   
-  <ion-button color="medium" (click)="importCharacterFromServer()">
+  <ion-button color="btn-purple" (click)="importCharacterFromServer()">
     <fa-icon class="icon" [icon]="importIcon"></fa-icon>
     Importer depuis le serveur
   </ion-button>
   
   <ion-fab vertical="top" horizontal="end" slot="fixed">
-    <ion-fab-button color="medium" (click)="characterModal()">
+    <ion-fab-button color="btn-purple" (click)="characterModal()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

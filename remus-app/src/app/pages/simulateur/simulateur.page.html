@@ -1,6 +1,6 @@
 
 <ion-header  >
-  <ion-toolbar class="new-background-color" >
+  <ion-toolbar color="header">
     <ion-buttons *ngIf='!isModal' slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -20,7 +20,7 @@
           <div *ngIf="!normalDices" class="dices">
               <ion-img *ngFor="let dice of this.diceService.specialGame.get(specialDiceSet)" (click)="increaseDiceSum(dice)" class="small pastèque" src="{{dice.faces[2]}}"></ion-img>
           </div>
-          <ion-button color="medium" (click)="specialDicesAlert()">Changer le set de dés</ion-button>
+          <ion-button color="btn-purple" (click)="specialDicesAlert()">Changer le set de dés</ion-button>
           <div class="control">
               <ion-card-content class="selectDices" >{{listOfDiceAsString}}</ion-card-content>
             
@@ -29,12 +29,12 @@
               <input type="number" id="modif" value="" name="fname" [(ngModel)]="modificateur">
             </form>
               <div class="buttons">
-                  <ion-button  class="launch" color="medium" *ngIf="listOfDiceAsString !== ''" (click)="launchDice()">Lancer</ion-button>
+                  <ion-button  class="launch" color="btn-purple" *ngIf="listOfDiceAsString !== ''" (click)="launchDice()">Lancer</ion-button>
                   <div>
-                      <ion-button shape="round" color= "medium" *ngIf="listOfDiceAsString !== ''" class="dice" (click)="newMacroAlert()">
+                      <ion-button shape="round" color="btn-purple" *ngIf="listOfDiceAsString !== ''" class="dice" (click)="newMacroAlert()">
                           <ion-icon name="save-outline"></ion-icon>
                       </ion-button>
-                      <ion-button shape="round" color="medium" *ngIf="listOfDiceAsString !== ''" class="refresh" (click)="resetDices()">
+                      <ion-button shape="round" color="btn-purple" *ngIf="listOfDiceAsString !== ''" class="refresh" (click)="resetDices()">
                           <ion-icon  name="refresh-outline" ></ion-icon>
                       </ion-button>
                   </div>
@@ -67,8 +67,8 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar class="new-background-color">
-    <ion-segment  [(ngModel)]="segment" (ionChange)="segmentChanged($event)"  color="warning">
+  <ion-toolbar color="header">
+    <ion-segment  [(ngModel)]="segment" (ionChange)="segmentChanged($event)"  color="over-header">
       <ion-segment-button value="0">
         <ion-label>Dés</ion-label>
       </ion-segment-button>

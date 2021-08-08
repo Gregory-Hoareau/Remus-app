@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar class="new-background-color">
+  <ion-toolbar color="header">
     <ion-buttons slot="end" (click)="closeModal()">
       <ion-icon class="ion-margin" name="close-outline"></ion-icon>
     </ion-buttons>
@@ -60,7 +60,7 @@
         <div class="private-info">
           <ion-item>
             <ion-label position="floating" class="editIcon"> {{character.background.name}} </ion-label>
-            <ion-input class="editIcon" maxLength="36" type="text" [(ngModel)]="character.background.value" (ionFocus)="setTemp(character.background)" (ionChange)="editValue(character.background, $event)" (ionBlur)="forceTemp(character.background)"> </ion-input>
+            <ion-input class="editIcon" maxLength="250" type="text" [(ngModel)]="character.background.value" (ionFocus)="setTemp(character.background)" (ionChange)="editValue(character.background, $event)" (ionBlur)="forceTemp(character.background)"> </ion-input>
             <ion-icon position="relative" *ngIf="!read_only" slot="end" name="create-outline" class="editIcon"></ion-icon>
           </ion-item>
         </div>
@@ -90,7 +90,7 @@
       </mat-expansion-panel-header>
 
       <div class="skills">
-        <ion-button color="medium" *ngIf="!read_only" (click)="addNewSkillAlert()" shape="round">+</ion-button>
+        <ion-button color="btn-purple" *ngIf="!read_only" (click)="addNewSkillAlert()" shape="round">+</ion-button>
         <ion-list>
           <ion-item-sliding *ngFor="let skill of character.skills; let i = index">
             <ion-item>
@@ -108,29 +108,29 @@
 
 
   <div class="buttons" *ngIf="!read_only">
-    <ion-button color="medium" (click)="shareCharacter()">
+    <ion-button color="btn-purple" (click)="shareCharacter()">
       <ion-icon class="icon" name="cloud-upload"></ion-icon>
       Uploader le personnage
     </ion-button>
-    <ion-button color="medium" (click)="importCharacterForPlayer()">
+    <ion-button color="btn-purple" (click)="importCharacterForPlayer()">
       <fa-icon class="icon" [icon]="importIcon"></fa-icon>
       Importer depuis le téléphone
     </ion-button>
-    <ion-button color="medium" (click)="importCharacterFromServerForPlayer()">
+    <ion-button color="btn-purple" (click)="importCharacterFromServerForPlayer()">
       <fa-icon class="icon" [icon]="importIcon"></fa-icon>
       Importer depuis le serveurs
     </ion-button>
   </div>
 
   <div class="buttons" *ngIf="read_only && !importing">
-    <ion-button color="medium" (click)="downloadCharacter()">
+    <ion-button color="btn-purple" (click)="downloadCharacter()">
       <ion-icon name="cloud-download"></ion-icon>
       Télécharger le personnage
     </ion-button>
   </div>
 
   <div class="buttons" *ngIf="importing">
-    <ion-button color="medium" (click)="importCharacter()">
+    <ion-button color="btn-purple" (click)="importCharacter()">
       <fa-icon class="icon" [icon]="importIcon"></fa-icon>
       Importer
     </ion-button>

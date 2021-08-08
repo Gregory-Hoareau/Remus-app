@@ -63,6 +63,7 @@ export class Peer2peerService {
 
   newConnection(id, options= {serialization: 'json'}): DataConnection {
     console.log("trying to connect to ", id);
+    if(this.peer.connections[id]) return 
     return this.peer.connect(id, options);
   }
 

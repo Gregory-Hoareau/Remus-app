@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar class="new-background-color">
+  <ion-toolbar color="header">
     <ion-title>{{player.name}}</ion-title>
    <!-- <ion-item *ngIf="playerServ.isHost">
       <ion-select interface="popover" placeholder="All Players"  (ionChange)="changePlayer($event)" [value]="player">
@@ -21,8 +21,8 @@
 
 <ion-content scroll-y="true" class="ion-padding">
   <div *ngFor="let message of getFilteredConv()" class="message-content">
-    <app-message class="me" *ngIf="message.player == playerServ.me()" [m]='message' [show]='message.target!=getFilteredConv().getPreviousMessage(message).target || message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
-    <app-message class="others" *ngIf="message.player != playerServ.me()" [m]='message' [show]='message.target!=getFilteredConv().getPreviousMessage(message).target || message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
+    <app-message class="me" *ngIf="message.player == player" [m]='message' [show]='message.target!=getFilteredConv().getPreviousMessage(message).target || message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
+    <app-message class="others" *ngIf="message.player == target" [m]='message' [show]='message.target!=getFilteredConv().getPreviousMessage(message).target || message.player!=getFilteredConv().getPreviousMessage(message).player'></app-message>
   </div>
 </ion-content>
 
@@ -30,7 +30,7 @@
   <form [formGroup]="myForm" (ngSubmit)="send()">
     <ion-item>
       <ion-textarea required formControlName="message" placeholder="Envoyer un message à {{target.name}}"></ion-textarea>
-      <ion-button block shape="round" size="medium" color="medium" type="submit" [disabled]="myForm.invalid">
+      <ion-button block shape="round" size="medium" color="btn-purple" type="submit" [disabled]="myForm.invalid">
         <ion-icon name="paper-plane-outline"></ion-icon>
       </ion-button>
     </ion-item>

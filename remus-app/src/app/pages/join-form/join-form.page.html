@@ -1,7 +1,9 @@
 <ion-header translucent="true">
-  <ion-toolbar class="new-background-color" >
+  <ion-toolbar color="header">
     <ion-title style="font-family: ' Playfair display',serif">Rejoindre une partie</ion-title>
-    <ion-buttons slot="end" (click)="this.modalController.dismiss(undefined, 'cancel')"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
+    <ion-buttons color="btn-purple" slot="end" (click)="this.modalController.dismiss(undefined, 'cancel')">
+      <ion-icon class="ion-margin" name="close-outline"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -15,7 +17,7 @@
       <ion-label position="floating">Pseudo <ion-text color="danger">*</ion-text></ion-label>
       <ion-input required formControlName="pseudo" maxLength="36" type="text"></ion-input>
     </ion-item>
-    <ion-button (click)="closeModal(myForm.getRawValue())" type="button" block expand="block" color="medium" [disabled]="myForm.invalid">
+    <ion-button (click)="closeModal(myForm.getRawValue())" type="button" block expand="block" color="btn-purple" [disabled]="myForm.invalid">
       Rejoindre
     </ion-button>
   </form>

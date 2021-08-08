@@ -35,7 +35,6 @@ export class HostFormPage implements OnInit {
 
 
   async closeModal(onClosedData: any) {
-    console.table(onClosedData);
     const template = onClosedData.template;
     this.characterService.setTemplate(template);
     if (template === 'Custom') {

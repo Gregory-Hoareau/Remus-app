@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="header">
     <ion-buttons slot="end" (click)="closeModal()">
       <ion-icon class="ion-margin" name="close-outline"></ion-icon>
     </ion-buttons>
@@ -18,7 +18,7 @@
         Par défaut, la fiche contient les champs suivant : nom, sexe, âge et background
       </div>
 
-      <ion-button (click)="addPersonalData()" shape="round">
+      <ion-button color="btn-purple" (click)="addPersonalData()" shape="round">
         <ion-icon name="add"></ion-icon>
       </ion-button>
 
@@ -35,7 +35,7 @@
         Caractéristiques
       </mat-expansion-panel-header>
 
-      <ion-button (click)="addTrait()" shape="round">
+      <ion-button color="btn-purple" (click)="addTrait()" shape="round">
         <ion-icon name="add"></ion-icon>
       </ion-button>
 
@@ -49,7 +49,7 @@
     </mat-expansion-panel>
   </mat-accordion>
 
-  <ion-button color="medium" (click)="addTags()">
+  <ion-button color="btn-purple" (click)="addTags()">
     <ion-icon name="add"></ion-icon>
      tag
   </ion-button>
@@ -62,7 +62,7 @@
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="medium" (click)="finishCustomisationAlert()">
+    <ion-fab-button color="btn-purple" (click)="finishCustomisationAlert()">
       <ion-icon name="save"></ion-icon>
     </ion-fab-button>
   </ion-fab>

@@ -70,7 +70,6 @@ import { Media } from '@ionic-native/media/ngx';
     Media,
     Platform
   ],
-
   bootstrap: [AppComponent]
 })
 export class AppModule {}

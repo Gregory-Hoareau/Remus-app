@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="header">
     <ion-title>Invitation</ion-title>
     <ion-buttons slot="end" (click)="closeModal()"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
   </ion-toolbar>
@@ -10,7 +10,7 @@
   <ion-list>
     <ion-list-header>
       <ion-label class="list-header">Destinataires</ion-label>
-      <ion-button (click)="addNumber()">
+      <ion-button color="btn-purple" (click)="addNumber()">
         <ion-icon name="add"></ion-icon>
       </ion-button>
     </ion-list-header>
@@ -36,7 +36,7 @@
   </ion-list>
 
   <ion-fab *ngIf="numbers.length > 0" vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="medium" (click)="sendSms()">
+    <ion-fab-button color="btn-purple" (click)="sendSms()">
       <ion-icon name="send"></ion-icon>
     </ion-fab-button>
   </ion-fab>
