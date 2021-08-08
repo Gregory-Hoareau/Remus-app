@@ -1,6 +1,5 @@
 import {Trait} from './trait.model';
 import { Skill } from './skill.model';
-import { PersonalData } from './personal-data.model';
 
 export const all_templates = {
     'D&D': 'Donjons et Dragons',

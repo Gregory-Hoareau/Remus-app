@@ -32,7 +32,7 @@
   </div>
 
   <ion-list>
-    <ion-item *ngFor="let character of displayedCharacters; let i = index" (click)="displayChar(i)">
+    <ion-item *ngFor="let character of displayedCharacters" (click)="displayChar(character)">
       <ion-label>{{character.name.value}}</ion-label>
     </ion-item>
   </ion-list>
