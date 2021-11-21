@@ -14,8 +14,8 @@
     <ion-slides #slides class="slides" (ionSlideDidChange)="slideChanged()" scrollbar="true">
       <!-- DICE -->
       <ion-slide class="dicesPage">
-          <div *ngIf="normalDices" class="dices">
-            <ion-img class="small" *ngFor="let dice of this.diceService.Normal" (click)="increaseDiceSum(dice)" src="/assets/{{dice.name}}.svg"></ion-img>
+          <div *ngIf="diceService.normalDices" class="dices">
+            <ion-img class="small" *ngFor="let dice of this.diceService.Normal" (click)="diceService.increaseDiceSum(diceService.dice)" src="/assets/{{dice.name}}.svg"></ion-img>
           </div>
           <div *ngIf="!normalDices" class="dices">
               <ion-img *ngFor="let dice of this.diceService.specialGame.get(specialDiceSet)" (click)="increaseDiceSum(dice)" class="small pastèque" src="{{dice.faces[2]}}"></ion-img>
