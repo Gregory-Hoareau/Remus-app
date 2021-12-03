@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Macro } from 'src/app/models/macro.model';
 import {Dice} from '../../models/dice.model';
 import {SpecialDice} from '../../models/special-dice.model';
-import { MathsService } from '../maths/maths.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +15,9 @@ export class DiceService {
 
   normalDices: boolean = true;
   typeOfDiceHasBeenChanged: boolean;
-  diceSum : number;
+  diceSum : any;
   specialDices: SpecialDice[];
-  diceSelected : Map<SpecialDice, number>;
+  diceSelected : Map<Dice, number>;
   specialDiceSet: string;
   separetedValue : string;
   specialFaces: string[];
@@ -28,40 +27,19 @@ export class DiceService {
   modificateur : number;
   modifResult : string;
 
-  constructor(public mathsService: MathsService) {
+  constructor() {
     this.Normal = [];
     this.StarWars = [];
     this.LegendOfTheFiveRings = [];
     this.specialGame = new Map<string, Dice[]>();
     this.Normal.push(
-        {name: 'd4', value: 4},
-        {name: 'd6', value: 6},
-        {name: 'd8', value: 8},
-        {name: 'd10', value: 10},
-        {name: 'd12', value: 12},
-        {name: 'd20', value: 20},
-        {name: 'd100', value: 100});
-
-    this.StarWars.push(
-        {name: ' Fortune', value: 6, faces: this.fillTheTab(6, 'starWars/fortune')},
-        {name: ' Aptitude', value: 8, faces: this.fillTheTab(8, 'starWars/aptitude')},
-        {name: ' Maîtrise', value: 12, faces: this.fillTheTab(12, 'starWars/maitrise')},
-        {name: ' Infortune', value: 6, faces: this.fillTheTab(6, 'starWars/infortune')},
-        {name: ' Difficulté', value: 8, faces: this.fillTheTab(8, 'starWars/difficulte')},
-        {name: ' Défi', value: 12, faces: this.fillTheTab(12, 'starWars/defi')},
-        {name: ' Force', value: 12, faces: this.fillTheTab(12, 'starWars/force')}
-
-    );
-
-    this.LegendOfTheFiveRings.push(
-        {name: ' Noir', value: 6, faces: this.fillTheTab(6, 'L5RDice/noir')},
-        {name: ' Blanc', value: 12, faces: this.fillTheTab(12, 'L5RDice/blanc')}
-    )
-
-    this.specialGame.set('Normal', this.Normal);
-    this.specialGame.set('Star Wars', this.StarWars);
-    this.specialGame.set('Legend Of The Five Rings', this.LegendOfTheFiveRings);
-
+      new Dice('d4',4),
+      new Dice('d6',6),
+      new Dice('d8',8),
+      new Dice('d10',10),
+      new Dice('d12',12),
+      new Dice('d20',20),
+      new Dice('d100',100))
   }
 
   fillTheTab(value, path) {
@@ -83,9 +61,9 @@ export class DiceService {
     this.diceSelected = macro.dices;
     for (const dice of this.diceSelected.keys()) {
       for (let itter = 0 ; itter < this.diceSelected.get(dice) ; itter++ ) {
-        this.dices.push(dice.value);
+        this.dices.push(dice.numberOfFaces);
         this.specialDices.push(dice);
-        this.totalDiceSum += dice.value;
+        this.totalDiceSum += dice.numberOfFaces;
       }
     }
     this.launchDice();
@@ -119,9 +97,9 @@ export class DiceService {
       this.specialDices = [];
       this.specialFaces = [];
     }
-      this.dices.push(dice.value);
+      this.dices.push(dice.numberOfFaces);
       this.specialDices.push(dice);
-      this.totalDiceSum = this.totalDiceSum + dice.value;
+      this.totalDiceSum = this.totalDiceSum + dice.numberOfFaces;
     const temp = this.diceSelected.get(dice)
     console.log(temp)
     if (!this.diceSelected.has(dice)) {
@@ -146,28 +124,31 @@ export class DiceService {
   }
 
     //TODO : Move to dice provider
-    launchDice(){
-      if (this.normalDices) {
-        for (let dice of this.dices) {
-          let res = this.mathsService.getRandomInt(dice);
-          this.diceSum = this.diceSum + res;
-          if (this.separetedValue === '') {
-            this.separetedValue = res.toString();
-          } else {
-            this.separetedValue = this.separetedValue + ' - ' + res.toString();
-          }
-        }
-        if (this.modificateur !== 0) {
-          this.modifying = true;
-        }
-        if (this.modificateur > 0){
-          this.modifResult = this.diceSum.toString() + ' + ' + this.modificateur.toString();
-        }else if (this.modificateur < 0){
-          this.modifResult = this.diceSum.toString() + this.modificateur.toString();
-        } else {
-          this.modifResult = this.diceSum.toString();
-        }
-      } // Break seperation with inheritence 
-    }
+  launchDice(): any[]{
+    var seperatedValues = []
+    this.diceSelected.forEach((value, dice, _) => {
+      for (let i = 0; i < value; i++) {
+        seperatedValues.push(dice.getRandomface())  
+      }
+    })
+    return seperatedValues;
+  }
+
+  AddSelectedDice(dice:Dice){
+    var value = this.diceSelected.get(dice)
+    console.log(value);
+    if (value)
+      this.diceSelected.set(dice, value+1)
+    else
+      this.diceSelected.set(dice, 1)
+  }
+
+  StringifySelectedDice(){
+    var stringifiedDice = ""
+    this.diceSelected.forEach((value, dice, _ )=> 
+      stringifiedDice += value + dice.name + " "
+    );
+    return stringifiedDice;
+  }
 
 }

@@ -9,7 +9,6 @@ import {Shake} from "@ionic-native/shake/ngx";
 import {SpecialDice} from "../../models/special-dice.model";
 import { MusicService } from 'src/app/providers/music/music.service';
 import { SOUNDS } from 'src/mocks/Track';
-import { MathsService } from 'src/app/providers/maths/maths.service';
 
 
 
@@ -38,6 +37,7 @@ export class SimulateurPage implements OnInit {
   finalValue: string;
 
   // View var
+  modifier: number;
   gyroscope : boolean;
   result : number;
   launched : boolean;
@@ -67,7 +67,7 @@ export class SimulateurPage implements OnInit {
 
 
   constructor(public shakeDetector: Shake, public alertController: AlertController, public diceService: DiceService,
-    public diceHistoryService: DiceHistoryService, private alertCtrl: AlertController, public mathsService: MathsService,
+    public diceHistoryService: DiceHistoryService, private alertCtrl: AlertController,
     public macroService: MacroService, private musicService: MusicService)  { }
 
   ngOnInit() {
@@ -138,18 +138,21 @@ export class SimulateurPage implements OnInit {
   }
 
 
-  async presentAlertConfirm(data) {
-    let title;
-    if (this.diceService.modificateur > 0) {
-      title = this.listOfDiceAsString + ' + ' + this.diceService.modificateur;
-    } else if (this.diceService.modificateur < 0) {
-      title = this.listOfDiceAsString + this.diceService.modificateur;
-    } else {
-      title = this.listOfDiceAsString + '';
-    }
+  async presentAlertConfirm(diceRoll: any[]) {
+    var seperatedValues = "";
+    var sum:any = 0;
+    diceRoll.forEach(val =>{
+      sum += val
+      seperatedValues += val + "; "
+    })
+    if(this.modifier)
+      seperatedValues += this.modifier > 0 ? `+ ${this.modifier}` : `- ${this.modifier}`
+
+    sum = sum.toString()
+
     const alert = await this.alertController.create({
-      header: title,
-      message: data,
+      header: sum,
+      message: seperatedValues,
       cssClass: 'dice_result',
       buttons: [
         {
@@ -250,6 +253,11 @@ export class SimulateurPage implements OnInit {
     //this.modificateur = parseInt((document.getElementById("modif") as HTMLInputElement).value, 10);
   }
 
+  addDiceToSelection(dice:Dice){
+    this.diceService.AddSelectedDice(dice);
+    this.listOfDiceAsString = this.diceService.StringifySelectedDice();
+    console.log(this.listOfDiceAsString);
+  }
 
 
 
@@ -264,17 +272,7 @@ export class SimulateurPage implements OnInit {
     //TODO : Move to dice provider
   launchDice(){
     this.musicService.launchSound(SOUNDS[0]);
-    console.log(this.diceAlert);
-    if(this.diceAlert)
-      this.diceAlert.then(alert => alert.dismiss());
-    if (this.launched) {
-      this.launched = false;
-      this.diceService.diceSum = 0;
-      this.diceService.separetedValue = "";
-      this.diceService.modifResult = "";
-      this.diceService.modifying = false;
-      this.diceService.specialFaces =  [];
-    }
+    this.presentAlertConfirm(this.diceService.launchDice());
   }
 
 
