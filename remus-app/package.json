@@ -43,7 +43,7 @@
     "@ionic-native/media": "^5.27.0",
     "@ionic-native/music-controls": "^5.27.0",
     "@ionic-native/native-audio": "^5.27.0",
-    "@ionic-native/screen-orientation": "^5.26.0",
+    "@ionic-native/screen-orientation": "^5.36.0",
     "@ionic-native/shake": "^5.26.0",
     "@ionic-native/sms": "^5.27.0",
     "@ionic-native/splash-screen": "^5.26.0",

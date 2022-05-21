@@ -31,6 +31,7 @@ import { NameGeneratorService } from './providers/name-generator/name-generator.
 import { MusicService } from './providers/music/music.service';
 import { MusicControls } from '@ionic-native/music-controls/ngx';
 import { Media } from '@ionic-native/media/ngx';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -68,7 +69,8 @@ import { Media } from '@ionic-native/media/ngx';
     MusicService,
     MusicControls,
     Media,
-    Platform
+    Platform,
+    ScreenOrientation,
   ],
   bootstrap: [AppComponent]
 })
