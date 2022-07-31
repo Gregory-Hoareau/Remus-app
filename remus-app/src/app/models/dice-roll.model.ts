@@ -1,9 +1,9 @@
 import { Dice } from './dice.model';
 
 export interface DiceRoll {
-    dices: Map<Dice, number>;
+    name: string;
     modificator?: number;
-    result?: number;
-    separatedValue?: string;
+    result: number;
+    separatedValue: string;
     faces?: string[];
 }

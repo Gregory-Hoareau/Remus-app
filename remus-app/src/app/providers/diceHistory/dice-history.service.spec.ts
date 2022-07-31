@@ -14,13 +14,13 @@ describe('DiceHistoryService', () => {
 
   it('should add a roll to history', () => {
     const service: DiceHistoryService = TestBed.get(DiceHistoryService);
-    const d4: Dice =  {name: 'd4', value: 4};
-    const d12: Dice =  {name: 'd12', value: 12};
+    const d4: Dice =  new Dice('d4',4);
+    const d12: Dice =  new Dice('d12',12);
     const diceSelected = new Map<Dice, number>();
     diceSelected.set(d4, 3);
     diceSelected.set(d12, 2);
     const roll = {
-      dices: diceSelected,
+      name: '3d4 2d12',
       modificator: 5,
       result: 29,
       separatedValue: '3 - 2 - 3 - 9 - 12'
@@ -29,6 +29,5 @@ describe('DiceHistoryService', () => {
     service.addDiceRoll(roll);
     expect(service.history.length).toBe(2);
     expect(service.history[0]).toEqual(roll);
-    expect(service.selectedDiceString(roll)).toEqual('3d4 + 2d12 + 5');
   });
 });

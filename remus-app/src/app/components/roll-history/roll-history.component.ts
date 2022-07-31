@@ -13,14 +13,11 @@ export class RollHistoryComponent implements OnInit {
   @Input()
   roll: DiceRoll;
 
-  roll_name: string;
-
   constructor(public historyService:DiceHistoryService) {
-    this.roll={result:0,modificator:0,dices:new Map<Dice,number>(),faces: []}
+    this.roll={result:0,modificator:0,name:'',faces: [], separatedValue:""}
   }
 
   ngOnInit() {
-    this.roll_name = this.historyService.selectedDiceString(this.roll);
   }
 
 }
