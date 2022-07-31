@@ -20,7 +20,7 @@ describe('DiceHistoryService', () => {
     diceSelected.set(d4, 3);
     diceSelected.set(d12, 2);
     const roll = {
-      dices: diceSelected,
+      name: '3d4 2d12',
       modificator: 5,
       result: 29,
       separatedValue: '3 - 2 - 3 - 9 - 12'
@@ -29,6 +29,5 @@ describe('DiceHistoryService', () => {
     service.addDiceRoll(roll);
     expect(service.history.length).toBe(2);
     expect(service.history[0]).toEqual(roll);
-    expect(service.selectedDiceString(roll)).toEqual('3d4 + 2d12 + 5');
   });
 });

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Macro } from 'src/app/models/macro.model';
+import { SOUNDS } from 'src/mocks/Track';
 import {Dice} from '../../models/dice.model';
 import {SpecialDice} from '../../models/special-dice.model';
+import { MusicService } from '../music/music.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +29,7 @@ export class DiceService {
   modifier : number;
   modifResult : string;
 
-  constructor() {
+  constructor(public musicService:MusicService) {
     this.Normal = [];
     this.StarWars = [];
     this.LegendOfTheFiveRings = [];
@@ -127,6 +129,7 @@ export class DiceService {
         seperatedValues.push(dice.getRandomface())  
       }
     })
+    this.musicService.launchSound(SOUNDS[0]);
     return seperatedValues;
   }
 

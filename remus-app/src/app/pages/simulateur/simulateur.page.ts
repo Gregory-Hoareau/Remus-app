@@ -36,7 +36,7 @@ export class SimulateurPage implements OnInit {
     public macroService: MacroService, private musicService: MusicService)  { }
 
   ngOnInit() {
-    this.resetDices();
+    this.diceService.resetDices();
   }
 
   ionViewDidEnter() {
@@ -67,7 +67,7 @@ export class SimulateurPage implements OnInit {
       buttons: [{
         text: 'Valider',
         handler: data => {
-          this.resetDices();
+          this.diceService.resetDices();
           if (this.diceService.specialGame.get(data) === this.diceService.Normal) {
             this.diceService.normalDices = true;
           } else {
@@ -93,7 +93,7 @@ export class SimulateurPage implements OnInit {
         handler: data => {
           if (data.macroName !== '') {
             this.macroService.createMacro(data.macroName, this.diceService.diceSelected, this.diceService.StringifySelectedDice(), this.diceService.modifier, this.diceService.normalDices);
-            this.resetDices(); //BUG: if dice are not reset, creating new macro overrides previous.
+            this.diceService.resetDices(); //BUG: if dice are not reset, creating new macro overrides previous.
           }
         }
       }]
@@ -140,14 +140,14 @@ export class SimulateurPage implements OnInit {
             if(this.diceService.typeOfDiceHasBeenChanged) {
               this.diceService.typeOfDiceHasBeenChanged = false;
               this.diceService.normalDices = !this.diceService.normalDices;
-              this.resetDices();
+              this.diceService.resetDices();
             }
           }
         }, {
           cssClass: 'buttons',
           text: 'Again',
           handler: () => {
-            this.launchDice();
+            this.presentAlertConfirm(this.diceService.launchDice(), this.diceService.modifier, this.diceService.StringifySelectedDice());
           }
         }
       ]
@@ -175,14 +175,14 @@ export class SimulateurPage implements OnInit {
             if(this.diceService.typeOfDiceHasBeenChanged) {
               this.diceService.typeOfDiceHasBeenChanged = false;
               this.diceService.normalDices = !this.diceService.normalDices;
-              this.resetDices();
+              this.diceService.resetDices();
             }
           }
         }, {
           cssClass: 'buttons',
           text: 'Again',
           handler: () => {
-            this.launchDice();
+            this.presentAlertConfirm(this.diceService.launchDice(), this.diceService.modifier, this.diceService.StringifySelectedDice());
           }
         }
       ]
@@ -214,30 +214,14 @@ export class SimulateurPage implements OnInit {
       this.gyroscope = false;
     } else if (!this.gyroscope){
       this.sub = this.shakeDetector.startWatch(50).subscribe(() => {
-        this.launchDice();
+        this.presentAlertConfirm(this.diceService.launchDice(), this.diceService.modifier, this.diceService.StringifySelectedDice());
       });
       this.gyroscope = true;
     }
   }
 
   // Dice thrower functions
-
-  addDiceToSelection(dice:Dice){
-    this.diceService.AddSelectedDice(dice);
-  }
-
-  //;u;
-  resetDices() {
-    this.diceService.resetDices();
-  }
-
-  launchDice(){
-    this.musicService.launchSound(SOUNDS[0]);
-    this.presentAlertConfirm(this.diceService.launchDice(), this.diceService.modifier, this.diceService.StringifySelectedDice());
-  }
-
   macroLaunch(macro: Macro){
-    this.musicService.launchSound(SOUNDS[0]);
     this.presentAlertConfirm(this.diceService.launchDice(macro.dices), macro.modifier, macro.stringDices);
   }
 
