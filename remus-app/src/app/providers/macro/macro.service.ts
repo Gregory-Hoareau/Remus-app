@@ -19,7 +19,6 @@ export class MacroService {
       modifier: modifier,
       isItNormalDices: isItNormal,
     } as Macro
-    console.log(macro);
     this.macros.push(macro);
   }
 }

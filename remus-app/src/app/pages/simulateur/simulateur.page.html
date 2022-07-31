@@ -22,19 +22,19 @@
           </div>
           <!-- ion-button color="btn-purple" (click)="specialDicesAlert()">Changer le set de dés</ion-button -->
           <div class="control">
-              <ion-card-content class="selectDices" >&nbsp;{{listOfDiceAsString}}</ion-card-content>
+              <ion-card-content class="selectDices" >&nbsp;{{this.diceService.StringifySelectedDice()}}</ion-card-content>
             
             <form *ngIf="this.diceService.normalDices">
               <label style="font-weight: bold" for="modif">Modificateur :</label><br>
               <input type="number" id="modif" value="" name="fname" [(ngModel)]="this.diceService.modifier">
             </form>
               <div class="buttons">
-                  <ion-button  class="launch" color="btn-purple" disabled={{!listOfDiceAsString}} (click)="launchDice()">Lancer</ion-button>
+                  <ion-button  class="launch" color="btn-purple" disabled={{!this.diceService.diceSelected.size}} (click)="launchDice()">Lancer</ion-button>
                   <div>
-                      <ion-button shape="round" color="btn-purple" disabled={{!listOfDiceAsString}} class="dice" (click)="newMacroAlert()">
+                      <ion-button shape="round" color="btn-purple" disabled={{!this.diceService.diceSelected.size}} class="dice" (click)="newMacroAlert()">
                           <ion-icon name="save-outline"></ion-icon>
                       </ion-button>
-                      <ion-button shape="round" color="btn-purple" disabled={{!listOfDiceAsString}} class="refresh" (click)="resetDices()">
+                      <ion-button shape="round" color="btn-purple" disabled={{!this.diceService.diceSelected.size}} class="refresh" (click)="resetDices()">
                           <ion-icon  name="refresh-outline" ></ion-icon>
                       </ion-button>
                   </div>

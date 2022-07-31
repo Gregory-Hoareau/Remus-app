@@ -14,8 +14,8 @@ describe('DiceHistoryService', () => {
 
   it('should add a roll to history', () => {
     const service: DiceHistoryService = TestBed.get(DiceHistoryService);
-    const d4: Dice =  {name: 'd4', value: 4};
-    const d12: Dice =  {name: 'd12', value: 12};
+    const d4: Dice =  new Dice('d4',4);
+    const d12: Dice =  new Dice('d12',12);
     const diceSelected = new Map<Dice, number>();
     diceSelected.set(d4, 3);
     diceSelected.set(d12, 2);

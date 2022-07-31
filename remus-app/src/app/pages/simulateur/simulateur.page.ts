@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { IonSlides, AlertController, ModalController } from '@ionic/angular';
+import { IonSlides, AlertController } from '@ionic/angular';
 import { DiceHistoryService } from 'src/app/providers/diceHistory/dice-history.service';
 import { Macro } from 'src/app/models/macro.model';
 import {MacroService} from '../../providers/macro/macro.service';
 import {Dice} from '../../models/dice.model';
 import {DiceService} from '../../providers/dice/dice.service';
 import {Shake} from "@ionic-native/shake/ngx";
-import {SpecialDice} from "../../models/special-dice.model";
+//import {SpecialDice} from "../../models/special-dice.model";
 import { MusicService } from 'src/app/providers/music/music.service';
 import { SOUNDS } from 'src/mocks/Track';
 
@@ -23,45 +23,11 @@ export class SimulateurPage implements OnInit {
     static: true
   }) slider: IonSlides;
 
-  // Simulateur var
-  @Input() isModal: boolean;
-  public diceHistory: string[];
-  segment = 0;
-  diceAlert;
-
-  //to string please
-  listOfDiceAsString : string;
-
-
-  // Historique var
-  finalValue: string;
 
   // View var
+  segment = 0;
   gyroscope : boolean;
-  result : number;
-  launched : boolean;
-  finalSeparatedValue : string;
   sub: any; //subscribe to gyroscope
-
-
-  // Controller var
-  // normalDices: boolean;
-  // typeOfDiceHasBeenChanged: boolean;
-  // diceSum : number;
-  // specialDices: SpecialDice[];
-  // diceSelected : Map<SpecialDice, number>;
-  // specialDiceSet: string;
-  // separetedValue : string;
-  // specialFaces: string[];
-  // modifying : boolean;
-  // totalDiceSum : number;
-  // dices : number[];
-  // modificateur : number;
-  // modifResult : string;
-  // sub: any;
-
-  //Model var
-
 
 
 
@@ -71,12 +37,10 @@ export class SimulateurPage implements OnInit {
 
   ngOnInit() {
     this.resetDices();
-    console.log(this.diceService.normalDices);
   }
 
   ionViewDidEnter() {
     this.slider.update()
-    console.table(this.macroService.macros);
   }
 
   async specialDicesAlert() {
@@ -128,7 +92,7 @@ export class SimulateurPage implements OnInit {
         text: 'Valider',
         handler: data => {
           if (data.macroName !== '') {
-            this.macroService.createMacro(data.macroName, this.diceService.diceSelected, this.listOfDiceAsString, this.diceService.modifier, this.diceService.normalDices);
+            this.macroService.createMacro(data.macroName, this.diceService.diceSelected, this.diceService.StringifySelectedDice(), this.diceService.modifier, this.diceService.normalDices);
             this.resetDices(); //BUG: if dice are not reset, creating new macro overrides previous.
           }
         }
@@ -138,7 +102,7 @@ export class SimulateurPage implements OnInit {
   }
 
 
-  async presentAlertConfirm(diceRoll: any[], modifier: number = 0) {
+  async presentAlertConfirm(diceRoll: any[], modifier: number = 0, roll_name: string) {
     var seperatedValues = "";
     var sum:any = 0;
     diceRoll.forEach(val =>{
@@ -146,10 +110,22 @@ export class SimulateurPage implements OnInit {
       seperatedValues += val + " + "
     })
     seperatedValues =  seperatedValues.substring(0, seperatedValues.length-2);
-    if(modifier)
-      seperatedValues += modifier > 0 ? `+ ${modifier}` : `- ${modifier}`
+    if(modifier){
+      sum += modifier
+
+      var modif:string = modifier > 0 ? `+ ${modifier}` : `${modifier}`
+      seperatedValues += modif
+      roll_name += modif
+    }
 
     sum = sum.toString()
+    
+    this.diceHistoryService.addDiceRoll({
+      name:roll_name,
+      result:sum,
+      separatedValue:seperatedValues,
+      modificator:modifier
+    })
 
     const alert = await this.alertController.create({
       header: sum,
@@ -244,33 +220,25 @@ export class SimulateurPage implements OnInit {
     }
   }
 
-
-
   // Dice thrower functions
+
   addDiceToSelection(dice:Dice){
     this.diceService.AddSelectedDice(dice);
-    this.listOfDiceAsString = this.diceService.StringifySelectedDice();
-    console.log(this.listOfDiceAsString);
   }
 
   //;u;
   resetDices() {
-    this.finalSeparatedValue = '';
-    this.result  = null;
     this.diceService.resetDices();
-    this.listOfDiceAsString = this.diceService.printSumDices(this.diceService.diceSelected);
   }
 
   launchDice(){
     this.musicService.launchSound(SOUNDS[0]);
-    console.log(this.diceService.modifier);
-    this.presentAlertConfirm(this.diceService.launchDice(), this.diceService.modifier);
+    this.presentAlertConfirm(this.diceService.launchDice(), this.diceService.modifier, this.diceService.StringifySelectedDice());
   }
 
   macroLaunch(macro: Macro){
     this.musicService.launchSound(SOUNDS[0]);
-    console.log(macro.dices);
-    this.presentAlertConfirm(this.diceService.launchDice(macro.dices), macro.modifier);
+    this.presentAlertConfirm(this.diceService.launchDice(macro.dices), macro.modifier, macro.stringDices);
   }
 
 }

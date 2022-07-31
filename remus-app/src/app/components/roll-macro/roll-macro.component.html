@@ -2,6 +2,6 @@
   <div class="macroName">{{macro.name}}</div>
   <br>
   <div class="macroContent" *ngIf="macro.modifier>0">{{macro.stringDices}} (+{{macro.modifier}})</div>
-  <div class="macroContent" *ngIf="macro.modifier<0">{{macro.stringDices}} (-{{macro.modifier}})</div>
+  <div class="macroContent" *ngIf="macro.modifier<0">{{macro.stringDices}} ({{macro.modifier}})</div>
   <div class="macroContent" *ngIf="macro.modifier==0">{{macro.stringDices}}</div>
 </div>

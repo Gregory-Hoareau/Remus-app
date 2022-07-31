@@ -16,7 +16,6 @@ export class RollMacroComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.macro);
   }
 
 }

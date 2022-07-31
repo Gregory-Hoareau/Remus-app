@@ -100,10 +100,8 @@ export class DiceService {
       this.specialDices.push(dice);
       this.totalDiceSum = this.totalDiceSum + dice.numberOfFaces;
     const temp = this.diceSelected.get(dice)
-    console.log(temp)
     if (!this.diceSelected.has(dice)) {
       this.diceSelected.set(dice, 1);
-      console.log(this.diceSelected.get(dice))
     } else {
       this.diceSelected.set(dice, temp + 1);
     }
@@ -124,7 +122,6 @@ export class DiceService {
 
   launchDice(dices: Map<Dice,Number> = this.diceSelected): any[]{
     var seperatedValues = []
-    console.log(dices);
     dices.forEach((value, dice, _) => {
       for (let i = 0; i < value; i++) {
         seperatedValues.push(dice.getRandomface())  
@@ -135,7 +132,6 @@ export class DiceService {
 
   AddSelectedDice(dice:Dice){
     var value = this.diceSelected.get(dice)
-    console.log(value);
     if (value)
       this.diceSelected.set(dice, value+1)
     else
