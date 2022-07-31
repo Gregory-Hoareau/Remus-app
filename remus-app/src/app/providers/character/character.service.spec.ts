@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { CharacterService } from './character.service';
 import { FileMock } from '@ionic-native-mocks/file';
 import { Component } from '@angular/core';
-import { all_characters } from 'src/mocks/character';
+import { all_characters } from 'src/mocks/Character';
 
 describe('CharacterService', () => {
   beforeEach(() => TestBed.configureTestingModule({

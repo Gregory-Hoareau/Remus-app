@@ -4,7 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { LoadCharacterPage } from './load-character.page';
 import { File } from '@ionic-native/file/ngx';
 import { FileMock } from '@ionic-native-mocks/file';
-import { all_characters } from 'src/mocks/character';
+import { all_characters } from 'src/mocks/Character';
 import { By } from '@angular/platform-browser';
 
 describe('LoadCharacterPage', () => {

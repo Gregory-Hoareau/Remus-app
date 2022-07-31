@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CharacterSheet, DnDCharacterSheet, WoDCharacterSheet, AventureCharacterSheet, WtACharacterSheet, StarWarsCharacterSheet, L5RCharacterSheet, CustomCharacterSheet } from 'src/app/models/character-sheet.model';
-import { all_characters } from 'src/mocks/character'
+import { all_characters } from 'src/mocks/Character'
 import { PlayersService } from '../players/players.service';
 
 @Injectable({

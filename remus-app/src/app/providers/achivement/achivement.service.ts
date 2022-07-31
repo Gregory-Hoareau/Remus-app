@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { all_characters } from 'src/mocks/character'
+import { all_characters } from 'src/mocks/Character'
 import {Achivement} from '../../models/achivement.model';
 
 @Injectable({

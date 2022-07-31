@@ -5,7 +5,7 @@ import { SelectCharacterPage } from './select-character.page';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { By } from '@angular/platform-browser';
 import { CharacterSheet } from 'src/app/models/character-sheet.model';
-import { all_characters } from 'src/mocks/character';
+import { all_characters } from 'src/mocks/Character';
 
 
 describe('SelectCharacterPage', () => {

@@ -13,29 +13,13 @@ import { MusicService } from '../music/music.service';
 export class DiceService {
 
   Normal: Dice[];
-  StarWars: SpecialDice[];
-  LegendOfTheFiveRings: SpecialDice[];
-  specialGame: Map<string, Dice[]>;
 
   normalDices: boolean = true;
-  typeOfDiceHasBeenChanged: boolean;
-  diceSum : any;
-  specialDices: SpecialDice[];
-  diceSelected : Map<Dice, number>;
-  specialDiceSet: string;
-  separetedValue : string;
-  specialFaces: string[];
-  modifying : boolean;
-  totalDiceSum : number;
-  dices : number[];
+  diceSelected : Map<Dice, number> = new Map<Dice, number>();
   modifier : number;
-  modifResult : string;
 
   constructor(public musicService:MusicService, public historyService:DiceHistoryService) {
     this.Normal = [];
-    this.StarWars = [];
-    this.LegendOfTheFiveRings = [];
-    this.specialGame = new Map<string, Dice[]>();
     this.Normal.push(
       new Dice('d4',4),
       new Dice('d6',6),
@@ -46,84 +30,13 @@ export class DiceService {
       new Dice('d100',100))
   }
 
-  fillTheTab(value, path) {
-    const Tab = Array<string>();
-    for (let i = 1; i <= value; i++) {
-      Tab.push('/assets/' + path + '/' + i + '.png');
-    }
-    return Tab;
-  }
-
-  macroLaunch(macro: Macro) {
-    if (this.normalDices !== macro.isItNormalDices){
-      this.normalDices = macro.isItNormalDices;
-      this.typeOfDiceHasBeenChanged = true;
-    }
-    this.resetDices()
-    this.modifier = macro.modifier;
-    this.diceSelected = macro.dices;
-    for (const dice of this.diceSelected.keys()) {
-      for (let itter = 0 ; itter < this.diceSelected.get(dice) ; itter++ ) {
-        this.dices.push(dice.numberOfFaces);
-        this.specialDices.push(dice);
-        this.totalDiceSum += dice.numberOfFaces;
-      }
-    }
-    this.launchDice();
-  }
-
-
-  //Kinda get it, change the text variable but yuk!
-  //Should make a toString function on dice array item
-  printSumDices(map: Map<Dice, number>) {
-    var listOfDiceAsString = ''
-    for (const dice of map.keys()) {
-      if (listOfDiceAsString === '') {
-        listOfDiceAsString = this.diceSelected.get(dice) + dice.name;
-      } else {
-        listOfDiceAsString = listOfDiceAsString + ' + ' + this.diceSelected.get(dice) + dice.name;
-      }
-    }
-    return listOfDiceAsString;
-  }
-
-  increaseDiceSum(dice: SpecialDice, launched: boolean) {
-    if (launched === true) {
-      launched = false;
-      this.dices = [];
-      this.diceSelected = new Map<SpecialDice, number>();
-      this.diceSum = 0;
-      this.separetedValue = '';
-      this.totalDiceSum = 0;
-      this.modifResult = '';
-      this.modifying = false;
-      this.specialDices = [];
-      this.specialFaces = [];
-    }
-      this.dices.push(dice.numberOfFaces);
-      this.specialDices.push(dice);
-      this.totalDiceSum = this.totalDiceSum + dice.numberOfFaces;
-    const temp = this.diceSelected.get(dice)
-    if (!this.diceSelected.has(dice)) {
-      this.diceSelected.set(dice, 1);
-    } else {
-      this.diceSelected.set(dice, temp + 1);
-    }
-    return this.printSumDices(this.diceSelected);
-  }
-
+  //Reset the dice choices and modifier to 0
   resetDices() {
-    this.diceSum = 0;
-    this.dices = [];
-    this.diceSelected = new Map<SpecialDice, number>();
-    this.totalDiceSum = 0;
-    this.modifier = 0;
-    this.modifying = false;
-    this.separetedValue = '';
-    this.specialDices = [];
-    this.specialFaces = [];
+    this.diceSelected.clear();
+    this.modifier = undefined;
   }
 
+  //Calculates the roll of the dice. Returns a DiceRoll object with the result of the roll, the dice string and individual roll detail.
   launchDice(dices: Map<Dice,number> = this.diceSelected, modifier?:number): DiceRoll{
     var rolls = []
     var valuesString = ""
@@ -162,11 +75,13 @@ export class DiceService {
       modificator:modifier
     }
 
+    //Memorise dice roll in history
     this.historyService.addDiceRoll(diceRoll)
 
     return diceRoll;
   }
 
+  //Adds a Dice object to the current selection of dice. If that dice exists already, increments the count in diceSelected
   AddSelectedDice(dice:Dice){
     var value = this.diceSelected.get(dice)
     if (value)
@@ -175,6 +90,7 @@ export class DiceService {
       this.diceSelected.set(dice, 1)
   }
 
+  //Returns the dice under a string form. Format follows classic dice rules XdY
   StringifyDice(dice:Map<Dice, number> = this.diceSelected){
     var stringifiedDice = ""
     dice.forEach((value, dice, _ )=> 

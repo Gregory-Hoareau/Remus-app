@@ -43,43 +43,8 @@ export class SimulateurPage implements OnInit {
     this.slider.update()
   }
 
-  async specialDicesAlert() {
-    const tab = [];
-    for (const i of this.diceService.specialGame.keys()) {
-      if ( i === 'Normal') {
-        tab.push({
-          label: i,
-          type: 'radio' as const,
-          value: i,
-          checked: true,
-        });
-      } else {
-        tab.push({
-          label: i,
-          type: 'radio' as const,
-          value: i,
-        });
-      }
-    }
-    const alert = await this.alertCtrl.create({
-      header: 'Sélectionner le JDR dont vous souhaitez utiliser les dés spéciaux :',
-      inputs: tab,
-      buttons: [{
-        text: 'Valider',
-        handler: data => {
-          this.diceService.resetDices();
-          if (this.diceService.specialGame.get(data) === this.diceService.Normal) {
-            this.diceService.normalDices = true;
-          } else {
-            this.diceService.normalDices = false;
-            this.diceService.specialDiceSet = data;
-          }
-        }
-      }]
-    });
-    await alert.present();
-  }
 
+  //Aleart that opens the macro creation form. Asks for the name to save the macro as and creates macro from current dice selection.
   async newMacroAlert() {
     const alert = await this.alertCtrl.create({
       header: 'Nouvelle Macro',
@@ -101,7 +66,8 @@ export class SimulateurPage implements OnInit {
     await alert.present();
   }
 
-
+  //Presents the dice result of a DiceRoll. Result displayed in big central, roll detail under.
+  //Player can reroll same configuration by pressing again. 
   async presentAlertConfirm(diceRoll: DiceRoll) {
 
     const alert = await this.alertController.create({
@@ -114,17 +80,12 @@ export class SimulateurPage implements OnInit {
           role: 'cancel',
           cssClass: 'buttons',
           handler: () => {
-            if(this.diceService.typeOfDiceHasBeenChanged) {
-              this.diceService.typeOfDiceHasBeenChanged = false;
-              this.diceService.normalDices = !this.diceService.normalDices;
-              this.diceService.resetDices();
-            }
           }
         }, {
           cssClass: 'buttons',
           text: 'Again',
           handler: () => {
-            this.presentAlertConfirm(this.diceService.launchDice(this.diceService.diceSelected, this.diceService.modifier));
+            this.presentAlertConfirm(this.diceService.launchDice(undefined, this.diceService.modifier));
           }
         }
       ]
@@ -133,50 +94,8 @@ export class SimulateurPage implements OnInit {
     return alert;
   }
 
-  async presentAlertConfirmSpecial(data: string[]) {
-    let message = '';
-    for (const path of data) {
-      message = message + '<ion-img class="resultPopupDices" src=' + path + '></ion-img>';
-    }
-    const finalResult = '<div class="popupSpecialDice">' + message + '</div>';
-    const alert = await this.alertController.create({
-      backdropDismiss: false,
-      message: finalResult,
-      cssClass: 'dice_result',
-      buttons: [
-        {
-          text: 'Ok',
-          role: 'cancel',
-          cssClass: 'buttons',
-          handler: () => {
-            if(this.diceService.typeOfDiceHasBeenChanged) {
-              this.diceService.typeOfDiceHasBeenChanged = false;
-              this.diceService.normalDices = !this.diceService.normalDices;
-              this.diceService.resetDices();
-            }
-          }
-        }, {
-          cssClass: 'buttons',
-          text: 'Again',
-          handler: () => {
-            this.presentAlertConfirm(this.diceService.launchDice(this.diceService.diceSelected, this.diceService.modifier));
-          }
-        }
-      ]
-    });
-    await alert.present();
-    return alert;
-  }
 
-  async noDiceAlert() {
-    const alert = await this.alertController.create({
-      header: 'Aucun dé sélectionné',
-      message: 'Vous devez choisir au moins un dé pour pouvoir faire une lancé de dé',
-      buttons: ['Compris'],
-    });
-    await alert.present();
-  }
-
+  //Manage slides
   async segmentChanged(ev: any) {
     await this.slider.slideTo(this.segment);
   }
@@ -185,19 +104,20 @@ export class SimulateurPage implements OnInit {
     this.segment = await this.slider.getActiveIndex();
   }
 
+  //Gyroscope launch logic
   gyroscopeSetting() {
     if (this.gyroscope) {
       this.sub.unsubscribe();
       this.gyroscope = false;
     } else if (!this.gyroscope){
       this.sub = this.shakeDetector.startWatch(50).subscribe(() => {
-        this.presentAlertConfirm(this.diceService.launchDice(this.diceService.diceSelected,this.diceService.modifier));
+        this.presentAlertConfirm(this.diceService.launchDice(undefined,this.diceService.modifier));
       });
       this.gyroscope = true;
     }
   }
 
-  // Dice thrower functions
+  //Launches dice with the selected macro's configuration
   macroLaunch(macro: Macro){
     this.presentAlertConfirm(this.diceService.launchDice(macro.dices, macro.modifier));
   }
