@@ -8,7 +8,7 @@ import {DiceService} from '../../providers/dice/dice.service';
 import {Shake} from "@ionic-native/shake/ngx";
 //import {SpecialDice} from "../../models/special-dice.model";
 import { MusicService } from 'src/app/providers/music/music.service';
-import { SOUNDS } from 'src/mocks/Track';
+import { DiceRoll } from 'src/app/models/dice-roll.model';
 
 
 
@@ -92,7 +92,7 @@ export class SimulateurPage implements OnInit {
         text: 'Valider',
         handler: data => {
           if (data.macroName !== '') {
-            this.macroService.createMacro(data.macroName, this.diceService.diceSelected, this.diceService.StringifySelectedDice(), this.diceService.modifier, this.diceService.normalDices);
+            this.macroService.createMacro(data.macroName, this.diceService.diceSelected, this.diceService.StringifyDice(), this.diceService.modifier, this.diceService.normalDices);
             this.diceService.resetDices(); //BUG: if dice are not reset, creating new macro overrides previous.
           }
         }
@@ -102,34 +102,11 @@ export class SimulateurPage implements OnInit {
   }
 
 
-  async presentAlertConfirm(diceRoll: any[], modifier: number = 0, roll_name: string) {
-    var seperatedValues = "";
-    var sum:any = 0;
-    diceRoll.forEach(val =>{
-      sum += val
-      seperatedValues += val + " + "
-    })
-    seperatedValues =  seperatedValues.substring(0, seperatedValues.length-2);
-    if(modifier){
-      sum += modifier
-
-      var modif:string = modifier > 0 ? `+ ${modifier}` : `${modifier}`
-      seperatedValues += modif
-      roll_name += modif
-    }
-
-    sum = sum.toString()
-    
-    this.diceHistoryService.addDiceRoll({
-      name:roll_name,
-      result:sum,
-      separatedValue:seperatedValues,
-      modificator:modifier
-    })
+  async presentAlertConfirm(diceRoll: DiceRoll) {
 
     const alert = await this.alertController.create({
-      header: sum,
-      message: seperatedValues,
+      header: diceRoll.result.toString(),
+      message: diceRoll.separatedValue,
       cssClass: 'dice_result',
       buttons: [
         {
@@ -147,7 +124,7 @@ export class SimulateurPage implements OnInit {
           cssClass: 'buttons',
           text: 'Again',
           handler: () => {
-            this.presentAlertConfirm(this.diceService.launchDice(), this.diceService.modifier, this.diceService.StringifySelectedDice());
+            this.presentAlertConfirm(this.diceService.launchDice(this.diceService.diceSelected, this.diceService.modifier));
           }
         }
       ]
@@ -182,7 +159,7 @@ export class SimulateurPage implements OnInit {
           cssClass: 'buttons',
           text: 'Again',
           handler: () => {
-            this.presentAlertConfirm(this.diceService.launchDice(), this.diceService.modifier, this.diceService.StringifySelectedDice());
+            this.presentAlertConfirm(this.diceService.launchDice(this.diceService.diceSelected, this.diceService.modifier));
           }
         }
       ]
@@ -214,7 +191,7 @@ export class SimulateurPage implements OnInit {
       this.gyroscope = false;
     } else if (!this.gyroscope){
       this.sub = this.shakeDetector.startWatch(50).subscribe(() => {
-        this.presentAlertConfirm(this.diceService.launchDice(), this.diceService.modifier, this.diceService.StringifySelectedDice());
+        this.presentAlertConfirm(this.diceService.launchDice(this.diceService.diceSelected,this.diceService.modifier));
       });
       this.gyroscope = true;
     }
@@ -222,7 +199,7 @@ export class SimulateurPage implements OnInit {
 
   // Dice thrower functions
   macroLaunch(macro: Macro){
-    this.presentAlertConfirm(this.diceService.launchDice(macro.dices), macro.modifier, macro.stringDices);
+    this.presentAlertConfirm(this.diceService.launchDice(macro.dices, macro.modifier));
   }
 
 }

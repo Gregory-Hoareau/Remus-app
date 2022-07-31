@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { DiceRoll } from 'src/app/models/dice-roll.model';
 import { Macro } from 'src/app/models/macro.model';
 import { SOUNDS } from 'src/mocks/Track';
 import {Dice} from '../../models/dice.model';
 import {SpecialDice} from '../../models/special-dice.model';
+import { DiceHistoryService } from '../diceHistory/dice-history.service';
 import { MusicService } from '../music/music.service';
 
 @Injectable({
@@ -29,7 +31,7 @@ export class DiceService {
   modifier : number;
   modifResult : string;
 
-  constructor(public musicService:MusicService) {
+  constructor(public musicService:MusicService, public historyService:DiceHistoryService) {
     this.Normal = [];
     this.StarWars = [];
     this.LegendOfTheFiveRings = [];
@@ -122,15 +124,47 @@ export class DiceService {
     this.specialFaces = [];
   }
 
-  launchDice(dices: Map<Dice,Number> = this.diceSelected): any[]{
-    var seperatedValues = []
+  launchDice(dices: Map<Dice,number> = this.diceSelected, modifier?:number): DiceRoll{
+    var rolls = []
+    var valuesString = ""
+    var roll_name = this.StringifyDice(dices)
+    var result:number = 0;
+
+    this.musicService.launchSound(SOUNDS[0]);
+
+    //random rolls
     dices.forEach((value, dice, _) => {
       for (let i = 0; i < value; i++) {
-        seperatedValues.push(dice.getRandomface())  
+        rolls.push(dice.getRandomface())  
       }
     })
-    this.musicService.launchSound(SOUNDS[0]);
-    return seperatedValues;
+
+    //result
+    rolls.forEach(roll =>{
+      result += roll
+      valuesString += roll + " + "
+    })
+    valuesString =  valuesString.substring(0, valuesString.length-2);
+
+    //modifier effect
+    if(modifier){
+      result += modifier
+
+      var modif:string = modifier > 0 ? `+ ${modifier}` : `${modifier}`
+      valuesString += modif
+      roll_name += modif
+    }
+    
+    var diceRoll:DiceRoll = {
+      name:roll_name,
+      result:result,
+      separatedValue:valuesString,
+      modificator:modifier
+    }
+
+    this.historyService.addDiceRoll(diceRoll)
+
+    return diceRoll;
   }
 
   AddSelectedDice(dice:Dice){
@@ -141,9 +175,9 @@ export class DiceService {
       this.diceSelected.set(dice, 1)
   }
 
-  StringifySelectedDice(){
+  StringifyDice(dice:Map<Dice, number> = this.diceSelected){
     var stringifiedDice = ""
-    this.diceSelected.forEach((value, dice, _ )=> 
+    dice.forEach((value, dice, _ )=> 
       stringifiedDice += value + dice.name + " "
     );
     return stringifiedDice;
