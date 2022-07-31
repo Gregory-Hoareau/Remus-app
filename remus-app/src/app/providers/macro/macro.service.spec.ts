@@ -23,7 +23,7 @@ describe('MacroService', () => {
       name: 'boule de feu',
       dices: diceSelected,
       stringDices: '2d4 + 1d12',
-      modificator: 0,
+      modifier: 0,
       isItNormalDices: true
     } as Macro;
     service.createMacro('boule de feu', diceSelected, '2d4 + 1d12', 0, true);

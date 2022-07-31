@@ -37,7 +37,6 @@ export class SimulateurPage implements OnInit {
   finalValue: string;
 
   // View var
-  modifier: number;
   gyroscope : boolean;
   result : number;
   launched : boolean;
@@ -129,7 +128,8 @@ export class SimulateurPage implements OnInit {
         text: 'Valider',
         handler: data => {
           if (data.macroName !== '') {
-            this.macroService.createMacro(data.macroName, this.diceService.diceSelected, this.listOfDiceAsString, this.diceService.modificateur, this.diceService.normalDices);
+            this.macroService.createMacro(data.macroName, this.diceService.diceSelected, this.listOfDiceAsString, this.diceService.modifier, this.diceService.normalDices);
+            this.resetDices(); //BUG: if dice are not reset, creating new macro overrides previous.
           }
         }
       }]
@@ -138,7 +138,7 @@ export class SimulateurPage implements OnInit {
   }
 
 
-  async presentAlertConfirm(diceRoll: any[]) {
+  async presentAlertConfirm(diceRoll: any[], modifier: number = 0) {
     var seperatedValues = "";
     var sum:any = 0;
     diceRoll.forEach(val =>{
@@ -146,8 +146,8 @@ export class SimulateurPage implements OnInit {
       seperatedValues += val + " + "
     })
     seperatedValues =  seperatedValues.substring(0, seperatedValues.length-2);
-    if(this.modifier)
-      seperatedValues += this.modifier > 0 ? `+ ${this.modifier}` : `- ${this.modifier}`
+    if(modifier)
+      seperatedValues += modifier > 0 ? `+ ${modifier}` : `- ${modifier}`
 
     sum = sum.toString()
 
@@ -247,20 +247,11 @@ export class SimulateurPage implements OnInit {
 
 
   // Dice thrower functions
-
-
-  //Not to sure what Im changing
-  modifyResult(){
-    //this.modificateur = parseInt((document.getElementById("modif") as HTMLInputElement).value, 10);
-  }
-
   addDiceToSelection(dice:Dice){
     this.diceService.AddSelectedDice(dice);
     this.listOfDiceAsString = this.diceService.StringifySelectedDice();
     console.log(this.listOfDiceAsString);
   }
-
-
 
   //;u;
   resetDices() {
@@ -272,8 +263,14 @@ export class SimulateurPage implements OnInit {
 
   launchDice(){
     this.musicService.launchSound(SOUNDS[0]);
-    this.presentAlertConfirm(this.diceService.launchDice());
+    console.log(this.diceService.modifier);
+    this.presentAlertConfirm(this.diceService.launchDice(), this.diceService.modifier);
   }
 
+  macroLaunch(macro: Macro){
+    this.musicService.launchSound(SOUNDS[0]);
+    console.log(macro.dices);
+    this.presentAlertConfirm(this.diceService.launchDice(macro.dices), macro.modifier);
+  }
 
 }

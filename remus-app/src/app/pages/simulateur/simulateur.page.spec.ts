@@ -64,7 +64,7 @@ describe('SimulateurPage', () => {
       name: 'boule de feu',
       dices: component.diceSelected,
       stringDices: component.listOfDiceAsString,
-      modificator: component.modificateur,
+      modifier: component.modificateur,
       isItNormalDices: component.normalDices
     } as Macro
     component.macroLaunch(macro);
@@ -81,7 +81,7 @@ describe('SimulateurPage', () => {
       name: 'boule de glace',
       dices: component.diceSelected,
       stringDices: component.listOfDiceAsString,
-      modificator: component.modificateur,
+      modifier: component.modificateur,
       isItNormalDices: component.normalDices
     } as Macro
     component.macroLaunch(macro2);

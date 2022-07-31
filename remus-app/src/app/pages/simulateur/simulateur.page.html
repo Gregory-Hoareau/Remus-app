@@ -26,7 +26,7 @@
             
             <form *ngIf="this.diceService.normalDices">
               <label style="font-weight: bold" for="modif">Modificateur :</label><br>
-              <input type="number" id="modif" value="" name="fname" [(ngModel)]="modifier">
+              <input type="number" id="modif" value="" name="fname" [(ngModel)]="this.diceService.modifier">
             </form>
               <div class="buttons">
                   <ion-button  class="launch" color="btn-purple" disabled={{!listOfDiceAsString}} (click)="launchDice()">Lancer</ion-button>
@@ -51,7 +51,7 @@
 
       <!-- MACRO -->
       <ion-slide class="macroPage">
-        <app-roll-macro class="macroPage" *ngFor="let macro of macroService.macros" [macro]= macro (click)="macroLaunch(macro)"></app-roll-macro>
+        <app-roll-macro class="macroPage" *ngFor="let macro of macroService.macros" [macro]=macro (click)="macroLaunch(macro)"></app-roll-macro>
       </ion-slide>
 
       <!-- HISTORIQUE -->

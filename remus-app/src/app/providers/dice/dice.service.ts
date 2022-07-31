@@ -24,7 +24,7 @@ export class DiceService {
   modifying : boolean;
   totalDiceSum : number;
   dices : number[];
-  modificateur : number;
+  modifier : number;
   modifResult : string;
 
   constructor() {
@@ -56,7 +56,7 @@ export class DiceService {
       this.typeOfDiceHasBeenChanged = true;
     }
     this.resetDices()
-    this.modificateur = macro.modificator;
+    this.modifier = macro.modifier;
     this.diceSelected = macro.dices;
     for (const dice of this.diceSelected.keys()) {
       for (let itter = 0 ; itter < this.diceSelected.get(dice) ; itter++ ) {
@@ -115,17 +115,17 @@ export class DiceService {
     this.dices = [];
     this.diceSelected = new Map<SpecialDice, number>();
     this.totalDiceSum = 0;
-    this.modificateur = 0;
+    this.modifier = 0;
     this.modifying = false;
     this.separetedValue = '';
     this.specialDices = [];
     this.specialFaces = [];
   }
 
-    //TODO : Move to dice provider
-  launchDice(): any[]{
+  launchDice(dices: Map<Dice,Number> = this.diceSelected): any[]{
     var seperatedValues = []
-    this.diceSelected.forEach((value, dice, _) => {
+    console.log(dices);
+    dices.forEach((value, dice, _) => {
       for (let i = 0; i < value; i++) {
         seperatedValues.push(dice.getRandomface())  
       }

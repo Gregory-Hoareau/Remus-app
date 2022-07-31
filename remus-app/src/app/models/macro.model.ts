@@ -4,7 +4,7 @@ export interface Macro {
     name: string;
     dices: Map<SpecialDice, number>;
     stringDices: string;
-    modificator?: number;
+    modifier?: number;
     isItNormalDices: boolean;
 
 }
