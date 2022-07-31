@@ -43,7 +43,7 @@
   text-align: center;
 }
 
-.dice_result .alert-message h1{
+.dice_result > div > .alert-head > h2{
     font-size: 60px;
     color: darkblue;
   }
