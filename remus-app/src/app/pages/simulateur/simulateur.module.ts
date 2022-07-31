@@ -33,7 +33,7 @@ import {Shake} from '@ionic-native/shake/ngx';
       DeviceMotion,
       Shake
   ],
-  schemas: [
+  schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ]
 })

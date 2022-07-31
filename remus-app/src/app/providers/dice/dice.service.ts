@@ -50,7 +50,6 @@ export class DiceService {
     return Tab;
   }
 
-  //TODO : Move to provider
   macroLaunch(macro: Macro) {
     if (this.normalDices !== macro.isItNormalDices){
       this.normalDices = macro.isItNormalDices;

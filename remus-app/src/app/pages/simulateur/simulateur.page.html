@@ -20,11 +20,11 @@
           <div *ngIf="!normalDices" class="dices">
               <ion-img *ngFor="let dice of this.diceService.specialGame.get(specialDiceSet)" (click)="increaseDiceSum(dice)" class="small pastèque" src="{{dice.faces[2]}}"></ion-img>
           </div>
-          <ion-button color="btn-purple" (click)="specialDicesAlert()">Changer le set de dés</ion-button>
+          <!-- ion-button color="btn-purple" (click)="specialDicesAlert()">Changer le set de dés</ion-button -->
           <div class="control">
               <ion-card-content class="selectDices" >&nbsp;{{listOfDiceAsString}}</ion-card-content>
             
-            <form *ngIf="normalDices">
+            <form *ngIf="this.diceService.normalDices">
               <label style="font-weight: bold" for="modif">Modificateur :</label><br>
               <input type="number" id="modif" value="" name="fname" [(ngModel)]="modifier">
             </form>

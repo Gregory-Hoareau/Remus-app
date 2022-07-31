@@ -143,8 +143,9 @@ export class SimulateurPage implements OnInit {
     var sum:any = 0;
     diceRoll.forEach(val =>{
       sum += val
-      seperatedValues += val + "; "
+      seperatedValues += val + " + "
     })
+    seperatedValues =  seperatedValues.substring(0, seperatedValues.length-2);
     if(this.modifier)
       seperatedValues += this.modifier > 0 ? `+ ${this.modifier}` : `- ${this.modifier}`
 
@@ -269,7 +270,6 @@ export class SimulateurPage implements OnInit {
     this.listOfDiceAsString = this.diceService.printSumDices(this.diceService.diceSelected);
   }
 
-    //TODO : Move to dice provider
   launchDice(){
     this.musicService.launchSound(SOUNDS[0]);
     this.presentAlertConfirm(this.diceService.launchDice());
