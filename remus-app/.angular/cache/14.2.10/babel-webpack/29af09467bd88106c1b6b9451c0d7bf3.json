@@ -1,1 +1,0 @@
-{"ast":null,"code":"export class Trait {\n  constructor(name, type = '(.*)') {\n    this.name = name;\n    this.value = undefined;\n    this.type = type;\n  }\n\n  equals(other) {\n    if (other instanceof Trait) {\n      return other.name === this.name && other.value === this.value;\n    }\n\n    return false;\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}

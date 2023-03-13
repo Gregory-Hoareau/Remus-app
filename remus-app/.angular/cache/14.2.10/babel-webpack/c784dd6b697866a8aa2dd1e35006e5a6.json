@@ -1,1 +1,0 @@
-{"ast":null,"code":"export class MathsService {\n  static getRandomInt(max) {\n    return Math.floor(Math.random() * Math.floor(max)) + 1;\n    ;\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}

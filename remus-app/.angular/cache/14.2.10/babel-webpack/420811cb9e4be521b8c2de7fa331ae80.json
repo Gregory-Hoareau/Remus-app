@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { MathsService } from \"../providers/maths/maths.service\";\nexport class Dice {\n  constructor(name, numberOfFaces) {\n    this.name = name;\n    this.numberOfFaces = numberOfFaces;\n  }\n\n  getRandomface() {\n    return MathsService.getRandomInt(this.numberOfFaces);\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}
