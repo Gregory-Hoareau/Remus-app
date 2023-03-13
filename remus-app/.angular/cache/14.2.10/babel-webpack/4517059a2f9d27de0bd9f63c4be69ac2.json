@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class Player {\n  constructor(c, n = \"host\", ch = null) {\n    this.name = n;\n    this.conn = c;\n    this.character = ch;\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}

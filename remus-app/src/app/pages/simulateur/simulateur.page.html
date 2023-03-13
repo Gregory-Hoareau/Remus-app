@@ -1,78 +1,135 @@
-
-<ion-header  >
+<ion-header>
   <ion-toolbar color="header">
-    <ion-buttons *ngIf='!isModal' slot="start">
+    <ion-buttons *ngIf="!isModal" slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title style="font-family:'Playfair display',serif">Lanceur de dés</ion-title>
-    <ion-buttons *ngIf='isModal' slot="end" (click)="this.modalCtrl.dismiss(undefined, 'cancel')"><ion-icon class="ion-margin" name="close-outline"></ion-icon></ion-buttons>
+    <ion-title style="font-family: 'Playfair display', serif"
+      >Lanceur de dés</ion-title
+    >
+    <ion-buttons
+      *ngIf="isModal"
+      slot="end"
+      (click)="this.modalCtrl.dismiss(undefined, 'cancel')"
+      ><ion-icon class="ion-margin" name="close-outline"></ion-icon
+    ></ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]='true'>
-    <!-- SLIDES -->
-    <ion-slides #slides class="slides" (ionSlideDidChange)="slideChanged()" scrollbar="true">
-      <!-- DICE -->
-      <ion-slide class="dicesPage">
-          <div *ngIf="diceService.normalDices" class="dices">
-            <ion-img class="small" *ngFor="let dice of this.diceService.Normal" (click)="this.diceService.AddSelectedDice(dice)" src="/assets/{{dice.name}}.svg"></ion-img>
+<ion-content [fullscreen]="true">
+  <!-- SLIDES -->
+  <ion-slides
+    #slides
+    class="slides"
+    (ionSlideDidChange)="slideChanged()"
+    scrollbar="true"
+  >
+    <!-- DICE -->
+    <ion-slide class="dicesPage">
+      <div *ngIf="diceService.normalDices" class="dices">
+        <ion-img
+          class="small"
+          *ngFor="let dice of this.diceService.Normal"
+          (click)="this.diceService.AddSelectedDice(dice)"
+          src="/assets/{{dice.name}}.svg"
+        ></ion-img>
+      </div>
+      <div *ngIf="!diceService.normalDices" class="dices">
+        <ion-img
+          *ngFor="let dice of this.diceService.specialGame.get(this.diceService.specialDiceSet)"
+          (click)="this.diceService.increaseDiceSum(dice)"
+          class="small pastèque"
+          src="{{dice.faces[2]}}"
+        ></ion-img>
+      </div>
+      <!-- ion-button color="btn-purple" (click)="specialDicesAlert()">Changer le set de dés</ion-button -->
+      <div class="control">
+        <ion-card-content class="selectDices"
+          >&nbsp;{{this.diceService.StringifyDice()}}</ion-card-content
+        >
+
+        <form *ngIf="this.diceService.normalDices">
+          <label style="font-weight: bold" for="modif">Modificateur :</label
+          ><br />
+          <input
+            type="number"
+            id="modif"
+            value=""
+            name="fname"
+            [(ngModel)]="this.diceService.modifier"
+          />
+        </form>
+        <div class="buttons">
+          <ion-button
+            class="launch"
+            color="btn-purple"
+            disabled="{{!this.diceService.diceSelected.size}}"
+            (click)="this.presentAlertConfirm(this.diceService.launchDice(this.diceService.diceSelected,this.diceService.modifier))"
+            >Lancer</ion-button
+          >
+          <div>
+            <ion-button
+              shape="round"
+              color="btn-purple"
+              disabled="{{!this.diceService.diceSelected.size}}"
+              class="dice"
+              (click)="newMacroAlert()"
+            >
+              <ion-icon name="save-outline"></ion-icon>
+            </ion-button>
+            <ion-button
+              shape="round"
+              color="btn-purple"
+              disabled="{{!this.diceService.diceSelected.size}}"
+              class="refresh"
+              (click)="this.diceService.resetDices()"
+            >
+              <ion-icon name="refresh-outline"></ion-icon>
+            </ion-button>
           </div>
-          <div *ngIf="!normalDices" class="dices">
-              <ion-img *ngFor="let dice of this.diceService.specialGame.get(specialDiceSet)" (click)="increaseDiceSum(dice)" class="small pastèque" src="{{dice.faces[2]}}"></ion-img>
-          </div>
-          <!-- ion-button color="btn-purple" (click)="specialDicesAlert()">Changer le set de dés</ion-button -->
-          <div class="control">
-              <ion-card-content class="selectDices" >&nbsp;{{this.diceService.StringifyDice()}}</ion-card-content>
-            
-            <form *ngIf="this.diceService.normalDices">
-              <label style="font-weight: bold" for="modif">Modificateur :</label><br>
-              <input type="number" id="modif" value="" name="fname" [(ngModel)]="this.diceService.modifier">
-            </form>
-              <div class="buttons">
-                  <ion-button  class="launch" color="btn-purple" disabled={{!this.diceService.diceSelected.size}} (click)="this.presentAlertConfirm(this.diceService.launchDice(this.diceService.diceSelected,this.diceService.modifier))">Lancer</ion-button>
-                  <div>
-                      <ion-button shape="round" color="btn-purple" disabled={{!this.diceService.diceSelected.size}} class="dice" (click)="newMacroAlert()">
-                          <ion-icon name="save-outline"></ion-icon>
-                      </ion-button>
-                      <ion-button shape="round" color="btn-purple" disabled={{!this.diceService.diceSelected.size}} class="refresh" (click)="resetDices()">
-                          <ion-icon  name="refresh-outline" ></ion-icon>
-                      </ion-button>
-                  </div>
-              </div>
-          </div>
-          <div class="settings">
-              <div class="subSettings">
-                <ion-toggle (ionChange)="gyroscopeSetting()"></ion-toggle>
-                <ion-label style="font-weight: bold">Activer le lancer par secousse</ion-label>
-              </div>
-          </div>
-      </ion-slide>
+        </div>
+      </div>
+      <div class="settings">
+        <div class="subSettings">
+          <ion-toggle (ionChange)="gyroscopeSetting()"></ion-toggle>
+          <ion-label style="font-weight: bold"
+            >Activer le lancer par secousse</ion-label
+          >
+        </div>
+      </div>
+    </ion-slide>
 
+    <!-- MACRO -->
+    <ion-slide class="macroPage">
+      <app-roll-macro
+        class="macroPage"
+        *ngFor="let macro of macroService.macros"
+        [macro]="macro"
+        (click)="macroLaunch(macro)"
+      ></app-roll-macro>
+    </ion-slide>
 
-      <!-- MACRO -->
-      <ion-slide class="macroPage">
-        <app-roll-macro class="macroPage" *ngFor="let macro of macroService.macros" [macro]=macro (click)="macroLaunch(macro)"></app-roll-macro>
-      </ion-slide>
-
-      <!-- HISTORIQUE -->
-      <ion-slide class="historiquePage" id="test">
-        <app-roll-history class="historiquePage" *ngFor="let roll of this.diceHistoryService.history" [roll]= roll></app-roll-history>
-      </ion-slide>
-
-
-    </ion-slides>
-
-
-  
+    <!-- HISTORIQUE -->
+    <ion-slide class="historiquePage" id="test">
+      <app-roll-history
+        class="historiquePage"
+        *ngFor="let roll of this.diceHistoryService.history"
+        [roll]="roll"
+      ></app-roll-history>
+    </ion-slide>
+  </ion-slides>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar color="header">
-    <ion-segment  [(ngModel)]="segment" (ionChange)="segmentChanged($event)"  color="over-header">
+    <ion-segment
+      [(ngModel)]="segment"
+      (ionChange)="segmentChanged($event)"
+      color="over-header"
+    >
       <ion-segment-button value="0">
         <ion-label>Dés</ion-label>
       </ion-segment-button>
-     <ion-segment-button value="1">
+      <ion-segment-button value="1">
         <ion-label>Macros</ion-label>
       </ion-segment-button>
       <ion-segment-button value="2">

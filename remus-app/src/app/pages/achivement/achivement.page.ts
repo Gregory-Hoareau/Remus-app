@@ -24,7 +24,7 @@ export class AchivementPage {
   private startOpen = false;
   private endOpen = false;
 
-  constructor(private modalCtrl: ModalController, private playersService:PlayersService,private router: Router, private alertController: AlertController, private achivementService: AchivementService) {
+  constructor(public modalCtrl: ModalController, public playersService:PlayersService,private router: Router, private alertController: AlertController, public achivementService: AchivementService) {
     this.players =this.playersService.playersList;
     this.achivements = achivementService.achivements;
     this.achivementService.setUpAvancee();
@@ -33,8 +33,10 @@ export class AchivementPage {
   }
 
 
-  async showAchivement(achivement: Achivement, sliding: IonItemSliding) {
-    sliding.close();
+  async showAchivement(achivement: Achivement, sliding?: IonItemSliding) {
+    if(sliding){
+      sliding.close();
+    }
     const alert = await this.alertController.create({
       header: achivement.titre,
       message : achivement.description,

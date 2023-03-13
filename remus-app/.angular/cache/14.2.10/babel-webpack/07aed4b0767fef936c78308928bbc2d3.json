@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class Message {\n  constructor(d, p, m, t) {\n    this.timestamp = d;\n    this.player = p;\n    this.message = m;\n    this.target = t;\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}

@@ -69,7 +69,7 @@ export class SessionHomePage {
   @ViewChild('sharedfilecontainer', { read: ViewContainerRef, static:true }) entry: ViewContainerRef;
   constructor(private resolver: ComponentFactoryResolver,public achivementService: AchivementService, public modalCtr: ModalController, private route: ActivatedRoute, private router: Router,
               private alerteController: AlertController, private loadingController: LoadingController,
-              private file: File, private playerServ: PlayersService,
+              private file: File, public playerServ: PlayersService,
               private toastController: ToastController, private menuController: MenuController,
               private noteService: NotesService, private location: Location,
               private characterService: CharacterService, private peerService: Peer2peerService) {

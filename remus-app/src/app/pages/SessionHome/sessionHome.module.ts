@@ -25,30 +25,29 @@ import { MusicPlayerPageModule } from '../music-player/music-player.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    SessionHomePageRoutingModule,
-    DocPopupModule,
-      AchivementPageModule,
-    CharacterSheetPageModule,
-    SelectCharacterPageModule,
-    FontAwesomeModule,
-    SimulateurPageModule,
-    NotesPageModule,
-    CanvasPageModule,
-    CrowdsourcingPageModule,
-    InvitationSenderPageModule,
-    GeneratorChoicePageModule,
-    MusicPlayerPageModule
-  ],
-  entryComponents: [SharedFileComponent],
-  declarations: [SessionHomePage,
-  SharedFileComponent],
-  providers: [File],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        SessionHomePageRoutingModule,
+        DocPopupModule,
+        AchivementPageModule,
+        CharacterSheetPageModule,
+        SelectCharacterPageModule,
+        FontAwesomeModule,
+        SimulateurPageModule,
+        NotesPageModule,
+        CanvasPageModule,
+        CrowdsourcingPageModule,
+        InvitationSenderPageModule,
+        GeneratorChoicePageModule,
+        MusicPlayerPageModule
+    ],
+    declarations: [SessionHomePage,
+        SharedFileComponent],
+    providers: [File],
+    schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+    ]
 })
 export class SessionHomePageModule {}

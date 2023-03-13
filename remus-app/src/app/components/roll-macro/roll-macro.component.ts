@@ -9,7 +9,7 @@ import {Macro} from '../../models/macro.model';
 export class RollMacroComponent implements OnInit {
 
   @Input()
-  private macro: Macro;
+  public macro: Macro;
 
   constructor() {
     this.macro = {name: '', dices: null, modifier: 0, stringDices: '', isItNormalDices: true};

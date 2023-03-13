@@ -33,43 +33,42 @@ import { MusicControls } from '@ionic-native/music-controls/ngx';
 import { Media } from '@ionic-native/media/ngx';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [
-      BrowserModule,
-      IonicModule.forRoot(),
-      AppRoutingModule,
-      BrowserAnimationsModule,
-      FontAwesomeModule,
-      HttpClientModule,
-      IonicStorageModule.forRoot(),
-      SessionChatPageModule,
-      AchivementPageModule,
-      JoinFormPageModule
-  ],
-  providers: [
-    StatusBar,
-    Camera,
-    SplashScreen,
-    FileChooser,
-    FilePath,
-    ImagePicker,
-    File,
-    DiceHistoryService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    CharacterService,
-    NameGeneratorService,
-    NavParams,
-    Base64ToGallery,
-    Deeplinks,
-    SMS,
-    Contacts,
-    AndroidPermissions,
-    MusicService,
-    MusicControls,
-    Media,
-    Platform
-  ],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
+        IonicModule.forRoot(),
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        FontAwesomeModule,
+        HttpClientModule,
+        IonicStorageModule.forRoot(),
+        SessionChatPageModule,
+        AchivementPageModule,
+        JoinFormPageModule
+    ],
+    providers: [
+        StatusBar,
+        Camera,
+        SplashScreen,
+        FileChooser,
+        FilePath,
+        ImagePicker,
+        File,
+        DiceHistoryService,
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        CharacterService,
+        NameGeneratorService,
+        NavParams,
+        Base64ToGallery,
+        Deeplinks,
+        SMS,
+        Contacts,
+        AndroidPermissions,
+        MusicService,
+        MusicControls,
+        Media,
+        Platform
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
